@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-08-16T09:49:33.551Z</updated>
+  <updated>2023-08-17T07:35:07.228Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,50 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>CMU15-445 B+tree</title>
+    <link href="http://example.com/2023/08/17/B-tree/"/>
+    <id>http://example.com/2023/08/17/B-tree/</id>
+    <published>2023-08-17T07:07:54.000Z</published>
+    <updated>2023-08-17T07:35:07.228Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="B-树的介绍（以InnoDB为例）"><a href="#B-树的介绍（以InnoDB为例）" class="headerlink" title="B+树的介绍（以InnoDB为例）"></a>B+树的介绍（以InnoDB为例）</h2><p>InnoDB 的数据是按「数据页」为单位来读写的，也就是说，当需要读一条记录的时候，并不是将这个记录本身从磁盘读出来，而是以页为单位，将其整体读入内存。</p><p>数据库的 I&#x2F;O 操作的最小单位是页，InnoDB 数据页的默认大小是 16KB，意味着数据库每次读写都是以 16KB 为单位的，一次最少从磁盘中读取 16K 的内容到内存中，一次最少把内存中的 16K 内容刷新到磁盘中。</p><p>B+树只有叶子结点存储数据，内部节点和根结点只存储索引。</p><p>另外，索引又可以分成聚簇索引和非聚簇索引（二级索引），它们区别就在于叶子节点存放的是什么数据：</p><ul><li>聚簇索引的叶子节点存放的是实际数据，所有完整的用户记录都存放在聚簇索引的叶子节点；</li><li>二级索引的叶子节点存放的是主键值，而不是实际数据。</li></ul><h2 id="bustub"><a href="#bustub" class="headerlink" title="bustub"></a>bustub</h2><p>在这这个实验中只需要实现三个接口：查询、插入和删除。</p><p>需要使用我们在 Project 1 中实现的 buffer pool manager 来获取 page。</p><p>internal page 中，KV 对的 K 是能够比较大小的索引，V 是 page id，用来指向下一层的节点。</p><p>leaf page 和 internal page 的内存布局基本一样，只是 leaf page 多了一个成员变量 <code>next_page_id</code>，指向下一个 leaf page（用于 range scan）</p><p>internal page 中储存 key 和 child page id，那么在拿到 page id 后如何获得对应的 page 指针？用 Project 1 中实现的 buffer pool。</p><p><code>Page *page = buffer_pool_manager_-&gt;FetchPage(page_id);</code></p><h3 id="find"><a href="#find" class="headerlink" title="find"></a>find</h3><p>找到leaf page，然后二分法找到key，就能够找到对应的record id。</p><p>唯一要注意的问题就是我们在拿到 page id 后，调用 buffer pool 的 FetchPage() 函数来获取对应的 page 指针。要注意的是，在使用完 page 之后，需要将 page unpin 掉，否则最终会导致 buffer pool 中的所有 page 都被 pin 住，无法从 disk 读取其他的 page。比较合适的做法是，在本次操作中，找出 page 最后一次被使用的地方，并在最后一次使用后 unpin。</p><h3 id="insert"><a href="#insert" class="headerlink" title="insert"></a>insert</h3><p>假设叶子结点插入值之后满了，要考虑break的问题，要向父节点中插入break之后新的索引，假设父节点也满了，也要break（这是一个递归的过程），注意这里内部节点的第一个位置只存放value，而不存放key</p><p><img src="/../imgs/B+insert.png"></p><h3 id="delete"><a href="#delete" class="headerlink" title="delete"></a>delete</h3><p>delete的时候，如果当前节点小于最小size（Max size&#x2F;2），首先考虑从兄弟结点偷一个过来，如果兄弟结点投不了，就考虑merge。因为是一个向上递归删除的过程，所以merge的时候要区分是叶节点还是内部节点。</p><p>这里注意是先删除再做merge或者偷一个key</p><p><img src="/../imgs/b+delete.png"></p><h3 id="锁的问题："><a href="#锁的问题：" class="headerlink" title="锁的问题："></a>锁的问题：</h3><p>螃蟹式加锁（区分读锁和写锁）</p><p>参考课件:<a href="https://15445.courses.cs.cmu.edu/fall2022/slides/09-indexconcurrency.pdf">https://15445.courses.cs.cmu.edu/fall2022/slides/09-indexconcurrency.pdf</a></p><p>先给父节点加锁，然后给子节点加锁，如果确认子节点安全（不会发生merge或者break），此时解锁父节点</p><p><img src="/../imgs/image-22.png" alt="Alt text"></p><p>当寻找兄弟结点时，一个指针往前走，假设另一个进程在往后寻找兄弟结点，此时会不会发生死锁？</p><p>不会，因为当子节点需要寻找兄弟节点时，说明此时该节点不安全，所以父节点的锁不会释放，也就意味着另一个子进程拿不到父节点的锁，只会等待。</p><p>如何确定该page有没有被锁住？使用事务管理。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;B-树的介绍（以InnoDB为例）&quot;&gt;&lt;a href=&quot;#B-树的介绍（以InnoDB为例）&quot; class=&quot;headerlink&quot; title=&quot;B+树的介绍（以InnoDB为例）&quot;&gt;&lt;/a&gt;B+树的介绍（以InnoDB为例）&lt;/h2&gt;&lt;p&gt;InnoDB 的数据</summary>
+      
+    
+    
+    
+    <category term="database" scheme="http://example.com/categories/database/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>CMU15-445 buffer pool manager</title>
+    <link href="http://example.com/2023/08/17/bufferpool/"/>
+    <id>http://example.com/2023/08/17/bufferpool/</id>
+    <published>2023-08-17T06:29:40.000Z</published>
+    <updated>2023-08-17T07:07:06.641Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="数据库中为什么需要buffer-pool？"><a href="#数据库中为什么需要buffer-pool？" class="headerlink" title="数据库中为什么需要buffer pool？"></a>数据库中为什么需要buffer pool？</h3><p>数据是存储在磁盘里的，但是也不能每次都从磁盘里面读取数据，这样性能是极差的。</p><p>要想提升查询性能，添加缓存。所以，当数据从磁盘中取出后，缓存内存中，下次查询同样的数据的时候，直接从内存中读取。</p><p>通常存储的数据划分为若干个「页」，以页作为磁盘和内存交互的基本单位，一个页的默认大小为 16KB。因此，Buffer Pool 同样需要按「页」来划分。</p><p>在MySQL中，InnoDB 会为 Buffer Pool 申请一片连续的内存空间，然后按照默认的16KB的大小划分出一个个的页(<code>frame</code>)， Buffer Pool 中的页就叫做缓存页。此时这些缓存页都是空闲(<code>free list</code>)的，之后随着程序的运行，才会有磁盘上的页被缓存到 Buffer Pool 中。</p><h3 id="Buffer-Pool-Manager-需要实现的功能："><a href="#Buffer-Pool-Manager-需要实现的功能：" class="headerlink" title="Buffer Pool Manager 需要实现的功能："></a>Buffer Pool Manager 需要实现的功能：</h3><p><code>auto NewPgImp(page_id_t *page_id) -&gt; Page * override</code><br>返回一个<code>Page</code>（首先检查free list中有没有空闲的Page，如果有从free list返回，如果没有使用LRU_K算法replace一个页面之后返回, 注意这里的<code>page_id</code>是一个传入参数）</p><p><code>auto FetchPgImp(page_id_t page_id) -&gt; Page * override;</code><br>在buffer pool中可能存在这个page_id, 标记为visit之后返回，不存在就和创建新的Page一样操作</p><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">UnpinPgImp</span><span class="params">(<span class="type">page_id_t</span> page_id, <span class="type">bool</span> is_dirty)</span> -&gt; <span class="type">bool</span> <span class="keyword">override</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">FlushPgImp</span><span class="params">(<span class="type">page_id_t</span> page_id)</span> -&gt; <span class="type">bool</span> <span class="keyword">override</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">FlushAllPgsImp</span><span class="params">()</span> <span class="keyword">override</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">DeletePgImp</span><span class="params">(<span class="type">page_id_t</span> page_id)</span> -&gt; <span class="type">bool</span> <span class="keyword">override</span></span>;</span><br></pre></td></tr></table></figure><h3 id="Extendible-Hash-Table"><a href="#Extendible-Hash-Table" class="headerlink" title="Extendible Hash Table"></a>Extendible Hash Table</h3><h4 id="为什么这里需要一个hash表？"><a href="#为什么这里需要一个hash表？" class="headerlink" title="为什么这里需要一个hash表？"></a>为什么这里需要一个hash表？</h4><p>外部使用的参数为<code>page_id</code> , 内部转换为<code>frame_id</code>, 每一个frame对应着一个page。从<code>page_id</code>转换为<code>frame_id</code>通过hash表实现。</p><p><strong>重点在于如何去管理桶，当桶满了再插入时应该如何操作。</strong></p><p>每个桶（bucket）都有一个本地深度（local depth）和一个全局深度（global depth）</p><p>本地深度是指每个桶中存储的键值对的哈希值的前缀长度。例如，如果本地深度为2，则桶中存储的键值对的哈希值的前两位必须相同。</p><p>全局深度是指哈希表中所有桶的本地深度的最大值。它表示哈希表的索引空间的大小。</p><p>如果插入时全局深度等于本地深度，哈希目录扩展为两倍（左移一位）<br>此时针对桶的处理最简单的办法是也新建一倍的桶，每一个桶对应着每个索引，但是这样很浪费空间，当有数据插入的时候再考虑新建桶。<br>扩展目录为double，更新index，将桶中的数据重新插入到新的桶中。</p><p><img src="/../imgs/image-21.png" alt="Alt text"></p><h3 id="LRU-K算法"><a href="#LRU-K算法" class="headerlink" title="LRU_K算法"></a>LRU_K算法</h3><p>和传统的LRU不一样的地方在于，传统的LRU是淘汰最近未使用的，而LRU_K多维护了一个record链表，用于记录访问次数大于等于K的Page，当淘汰时优先淘汰访问次数小于K次的，若所有的Page访问次数都大于K次才从record链表中去淘汰。</p><p><img src="/../imgs/image-20.png" alt="Alt text"></p><h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h3><p><img src="/../imgs/bufferpool.png"></p><h3 id="tips"><a href="#tips" class="headerlink" title="tips"></a>tips</h3><ul><li><p>是否是dirty，是在Page内部用变量标识的，在buffer pool中没有使用额外的list管理脏页。</p></li><li><p>在buffer pool中的Page array的作用：<code>pages_</code>用来管理已经在bufferp pool中的Page</p><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (page_table_-&gt;<span class="built_in">Find</span>(page_id, frame_id)) &#123;</span><br><span class="line">    replacer_-&gt;<span class="built_in">RecordAccess</span>(frame_id);</span><br><span class="line">    replacer_-&gt;<span class="built_in">SetEvictable</span>(frame_id, <span class="literal">false</span>);</span><br><span class="line">    pages_[frame_id].pin_count_++;</span><br><span class="line">    <span class="keyword">return</span> &amp;pages_[frame_id];</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h3 id=&quot;数据库中为什么需要buffer-pool？&quot;&gt;&lt;a href=&quot;#数据库中为什么需要buffer-pool？&quot; class=&quot;headerlink&quot; title=&quot;数据库中为什么需要buffer pool？&quot;&gt;&lt;/a&gt;数据库中为什么需要buffer pool？&lt;/</summary>
+      
+    
+    
+    
+    <category term="database" scheme="http://example.com/categories/database/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>malloc是如何和物理地址关联上的？</title>
