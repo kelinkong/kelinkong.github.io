@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>CMU15-445 Concurrency Control | Kelin's blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/latest/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/grids-responsive-min.min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script type="text/javascript" src="//lib.baomitu.com/clipboard.js/latest/clipboard.min.js"></script><script type="text/javascript" src="//lib.baomitu.com/toastr.js/latest/toastr.min.js"></script><link rel="stylesheet" href="//lib.baomitu.com/toastr.js/latest/toastr.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">CMU15-445 Concurrency Control</h1><a id="logo" href="/.">Kelin's blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">CMU15-445 Concurrency Control</h1><div class="post-meta">2023-08-21<span> | </span><span class="category"><a href="/categories/database/">database</a></span></div><div class="post-content"><h2 id="project4需要实现的内容"><a href="#project4需要实现的内容" class="headerlink" title="project4需要实现的内容"></a>project4需要实现的内容</h2><p><a target="_blank" rel="noopener" href="https://15445.courses.cs.cmu.edu/fall2022/project4/">project任务链接</a></p>
 <h3 id="Lock-Manager："><a href="#Lock-Manager：" class="headerlink" title="Lock Manager："></a>Lock Manager：</h3><p><code>src/include/concurrency/lock_manager.h</code></p>
 <p><code>concurrency/lock_manager.cpp</code></p>
-<h4 id="Lock-Manager的作用是什么？"><a href="#Lock-Manager的作用是什么？" class="headerlink" title="Lock Manager的作用是什么？"></a>Lock Manager的作用是什么？</h4><p>Lock Manager 的作用是处理事务发送的锁请。，事务在被允许访问某个数据项之前,需要先向锁管理器发出锁请求。锁管理器将向调用事务授予锁,阻塞该事务,或者中止它。</p>
+<h4 id="Lock-Manager的作用是什么？"><a href="#Lock-Manager的作用是什么？" class="headerlink" title="Lock Manager的作用是什么？"></a>Lock Manager的作用是什么？</h4><p>Lock Manager 的作用是处理事务发送的锁请。事务在被允许访问某个数据项之前,需要先向锁管理器发出锁请求。锁管理器将向调用事务授予锁,阻塞该事务,或者中止它。</p>
 <p>例如有一个 SeqScan 算子需要扫描某张表，其所在事务就需要对这张表加 S 锁。而加读锁这个动作需要由 Lock Manager 来完成。事务先对向 Lock Manager 发起加 S 锁请求，Lock Manager 对请求进行处理。如果发现此时没有其他的锁与这个请求冲突，则授予其 S 锁并返回。如果存在冲突，例如其他事务持有这张表的 X 锁，则 Lock Manager 会阻塞此请求（即阻塞此事务），直到能够授予 S 锁，再授予并返回。</p>
 <p>整个系统将具有一个全局的锁管理器(类似于缓冲池管理器)。TableHeap和Executor类将使用你实现的锁管理器在事务想访问或修改一个元组记录时获取行锁(通过记录ID RID)。</p>
 <p>这个任务要求实现一个支持三种常见隔离级别的表级锁和行级锁:READ_UNCOMMITTED, READ_COMMITTED和REPEATABLE_READ。锁管理器应该根据事务的隔离级别授予或释放锁。请参考课件复习隔离级别。</p>
@@ -20,11 +20,16 @@
 <p><img src="/../imgs/image-43.png"></p>
 <p><strong>获取表锁</strong></p>
 <ol>
-<li>判断锁请求是否合理</li>
+<li>判断锁请求是否合理(如果当前事务Abort&#x2F;Commit，或者加锁类型与事务隔离级别不符合，抛异常)</li>
+<li>从 <code>table_lock_map_</code> 中获取 table 对应的 <code>lock request queue</code>。注意需要对 map 加锁，并且为了提高并发性，在获取到 queue 之后立即释放 map 的锁。若 queue 不存在则创建。</li>
 <li>判断之前该事务是否对这个表进行加过锁</li>
-<li>如果之前加过锁，升级该锁（级别不能比当前的锁的级别要低），此时新的锁请求位置在原位置</li>
-<li>更新锁之后，原本队列中阻塞等待加锁的请求可能与当前的请求不兼容了，所以还需要再判断一次。</li>
-<li>如果加锁不是升级，直接插入新的请求</li>
+<li>如果之前加过锁，升级该锁（级别不能比当前的锁的级别要低且不能有另一个事务也在对这个表进行升级），创建一个新的LockRequest，加入到队列尾部</li>
+<li>尝试获取锁，如果<code>GrantLock()</code>为真，可以获取锁，否则循环等待，这里使用条件变量<code>queue-&gt;cv_.wait(queue-&gt;latch_);</code>, 当这个锁被释放时，会唤醒当前线程，判断是否能获取锁。</li>
+</ol>
+<p><strong>GrantLock()</strong></p>
+<ol>
+<li>判断当前的锁请求是否与所有的<code>granted</code>的请求兼容</li>
+<li>判断优先级</li>
 </ol>
 <p>tips：</p>
 <p>使用条件变量去通知请求队列上等待的线程。</p>
@@ -44,6 +49,7 @@
 </ul>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"> <span class="comment">/** Waits-for graph representation. */</span></span><br><span class="line">std::unordered_map&lt;<span class="type">txn_id_t</span>, std::vector&lt;<span class="type">txn_id_t</span>&gt;&gt; waits_for_;</span><br></pre></td></tr></table></figure>
 
+<p>并不需要时刻维护wait for图，而是在死锁检测线程被唤醒的时候，根据当前请求队列构建的wait for图，再通过这个图去判断是否存在死锁。</p>
 <ul>
 <li>当检测到有圈时，这里采取的victim策略是找到事务ID最大的返回，因为这个事务是最年轻的。</li>
 <li>默认的检测时间是50ms</li>
