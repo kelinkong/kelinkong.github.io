@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>C++代码调试 | Kelin's blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/latest/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/grids-responsive-min.min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script type="text/javascript" src="//lib.baomitu.com/clipboard.js/latest/clipboard.min.js"></script><script type="text/javascript" src="//lib.baomitu.com/toastr.js/latest/toastr.min.js"></script><link rel="stylesheet" href="//lib.baomitu.com/toastr.js/latest/toastr.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">C++代码调试</h1><a id="logo" href="/.">Kelin's blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">C++代码调试</h1><div class="post-meta">2023-10-10</div><div class="post-content"><h2 id="GCC-工作流程"><a href="#GCC-工作流程" class="headerlink" title="GCC 工作流程"></a>GCC 工作流程</h2><table>
+<thead>
+<tr>
+<th>说明</th>
+<th>文件后缀</th>
+<th>参数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>预处理</td>
+<td>.c</td>
+<td>-</td>
+</tr>
+<tr>
+<td>编译</td>
+<td>.i</td>
+<td>-E</td>
+</tr>
+<tr>
+<td>汇编</td>
+<td>.s</td>
+<td>-S</td>
+</tr>
+<tr>
+<td>链接</td>
+<td>.o</td>
+<td>-c</td>
+</tr>
+</tbody></table>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 预处理。 -o 参数是为了指定编译后的文件名</span></span><br><span class="line">gcc -E test.c -o test.i</span><br><span class="line"><span class="comment"># 编译</span></span><br><span class="line">gcc -S test.i -o test.s </span><br><span class="line"><span class="comment"># 汇编</span></span><br><span class="line">gcc -c test.s -o test.o</span><br><span class="line"><span class="comment">#链接</span></span><br><span class="line">gcc test.o -o <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="CMake"><a href="#CMake" class="headerlink" title="CMake"></a>CMake</h2><p>参考<a target="_blank" rel="noopener" href="https://www.hahack.com/codes/cmake/">Cmake快速入门</a></p>
+<p>cmake的基本语法：</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">cmake &lt;<span class="keyword">option</span>&gt; &lt;path&gt;</span><br><span class="line">cmake -DCMAKE_BUILD_TYPE=Debug ..</span><br></pre></td></tr></table></figure>
+
+<h3 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h3><table>
+<thead>
+<tr>
+<th>含义</th>
+<th>指令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>编译</td>
+<td>cmake <code>&lt;path&gt;</code>, 当前目录为<code>.</code>,上一级目录为<code>..</code></td>
+</tr>
+<tr>
+<td>清理cmake缓存</td>
+<td><code>rm -rf CMakeFiles/ CMakeCache.txt cmake_install.cmake Makefile</code></td>
+</tr>
+</tbody></table>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ul>
+<li>每一个层级都需要写CMakeLists.txt文件</li>
+<li>需要在父层级添加子层级的目录</li>
+<li>需要在父层级添加子层级的库&#x2F;子目录包含可执行文件</li>
+</ul>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p><strong>文件结构：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">├── cmake_notes</span><br><span class="line">│   ├── build</span><br><span class="line">│   └── math</span><br><span class="line">│       ├── CMakeLists.txt</span><br><span class="line">|       ├── myfunction.h</span><br><span class="line">│       └── myfunction.cpp</span><br><span class="line">├── CMakeLists.txt</span><br><span class="line">└── main.txt</span><br></pre></td></tr></table></figure>
+
+<p>第一层级的CMakeLists.txt：</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 项目名称</span></span><br><span class="line"><span class="keyword">project</span>(Demo)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 是否用自己的 MathFunctions库</span></span><br><span class="line"><span class="keyword">option</span>(USE_MYMATH <span class="string">&quot;Use provided math implementation&quot;</span> <span class="keyword">OFF</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加自己的 MathFunctions库</span></span><br><span class="line"><span class="keyword">add_definitions</span>(-DUSE_MYMATH)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 是否加入MathFunctions库</span></span><br><span class="line"><span class="keyword">if</span> (USE_MYMATH)</span><br><span class="line">    <span class="keyword">include_directories</span>(<span class="string">&quot;$&#123;PROJECT_SOURCE_DIR&#125;/math&quot;</span>)</span><br><span class="line">    <span class="keyword">add_subdirectory</span>(<span class="keyword">math</span>)</span><br><span class="line"><span class="keyword">endif</span> (USE_MYMATH)</span><br><span class="line"></span><br><span class="line"><span class="comment"># add_executable(Demo main.cpp print.cpp)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查找当前目录下的所有源文件，保存到DIR_SRCS变量中</span></span><br><span class="line"><span class="keyword">aux_source_directory</span>(. DIR_SRCS)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成指定目标</span></span><br><span class="line"><span class="keyword">add_executable</span>(Demo <span class="variable">$&#123;DIR_SRCS&#125;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加子目录</span></span><br><span class="line"><span class="comment"># add_subdirectory(math)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 链接到库</span></span><br><span class="line"><span class="keyword">if</span> (USE_MYMATH)</span><br><span class="line">    <span class="keyword">target_link_libraries</span>(Demo MathFunctions)</span><br><span class="line"><span class="keyword">endif</span> (USE_MYMATH)</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_link_libraries</span>(Demo -lpthread)</span><br></pre></td></tr></table></figure>
+
+<p><strong>在源代码中使用：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> USE_MYMATH</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;use my math&quot;</span>&lt;&lt;endl;</span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;use system math&quot;</span>&lt;&lt;endl;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span> <span class="comment">// USE_MYMATH</span></span></span><br></pre></td></tr></table></figure>
+
+<p><strong>子目录的CMakeLists文档，需要add_executable吗?</strong></p>
+<p>子目录包含可执行文件：</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在子目录的 CMakeLists.txt 中</span></span><br><span class="line"><span class="keyword">add_executable</span>(my_executable main.cpp other_source.cpp)</span><br></pre></td></tr></table></figure>
+
+<p>子目录只包含库代码：</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在子目录的 CMakeLists.txt 中</span></span><br><span class="line"><span class="keyword">add_library</span>(my_library my_source.cpp)</span><br></pre></td></tr></table></figure>
+
+<p>这将创建一个库目标而不是可执行文件，以便在主目录的CMakeLists.txt文件中或其他子目录中使用。</p>
+</div><div class="tags"><ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/" rel="tag">cpp</a></li></ul></div><div class="post-nav"><a class="next" href="/2023/10/10/C++11-threads/">C++多线程模型</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://example.com"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="About"><img class="nofancybox" src="/img/logo.jpg"/></a><p>Kelin is a boring girl, but not always.</p></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/data-structure/">data_structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">os</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/solutions/">solutions</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tcs/">tcs</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/CMU15-445/" style="font-size: 15px;">CMU15-445</a> <a href="/tags/cpp/" style="font-size: 15px;">cpp</a> <a href="/tags/c/" style="font-size: 15px;">c++</a> <a href="/tags/os/" style="font-size: 15px;">os</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2023/10/10/C++%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/">C++代码调试</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/10/10/C++11-threads/">C++多线程模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/10/08/cs50/">CS50</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/08/21/Concurrency-Control/">CMU15-445 Concurrency Control</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/08/21/concurrency_notes/">CMU15-445 Concurrency study note</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/08/17/Query-Execution/">CMU15-445 Query_Execution</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/08/17/B-tree/">CMU15-445 B+tree</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/08/17/bufferpool/">CMU15-445 buffer pool manager</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/08/16/malloc%E6%98%AF%E5%A6%82%E4%BD%95%E5%92%8C%E7%89%A9%E7%90%86%E5%9C%B0%E5%9D%80%E5%85%B3%E8%81%94%E4%B8%8A%E7%9A%84/">malloc是如何和物理地址关联上的？</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/08/16/%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/">利用hexo和github搭建静态博客</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> Links</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2023 <a href="/." rel="nofollow">Kelin's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0"></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="Copy Successed!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
