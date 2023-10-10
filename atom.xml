@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-10-08T09:08:20.646Z</updated>
+  <updated>2023-10-10T07:53:21.051Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>C++多线程模型</title>
+    <link href="http://example.com/2023/10/10/C++11-threads/"/>
+    <id>http://example.com/2023/10/10/C++11-threads/</id>
+    <published>2023-10-10T06:47:41.000Z</published>
+    <updated>2023-10-10T07:53:21.051Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="线程同步和线程通信"><a href="#线程同步和线程通信" class="headerlink" title="线程同步和线程通信"></a>线程同步和线程通信</h2><h3 id="线程同步"><a href="#线程同步" class="headerlink" title="线程同步"></a>线程同步</h3><ol><li>互斥锁</li><li>条件变量</li><li>互斥量</li><li>信号量</li></ol><h3 id="线程通信"><a href="#线程通信" class="headerlink" title="线程通信"></a>线程通信</h3><ol><li>条件变量</li><li>队列</li><li>原子操作</li><li>条件变量和定时器</li></ol><h2 id="C-标准库提供了哪些锁？"><a href="#C-标准库提供了哪些锁？" class="headerlink" title="C++标准库提供了哪些锁？"></a>C++标准库提供了哪些锁？</h2><p><code>std::mutex</code>：互斥锁是最基本的锁类型，用于确保一次只有一个线程可以访问共享资源。你可以使用 std::mutex 来创建一个互斥锁对象，然后使用 lock() 和 unlock() 方法来手动锁定和解锁。</p><p><code>std::unique_lock：</code>std::unique_lock 是一个更加灵活的互斥锁包装器，它允许你在需要时手动锁定和解锁，也可以在构造函数和析构函数中自动锁定和解锁。</p><p><code>std::lock_guard：</code>std::lock_guard 是另一个互斥锁包装器，但它只支持自动锁定和解锁。一旦 std::lock_guard 对象被创建，它会自动锁定互斥锁，并在其生命周期结束时自动解锁。</p><p><code>std::recursive_mutex：</code>递归互斥锁允许同一线程多次获得锁。这对于某些特定的情况很有用，但要小心避免死锁。</p><p><code>std::shared_mutex：</code>共享互斥锁（C++17引入）允许多个线程同时读取共享资源，但只有一个线程可以写入资源。这有助于提高并发性能。</p><p><code>std::condition_variable：</code>条件变量用于线程之间的同步和通信。它们允许一个线程等待某个条件成立，然后另一个线程发出信号以通知等待线程。</p><h2 id="实现线程的交替打印："><a href="#实现线程的交替打印：" class="headerlink" title="实现线程的交替打印："></a>实现线程的交替打印：</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;condition_variable&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;mutex&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> NUM_THREADS = <span class="number">3</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> NUM_ITERATTIONS = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line">std::mutex mtx; <span class="comment">// 锁，用于线程同步</span></span><br><span class="line">std::condition_variable cv; <span class="comment">// 条件变量，用于线程通信</span></span><br><span class="line"><span class="type">int</span> current_thread = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">print</span><span class="params">(<span class="type">int</span> thread_num, <span class="type">const</span> std::string&amp; messages)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; NUM_ITERATTIONS; ++i) &#123;</span><br><span class="line">        <span class="comment">// 获取锁，进入临界区</span></span><br><span class="line">        <span class="function">std::unique_lock&lt;std::mutex&gt; <span class="title">lock</span><span class="params">(mtx)</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 如果不是当前线程，就等待</span></span><br><span class="line">        <span class="keyword">while</span> (current_thread != thread_num) &#123;</span><br><span class="line">            cv.<span class="built_in">wait</span>(lock); <span class="comment">// 释放锁，允许其他线程进入临界区</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 打印信息</span></span><br><span class="line">        std::cout &lt;&lt; messages &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 更改当前线程的编号</span></span><br><span class="line">        current_thread = (current_thread + <span class="number">1</span>) % NUM_THREADS;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 通知下一个线程开始打印</span></span><br><span class="line">        cv.<span class="built_in">notify_all</span>(); <span class="comment">// 这里并没有释放锁，当前线程仍然持有锁</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::thread threads[NUM_THREADS];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; NUM_THREADS; ++i) &#123;</span><br><span class="line">        threads[i] = std::<span class="built_in">thread</span>(print, i, <span class="string">&quot;Thread &quot;</span> + std::<span class="built_in">to_string</span>(i));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; NUM_THREADS; ++i) &#123;</span><br><span class="line">        threads[i].<span class="built_in">join</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">g++ test.cpp -o <span class="built_in">test</span> -pthread</span><br></pre></td></tr></table></figure><h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="为什么使用条件变量唤醒的时候要用while而不用if？"><a href="#为什么使用条件变量唤醒的时候要用while而不用if？" class="headerlink" title="为什么使用条件变量唤醒的时候要用while而不用if？"></a>为什么使用条件变量唤醒的时候要用while而不用if？</h3><p>条件变量在等待期间可能会收到虚假唤醒（spurious wakeups），也就是在条件尚未满足时，线程被唤醒。</p><p>虚假唤醒是由于操作系统或底层线程库的实现细节引起的，他们可能会偶尔导致条件变量的信号量被错误唤醒。所以要循环检查，直到条件不满足。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;线程同步和线程通信&quot;&gt;&lt;a href=&quot;#线程同步和线程通信&quot; class=&quot;headerlink&quot; title=&quot;线程同步和线程通信&quot;&gt;&lt;/a&gt;线程同步和线程通信&lt;/h2&gt;&lt;h3 id=&quot;线程同步&quot;&gt;&lt;a href=&quot;#线程同步&quot; class=&quot;headerli</summary>
+      
+    
+    
+    
+    <category term="cpp" scheme="http://example.com/categories/cpp/"/>
+    
+    
+    <category term="cpp" scheme="http://example.com/tags/cpp/"/>
+    
+  </entry>
   
   <entry>
     <title>CS50</title>
