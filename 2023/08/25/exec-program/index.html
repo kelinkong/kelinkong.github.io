@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>执行一个程序的过程 | Kelin's blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/latest/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/grids-responsive-min.min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script type="text/javascript" src="//lib.baomitu.com/clipboard.js/latest/clipboard.min.js"></script><script type="text/javascript" src="//lib.baomitu.com/toastr.js/latest/toastr.min.js"></script><link rel="stylesheet" href="//lib.baomitu.com/toastr.js/latest/toastr.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">执行一个程序的过程</h1><a id="logo" href="/.">Kelin's blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">执行一个程序的过程</h1><div class="post-meta">2023-08-25</div><div class="post-content"><h2 id="冯诺依曼模型"><a href="#冯诺依曼模型" class="headerlink" title="冯诺依曼模型"></a>冯诺依曼模型</h2><ul>
+<li>运算器</li>
+<li>控制器</li>
+<li>存储器</li>
+<li>输入设备</li>
+<li>输出设备</li>
+</ul>
+<p><img src="/../imgs/image-44.png" alt="图来源于小林coding"></p>
+<h3 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h3><p>程序和数据都是存储在内存中，存储的区域是线性的。存储数据的基本单位是<strong>字节（byte）</strong>，一字节等于8位（bit），每一个字节对应着一个内存地址。</p>
+<h3 id="中央处理器CPU"><a href="#中央处理器CPU" class="headerlink" title="中央处理器CPU"></a>中央处理器CPU</h3><p>32位和64位CPU最主要区别在于一次能计算多少字节的数据</p>
+<ul>
+<li>32位一次能计算4个字节，虚拟内存空间大小为$2^{32}$，4G</li>
+<li>64位一次能计算8个字节</li>
+</ul>
+<h4 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h4><ul>
+<li>通用寄存器：用来存放需要进行运算的数据(执行单元)</li>
+<li>程序计数器：用来存储CPU要执行下一条指令所在的内存地址（此时指令仍然在内存中）（控制单元）</li>
+<li>指令寄存器：用来存放正在执行的指令（控制单元）</li>
+</ul>
+<h3 id="存储器接口-Memory-Interface"><a href="#存储器接口-Memory-Interface" class="headerlink" title="存储器接口(Memory Interface)"></a>存储器接口(Memory Interface)</h3><p>与内存交互,读写数据。</p>
+<h4 id="控制单元"><a href="#控制单元" class="headerlink" title="控制单元"></a>控制单元</h4><p>提取指令、解析指令、产生控制信号。</p>
+<h4 id="执行单元-Execution-Unit"><a href="#执行单元-Execution-Unit" class="headerlink" title="执行单元(Execution Unit)"></a>执行单元(Execution Unit)</h4><p>包含算术逻辑单元ALU和通用寄存器组,执行各种运算和数据处理。</p>
+<h3 id="总线"><a href="#总线" class="headerlink" title="总线"></a>总线</h3><ul>
+<li>地址总线：用于指定CPU将要操作的内存地址</li>
+<li>数据总线：用于读写内存的数据</li>
+<li>控制总线：用于发送和接收信号</li>
+</ul>
+<p>通过地址总线来指定内存内存的地址–&gt;通过控制总线控制是读或写命令–&gt;通过数据总线传输数据。</p>
+<h2 id="程序是如何执行的？"><a href="#程序是如何执行的？" class="headerlink" title="程序是如何执行的？"></a>程序是如何执行的？</h2><p><img src="/../imgs/image-45.png"></p>
+<p>指令：一串二进制数字的机器码，不同的CPU有不同的指令集</p>
+<p><strong>指令是存放在虚拟内存里还是物理内存中？</strong></p>
+<p>虚拟内存为每个进程提供一片连续的虚拟地址空间，各进程的虚拟地址空间是独立的，指令与数据位于不同进程的虚拟地址空间中，因此多个进程共同执行时，他们的指令集不会交叉。</p>
+<p><strong>那么程序计数器加1的时候，是加的虚拟内存还是实际内存？CPU直接操作的是实际内存还是虚拟内存？</strong></p>
+<p>程序计数器加1时,它加的都是虚拟地址。CPU在执行程序时,直接操作和访问的也都是虚拟地址,而不是实际物理地址。</p>
+<ol>
+<li>CPU送出的下一条指令虚拟地址到MMU</li>
+<li>MMU根据页表查找虚拟地址到物理地址的映射</li>
+<li>若对应页不在物理内存，则触发缺页中断，os将其从磁盘换入</li>
+<li>MMU最终将虚拟地址翻译为物理地址，从物理地址中读取指令后，将指令发送至CPU</li>
+<li>CPU执行该指令</li>
+<li>程序计数器中的虚拟地址+1</li>
+</ol>
+<h3 id="对于一个C-程序而言，是如何把代码变成指令集的？"><a href="#对于一个C-程序而言，是如何把代码变成指令集的？" class="headerlink" title="对于一个C++程序而言，是如何把代码变成指令集的？"></a>对于一个C++程序而言，是如何把代码变成指令集的？</h3><h4 id="预处理-Preprocessing"><a href="#预处理-Preprocessing" class="headerlink" title="预处理(Preprocessing)"></a>预处理(Preprocessing)</h4><p>预编译器处理头文件包含、宏定义展开等预处理工作,生成扩展后的源代码。<code>#define</code></p>
+<h4 id="编译-Compilation"><a href="#编译-Compilation" class="headerlink" title="编译(Compilation)"></a>编译(Compilation)</h4><p>编译器将预处理后的C++源代码编译成汇编语言。这个过程包括词法分析、语法分析、语义分析、中间代码生成、目标代码生成等步骤。内联函数会被直接插入到每一个调用点，省去了函数调用的过程。</p>
+<h4 id="汇编-Assembly"><a href="#汇编-Assembly" class="headerlink" title="汇编(Assembly)"></a>汇编(Assembly)</h4><p>汇编程序将汇编语言转换成机器语言,生成目标文件。</p>
+<h4 id="链接-Linking"><a href="#链接-Linking" class="headerlink" title="链接(Linking)"></a>链接(Linking)</h4><p>链接器将多个目标文件和系统库链接生成完整的可执行程序。</p>
+<p>在这个过程中,C++源代码经过编译器的编译和汇编程序的汇编,最终被转换成机器指令,这些指令保存在可执行文件的代码段,可以直接被CPU执行。</p>
+<h3 id="编译前和编译后代码是存放在哪里？"><a href="#编译前和编译后代码是存放在哪里？" class="headerlink" title="编译前和编译后代码是存放在哪里？"></a>编译前和编译后代码是存放在哪里？</h3><h4 id="编译前"><a href="#编译前" class="headerlink" title="编译前:"></a>编译前:</h4><p>源代码以文本文件的形式存储在文件系统中,使用高级语言编写,对人更友好。</p>
+<p>源代码包含了数据结构定义、算法流程、程序逻辑等信息。但不能直接被计算机执行。</p>
+<h4 id="编译后："><a href="#编译后：" class="headerlink" title="编译后："></a>编译后：</h4><p>经过编译器编译后,会生成机器代码,存放在可执行文件的代码段中。</p>
+<p>机器代码使用机器指令组成,可以直接被CPU执行。</p>
+<p>举个例子：当我调用<code>new</code>关键字去为一个对象分配内存时，在编译前这仅仅是一个抽象的概念，<strong>内存分配是在运行时发生的</strong>。</p>
+<h3 id="在编译的时候，编译顺序是怎么样的？"><a href="#在编译的时候，编译顺序是怎么样的？" class="headerlink" title="在编译的时候，编译顺序是怎么样的？"></a>在编译的时候，编译顺序是怎么样的？</h3><p>以下面的代码为例：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span> <span class="comment">// 预处理阶段</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Node</span>&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Node</span>(<span class="type">int</span> val):<span class="built_in">val</span>(val)&#123;&#125; <span class="comment">// 构造函数和析构函数机器码</span></span><br><span class="line">    ~<span class="built_in">Node</span>()&#123;&#125; <span class="comment">// </span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="type">static</span> <span class="title">sFunc</span><span class="params">()</span></span>; <span class="comment">// 没有this指针，所以只能调用静态成员变量</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span> val;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> c_val = <span class="number">1</span>;</span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> s_val = <span class="number">1</span>; <span class="comment">// 所有实例共享，不属于类</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="function">Node <span class="title">node</span><span class="params">(<span class="number">1</span>)</span></span>;</span><br><span class="line">    Node * node_ptr = <span class="keyword">new</span> <span class="built_in">Node</span>(<span class="number">1</span>);</span><br><span class="line">    node.<span class="built_in">func</span>();</span><br><span class="line">    node_ptr.<span class="built_in">func</span>();</span><br><span class="line">    <span class="keyword">delete</span> node_ptr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="main函数执行之前，需要做什么？"><a href="#main函数执行之前，需要做什么？" class="headerlink" title="main函数执行之前，需要做什么？"></a>main函数执行之前，需要做什么？</h3><ol>
+<li>设置栈指针</li>
+<li>初始化静态static变量和global变量。静态类的构造函数在这里被调用</li>
+<li>初始化全局变量，全局对象的构造函数也在main之前被调用</li>
+<li>将main函数所需参数传递给main函数</li>
+</ol>
+<h3 id="在main函数之后，需要执行什么？"><a href="#在main函数之后，需要执行什么？" class="headerlink" title="在main函数之后，需要执行什么？"></a>在main函数之后，需要执行什么？</h3><ol>
+<li>全局对象的析构函数</li>
+<li>可以使用<code>atexit</code>注册一个函数，会在main之后执行</li>
+</ol>
+<h3 id="静态成员函数也是放在代码区的吗？"><a href="#静态成员函数也是放在代码区的吗？" class="headerlink" title="静态成员函数也是放在代码区的吗？"></a>静态成员函数也是放在代码区的吗？</h3><p>是的。编译器会为静态成员函数生成对应的机器代码，不需要实例化类就可以调用，机器代码独立生成，不依赖任何实例。</p>
+<h3 id="函数调用时是如何传递参数的？"><a href="#函数调用时是如何传递参数的？" class="headerlink" title="函数调用时是如何传递参数的？"></a>函数调用时是如何传递参数的？</h3><ol>
+<li>把参数的值从寄存器或内存加载到CPU的通用寄存器中。</li>
+<li>调用指令将程序控制流跳转到函数代码地址。</li>
+<li>在跳转前,调用指令会将返回地址等寄存器信息压入调用栈,用于保留调用环境。</li>
+<li>跳转执行函数代码,函数中的局部变量也可能在栈上分配。</li>
+<li>在函数执行前,根据调用约定从寄存器或栈空间中读取参数值。</li>
+<li>函数执行完后,使用返回指令跳回调用点。</li>
+<li>返回前依照调用约定将返回值写入寄存器或内存。</li>
+<li>返回后,调用栈恢复,继续执行调用代码。</li>
+</ol>
+</div><div class="tags"><ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/os/" rel="tag">os</a></li></ul></div><div class="post-nav"><a class="pre" href="/2023/10/08/cs50/">CS50</a><a class="next" href="/2023/08/21/Concurrency-Control/">CMU15-445 Concurrency Control</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://example.com"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="About"><img class="nofancybox" src="/img/logo.jpg"/></a><p>Kelin is a boring girl, but not always.</p></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/data-structure/">data_structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">os</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/solutions/">solutions</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tcs/">tcs</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/CMU15-445/" style="font-size: 15px;">CMU15-445</a> <a href="/tags/cpp/" style="font-size: 15px;">cpp</a> <a href="/tags/c/" style="font-size: 15px;">c++</a> <a href="/tags/os/" style="font-size: 15px;">os</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2023/10/10/C++%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/">C++代码调试</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/10/10/C++11-threads/">C++多线程模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/10/08/cs50/">CS50</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/08/25/exec-program/">执行一个程序的过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/08/21/Concurrency-Control/">CMU15-445 Concurrency Control</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/08/21/concurrency_notes/">CMU15-445 Concurrency study note</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/08/17/Query-Execution/">CMU15-445 Query_Execution</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/08/17/B-tree/">CMU15-445 B+tree</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/08/17/bufferpool/">CMU15-445 buffer pool manager</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/08/16/malloc%E6%98%AF%E5%A6%82%E4%BD%95%E5%92%8C%E7%89%A9%E7%90%86%E5%9C%B0%E5%9D%80%E5%85%B3%E8%81%94%E4%B8%8A%E7%9A%84/">malloc是如何和物理地址关联上的？</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> Links</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2023 <a href="/." rel="nofollow">Kelin's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0"></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="Copy Successed!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
