@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-12-05T04:29:14.479Z</updated>
+  <updated>2024-01-31T03:25:53.191Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>托管博客源码</title>
+    <link href="http://example.com/2024/01/31/%E6%89%98%E7%AE%A1%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81/"/>
+    <id>http://example.com/2024/01/31/%E6%89%98%E7%AE%A1%E5%8D%9A%E5%AE%A2%E6%BA%90%E7%A0%81/</id>
+    <published>2024-01-31T03:14:41.000Z</published>
+    <updated>2024-01-31T03:25:53.191Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>使用hexo在GitHub部署静态博客时，上传到仓库的是bianry文件（在.deploy_git中），无法直接查看源码。这里介绍一种方法，将源码也上传到仓库，方便查看。</p><h2 id="使用多分支管理"><a href="#使用多分支管理" class="headerlink" title="使用多分支管理"></a>使用多分支管理</h2><ol><li><p>在GitHub创建一个hexo分支，并将其设置为默认分支；</p></li><li><p>将其clone到本地，默认clone的是hexo分支内容，此时会包含一个.git文件夹，还有原本仓库中有的编译后的文件；</p></li><li><p>将原本仓库中的内容删除，只保留.git文件夹；</p></li><li><p>将原本的文件除了.deploy_git文件夹复制到本地仓库中；</p></li><li><p>在.gitignore文件中添加</p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.DS_Store</span><br><span class="line">Thumbs.db</span><br><span class="line">db.json</span><br><span class="line">*.log</span><br><span class="line">node_modules/</span><br><span class="line">public/</span><br><span class="line">.deploy*/</span><br></pre></td></tr></table></figure><p><strong>如果clone过主题文件，需要把主题文件夹中的.git文件夹删除，因为不能嵌套clone</strong></p></li><li><p>将clone的文件提交到hexo分支中；</p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit –m add_branch</span><br><span class="line">git push</span><br></pre></td></tr></table></figure></li></ol><p><strong>之后网站更新到main分支，源代码更新到hexo分支。</strong></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;使用hexo在GitHub部署静态博客时，上传到仓库的是bianry文件（在.deploy_git中），无法直接查看源码。这里介绍一种方法，</summary>
+      
+    
+    
+    
+    
+    <category term="hexo" scheme="http://example.com/tags/hexo/"/>
+    
+  </entry>
   
   <entry>
     <title>利用hexo和github搭建静态博客</title>
@@ -480,31 +502,6 @@
 &lt;li&gt;使用运算符不能违反运算符原来的语法规则&lt;/li&gt;
 &lt;li&gt;不能修改运算符的优先级&lt;/li&gt;
 &lt;li&gt;不能进行重载的运算符：成员运算符&lt;code&gt;.&lt;/code&gt;、作用域运算符&lt;c</summary>
-      
-    
-    
-    
-    <category term="cpp" scheme="http://example.com/categories/cpp/"/>
-    
-    
-    <category term="cpp" scheme="http://example.com/tags/cpp/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>左值和右值</title>
-    <link href="http://example.com/2022/08/15/%E3%80%90c++%E3%80%91%E5%B7%A6%E5%80%BC%E5%92%8C%E5%8F%B3%E5%80%BC/"/>
-    <id>http://example.com/2022/08/15/%E3%80%90c++%E3%80%91%E5%B7%A6%E5%80%BC%E5%92%8C%E5%8F%B3%E5%80%BC/</id>
-    <published>2022-08-14T23:33:02.000Z</published>
-    <updated>2023-12-05T04:29:14.478Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="左值和右值"><a href="#左值和右值" class="headerlink" title="左值和右值"></a>左值和右值</h3><p><strong>左值：有地址的值</strong></p><p><strong>右值：只能放在等式右边的值</strong></p><ul><li>常量</li><li>将亡值</li><li>算术表达式<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">f</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="keyword">return</span> <span class="number">10</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> i = <span class="number">10</span>;<span class="comment">//i左值，10右值</span></span><br><span class="line"><span class="type">int</span> j = <span class="built_in">f</span>();<span class="comment">//将亡值，用完即销</span></span><br></pre></td></tr></table></figure><strong>函数返回值为左值引用，就可以放在等式左边</strong><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span>&amp; <span class="title">GetValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="type">static</span> <span class="type">int</span> value = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> i = <span class="built_in">GetValue</span>();</span><br><span class="line">cout &lt;&lt; i &lt;&lt; endl;<span class="comment">//10</span></span><br><span class="line"><span class="built_in">GetValue</span>() = <span class="number">5</span>;<span class="comment">//左值引用</span></span><br><span class="line">cout &lt;&lt; <span class="built_in">GetValue</span>() &lt;&lt; endl;<span class="comment">//5</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><strong>非const引用，只能引用左值</strong><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(<span class="type">int</span>&amp; value)</span></span>;</span><br><span class="line"><span class="built_in">f</span>(<span class="number">10</span>);<span class="comment">//报错,正确 f(const int&amp; value);</span></span><br></pre></td></tr></table></figure></li></ul><h3 id="左值引用和右值引用"><a href="#左值引用和右值引用" class="headerlink" title="左值引用和右值引用"></a>左值引用和右值引用</h3><p><code>const</code>加左值引用，可以兼容右值，相当于创建了一个临时变量，然后进行左值引用。<code>int tmp = 10;f(tmp);</code><br>左值引用仅仅接受左值，右值引用仅仅接受右值。</p><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">MyPrint</span><span class="params">(<span class="type">int</span>&amp; value)</span> </span>&#123;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;左值引用&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">MyPrint</span><span class="params">(<span class="type">int</span>&amp;&amp; value)</span> </span>&#123;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;右值引用&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">MyPrint</span><span class="params">(<span class="type">const</span> <span class="type">int</span>&amp; value)</span> </span>&#123;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;兼容左值和右值引用&quot;</span> &lt;&lt; endl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="built_in">MyPrint</span>(a);<span class="comment">//左值引用</span></span><br><span class="line"><span class="built_in">MyPrint</span>(<span class="number">10</span>);<span class="comment">//右值引用</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="移动语义"><a href="#移动语义" class="headerlink" title="移动语义"></a>移动语义</h3><p>移动语义用来传递所有权，仅仅移动对象，而不进行复制</p><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">//传递所有权</span></span><br><span class="line"><span class="comment">//仅仅移动对象，而不复制，提高效率</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">String</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="built_in">String</span>(<span class="type">const</span> <span class="type">char</span>* data) &#123;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;Creat!\n&quot;</span>);</span><br><span class="line">m_size = <span class="built_in">strlen</span>(data);</span><br><span class="line">m_data = <span class="keyword">new</span> <span class="type">char</span>[m_size];</span><br><span class="line"><span class="built_in">memcpy</span>(m_data, data,m_size);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//深拷贝</span></span><br><span class="line"><span class="built_in">String</span>(<span class="type">const</span> String&amp; other) &#123;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;copy\n&quot;</span>);</span><br><span class="line">m_size = other.m_size;</span><br><span class="line">m_data = <span class="keyword">new</span> <span class="type">char</span>[m_size];</span><br><span class="line"><span class="built_in">memcpy</span>(m_data, other.m_data, m_size);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//移动语义</span></span><br><span class="line"><span class="built_in">String</span>(String&amp;&amp; other) &#123;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;move\n&quot;</span>);</span><br><span class="line">m_size = other.m_size;</span><br><span class="line">m_data = other.m_data;</span><br><span class="line">other.m_size = <span class="number">0</span>;</span><br><span class="line">other.m_data = <span class="literal">nullptr</span>;</span><br><span class="line">&#125;</span><br><span class="line">~<span class="built_in">String</span>() &#123;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;String的析构函数\n&quot;</span>);</span><br><span class="line"><span class="keyword">delete</span> m_data;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line"><span class="type">char</span>* m_data;</span><br><span class="line"><span class="type">int</span> m_size;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ENT</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="built_in">ENT</span>(String&amp;&amp; data):<span class="built_in">m_data</span>(<span class="built_in">move</span>(data))&#123;</span><br><span class="line"><span class="comment">//这里要将data转换成一个右值才会调用移动构造函数</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;R Printf\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">ENT</span>(<span class="type">const</span> String&amp; data):<span class="built_in">m_data</span>(data)&#123;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;ENT Printf\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line">String m_data;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="function">String <span class="title">s</span><span class="params">(<span class="string">&quot;abd&quot;</span>)</span></span>;</span><br><span class="line"><span class="function">ENT <span class="title">t1</span><span class="params">(s)</span></span>;<span class="comment">//调用了Creat和copy</span></span><br><span class="line"><span class="function">ENT <span class="title">t2</span><span class="params">(<span class="string">&quot;abd&quot;</span>)</span></span>;<span class="comment">//调用了Creat和move</span></span><br><span class="line">String str = <span class="string">&quot;hello&quot;</span>;</span><br><span class="line"><span class="function">String <span class="title">str1</span><span class="params">(move(str))</span></span>;</span><br><span class="line">cout &lt;&lt; str.m_size &lt;&lt; endl;<span class="comment">//0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h3 id=&quot;左值和右值&quot;&gt;&lt;a href=&quot;#左值和右值&quot; class=&quot;headerlink&quot; title=&quot;左值和右值&quot;&gt;&lt;/a&gt;左值和右值&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;左值：有地址的值&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;右值：只能放在等式右边的值&lt;/st</summary>
       
     
     
