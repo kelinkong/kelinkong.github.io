@@ -1,0 +1,117 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>CS50 | Kelin's blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/latest/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/grids-responsive-min.min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script type="text/javascript" src="//lib.baomitu.com/clipboard.js/latest/clipboard.min.js"></script><script type="text/javascript" src="//lib.baomitu.com/toastr.js/latest/toastr.min.js"></script><link rel="stylesheet" href="//lib.baomitu.com/toastr.js/latest/toastr.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">CS50</h1><a id="logo" href="/.">Kelin's blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">CS50</h1><div class="post-meta">2023-10-08<span> | </span><span class="category"><a href="/categories/os/">os</a></span></div><div class="post-content"><h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><h3 id="Computational-Thinking"><a href="#Computational-Thinking" class="headerlink" title="Computational Thinking"></a>Computational Thinking</h3><ul>
+<li>input –&gt; black box –&gt; output</li>
+<li>binary&#x2F;bit: A bit is a zero or one</li>
+<li>text: using ASCII</li>
+<li>Emojis: Unicode</li>
+<li>RGB: three numbers</li>
+<li>Images, Video and Sound are simply collections of RGB values</li>
+</ul>
+<h3 id="Algorithms"><a href="#Algorithms" class="headerlink" title="Algorithms"></a>Algorithms</h3><ul>
+<li>Problem-solving is central to computer science and computer programming</li>
+</ul>
+<h3 id="Pseudocode"><a href="#Pseudocode" class="headerlink" title="Pseudocode"></a>Pseudocode</h3><ul>
+<li>function：pick up</li>
+<li>conditions：if elseif</li>
+<li>Boolean expression</li>
+<li>loops：for&#x2F;while</li>
+</ul>
+<h2 id="C"><a href="#C" class="headerlink" title="C"></a>C</h2><h3 id="compiler"><a href="#compiler" class="headerlink" title="compiler"></a>compiler</h3><p><strong>command line interface</strong>：CLI， send commands to the computer</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;hello world\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">make hello</span><br><span class="line">./hello</span><br></pre></td></tr></table></figure>
+
+<p><em>这里并没有写makefile文件，为什么可以直接编译呢？</em><br><em>make程序默认会根据源代码文件的后缀名，自动生成并使用一个默认的Makefile规则进行编译。对于c语言的源代码，会有一个默认规则，类似如下：</em></p>
+<figure class="highlight makefile"><table><tr><td class="code"><pre><span class="line">%.o : %.c <span class="comment"># % 是通配符，匹配任意字符串，匹配所有.c结尾的文件，生成以.o结尾的目标文件</span></span><br><span class="line">    <span class="variable">$(CC)</span> <span class="variable">$(CFLAGS)</span> -c <span class="variable">$&lt;</span> -o <span class="variable">$@</span> <span class="comment"># $(CC) 变量，使用CC编译器。 $(CFLAGS)编译参数， -c表示进行编译而不链接， $&lt; 取出第一个前置文件的名字，即.c文件，-o指定输出目标文件，&amp;@ 取出目标文件的名字，既.o文件</span></span><br></pre></td></tr></table></figure>
+
+<p>这里提到一个进行编译而不链接。回顾一下c语言编译的过程</p>
+<ol>
+<li>预处理，生成扩展后的.i文件。删除所有注释、#define 宏展开、文件包含 #include&lt;文件名&gt;</li>
+<li>编译，汇编代码文件.s。会进行语法检查</li>
+<li>组装。将汇编文件转化为机器码。生成.o文件</li>
+<li>链接。链接是将库文件包含在我们的程序中的过程。生成可执行文件.out</li>
+</ol>
+<p><strong>静态成员变量是在哪一个阶段被初始化的呢？</strong></p>
+<p><em>我们都知道静态成员变量是在运行<code>main</code>函数前初始化，那么究竟是在编译的哪一个阶段呢？</em></p>
+<ol>
+<li>定义在类内部的静态成员变量,其初始化是在编译期初期完成的。</li>
+<li>定义在类外部的静态成员变量,其初始化是在链接阶段完成的。</li>
+</ol>
+<p>区别在于:</p>
+<p>对于类内部定义的静态成员变量,编译器可以在编译当前类的定义时直接初始化它。</p>
+<p>而对于类外部定义的静态成员变量,需要到链接阶段不同的目标文件合并时,由链接器完成初始化操作。</p>
+<p><strong>预编译阶段，编译器会把#include包含的头文件内容展开Inline，但是对于lib库的引用则不会展开，而是保留该引用。真正使用库里的目标文件是在链接阶段。由链接器解析引用，并从外部库获取目标代码进行连接。</strong></p>
+<h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2><ul>
+<li>linear and binary search</li>
+<li>data structures</li>
+<li>sorting</li>
+<li>recursion</li>
+</ul>
+<h2 id="Memory"><a href="#Memory" class="headerlink" title="Memory"></a>Memory</h2><p><strong>内存地址为什么用16进制存放？</strong></p>
+<ol>
+<li>紧凑表示：使用尽可能少的数字来表示较大的内存空间</li>
+<li>与CPU寻址匹配： CPU使用总线地址线表示内存地址，地址线数量是2的指数倍（如8条、16条），这与16进制表示是匹配的</li>
+<li>转换为二进制方便，16进制中的每一个恰好对应2进制中的4位，可以非常方便的转换为二进制数。</li>
+</ol>
+<h3 id="pointer"><a href="#pointer" class="headerlink" title="pointer"></a>pointer</h3><p>指针的本质就是一个地址变量。指向的是操作系统给模拟出来的虚拟内存空间的地址。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">50</span>;</span><br><span class="line"><span class="type">int</span> *p = &amp;a; <span class="comment">// p是一个指针，(*p)表示获取指针所指向的值，&amp;符合代表取地址</span></span><br></pre></td></tr></table></figure>
+<p>在c语言中<br><code>string</code>类型本质就是一个指针，以<code>&#39;\0&#39;</code>位标识符结尾。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="type">char</span> *s = <span class="string">&quot;HI!&quot;</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%c\n&quot;</span>,s[<span class="number">0</span>]); <span class="comment">// H</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%c\n&quot;</span>,s[<span class="number">1</span>]); <span class="comment">// I</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%c\n&quot;</span>,s[<span class="number">2</span>]); <span class="comment">// !</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%c\n&quot;</span>,s[<span class="number">3</span>]); <span class="comment">// </span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%c\n&quot;</span>,s[<span class="number">4</span>]); <span class="comment">// %</span></span><br></pre></td></tr></table></figure>
+<p>为什么没有提示数组越界呢？</p>
+<p><em>在c语言中数组边界检查并不是强制的。所以这访问越界并没有报错，但是可能会导致其他问题。当访问s[3]之后的值时，读取的是垃圾内存的值。</em></p>
+<h3 id="Valgrind"><a href="#Valgrind" class="headerlink" title="Valgrind"></a>Valgrind</h3><p>valgrind是一个检查是否有内存泄漏的工具，比如使用malloc但是没有使用free。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> *x = <span class="built_in">malloc</span>(<span class="number">3</span> * <span class="keyword">sizeof</span>(<span class="type">int</span>));</span><br><span class="line">    x[<span class="number">0</span>] = <span class="number">72</span>;</span><br><span class="line">    x[<span class="number">1</span>] = <span class="number">73</span>;</span><br><span class="line">    x[<span class="number">2</span>] = <span class="number">33</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>make test</code></p>
+<p><code>valgrind --leak-check=full ./test</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">==61782== HEAP SUMMARY:</span><br><span class="line">==61782==     in use at exit: 12 bytes in 1 blocks</span><br><span class="line">==61782==   total heap usage: 1 allocs, 0 frees, 12 bytes allocated</span><br><span class="line">==61782== </span><br><span class="line">==61782== 12 bytes in 1 blocks are definitely lost in loss record 1 of 1</span><br><span class="line">==61782==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)</span><br><span class="line">==61782==    by 0x10915E: main (in /home/kelin/cs50/test)</span><br></pre></td></tr></table></figure>
+
+<p><strong>valgind可以检查哪些类型的错误呢？</strong></p>
+<ol>
+<li>内存管理错误：访问越界、未释放、访问未初始化的内存等</li>
+<li>线程错误：程序未正确join线程、线程同步错误（多个线程争用资源未加锁）</li>
+<li>I&#x2F;O操作错误：文件描述符泄漏、socket使用错误</li>
+<li>未定义行为：访问未初始化的变量</li>
+</ol>
+<h3 id="在c语言中，打开文件是如何实现的？"><a href="#在c语言中，打开文件是如何实现的？" class="headerlink" title="在c语言中，打开文件是如何实现的？"></a>在c语言中，打开文件是如何实现的？</h3><ol>
+<li>open系统调用</li>
+<li>分配文件描述符：文件描述符是内核用来标识这个文件打开状态的整数</li>
+<li>更新文件表：将文件描述符放入进程的文件描述符表，该表维护了进程打开文件的状态</li>
+<li>返回文件描述符：open系统调用返回文件描述符给应用程序</li>
+<li>read&#x2F;write调用</li>
+<li>关闭</li>
+</ol>
+<h2 id="network"><a href="#network" class="headerlink" title="network"></a>network</h2><p><strong><code>curl</code></strong></p>
+<p>curl用来发送各种HTTP请求，获取或传输数据。</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>作用</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-X</td>
+<td>指定http请求的方法</td>
+<td>-X GET</td>
+</tr>
+<tr>
+<td>-d</td>
+<td>指定发送的数据体</td>
+<td>-d ‘data&#x3D;test’</td>
+</tr>
+<tr>
+<td>-I</td>
+<td>只显示响应头信息，不显示响应内容</td>
+<td></td>
+</tr>
+<tr>
+<td>-w</td>
+<td>将响应头信息保存到文件</td>
+<td></td>
+</tr>
+<tr>
+<td>-O</td>
+<td>将服务器访问保存为文件</td>
+<td>curl -O example.com&#x2F;file1.zip</td>
+</tr>
+</tbody></table>
+</div><div class="tags"></div><div class="post-nav"><a class="pre" href="/2023/10/10/%E3%80%90c++%E3%80%91-threads/">C++多线程模型</a><a class="next" href="/2023/08/25/exec-program/">执行一个程序的过程</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://example.com"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="About"><img class="nofancybox" src="/img/logo.jpg"/></a><p>Kelin is a boring girl, but not always.</p></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/data-structure/">data_structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/frontend/">frontend</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">os</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/solutions/">solutions</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tcs/">tcs</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/CMU15-445/" style="font-size: 15px;">CMU15-445</a> <a href="/tags/cpp/" style="font-size: 15px;">cpp</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2023/12/05/%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/">利用hexo和github搭建静态博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/10/18/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">前端基础学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/10/10/%E3%80%90c++%E3%80%91%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/">C++代码调试</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/10/10/%E3%80%90c++%E3%80%91-threads/">C++多线程模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/10/08/cs50/">CS50</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/08/25/exec-program/">执行一个程序的过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/08/21/Concurrency-Control/">CMU15-445 Concurrency Control</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/08/21/concurrency_notes/">CMU15-445 Concurrency study note</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/08/17/Query-Execution/">CMU15-445 Query_Execution</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/08/17/B-tree/">CMU15-445 B+tree</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> Links</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">Kelin's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0"></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="Copy Successed!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>

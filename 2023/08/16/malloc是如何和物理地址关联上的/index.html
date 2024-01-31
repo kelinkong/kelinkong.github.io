@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>malloc是如何和物理地址关联上的？ | Kelin's blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/latest/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/grids-responsive-min.min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script type="text/javascript" src="//lib.baomitu.com/clipboard.js/latest/clipboard.min.js"></script><script type="text/javascript" src="//lib.baomitu.com/toastr.js/latest/toastr.min.js"></script><link rel="stylesheet" href="//lib.baomitu.com/toastr.js/latest/toastr.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">malloc是如何和物理地址关联上的？</h1><a id="logo" href="/.">Kelin's blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">malloc是如何和物理地址关联上的？</h1><div class="post-meta">2023-08-16<span> | </span><span class="category"><a href="/categories/os/">os</a></span></div><div class="post-content"><p><img src="/../imgs/image-19.png"></p>
+<ol>
+<li><p>malloc函数用于在堆上动态分配内存,它会向操作系统请求一块未使用的内存,然后返回这块内存的地址。</p>
+</li>
+<li><p>操作系统维护着可用物理内存的信息,知道哪些内存地址 当前未被使用。当收到malloc的请求时,它会从可用物理内存中选择一块未使用的内存,将其标记为已分配,并返回给应用程序。</p>
+</li>
+<li><p>在32位系统中,malloc返回的地址是虚拟地址,需要经过MMU地址转换找到对应的物理地址。64位系统中,malloc的地址空间通常就直接对应物理地址空间。</p>
+<p> a. 在32位系统中,CPU可以寻址的虚拟地址空间比较小,一般为4GB左右。而物理内存可能会超过4GB。为了让进程可以访问超过4GB的物理内存,操作系统会使用虚拟内存技术,将虚拟地址映射到物理地址上。malloc返回的虚拟地址需要通过MMU(内存管理单元)翻译成物理地址,才能真正访问到内存。</p>
+<p> b. 而在64位系统中,虚拟地址空间巨大(16EB),远远大于当前的物理内存大小。所以操作系统可以选择把虚拟地址直接映射到物理地址上,这种称为平坦内存模型。在这种情况下,malloc返回的地址就是物理地址,不需要再做地址转换。应用程序把malloc返回的地址直接作为物理地址使用即可。</p>
+</li>
+</ol>
+<h3 id="平坦内存模型-Flat-Memory-Model"><a href="#平坦内存模型-Flat-Memory-Model" class="headerlink" title="平坦内存模型(Flat Memory Model)"></a>平坦内存模型(Flat Memory Model)</h3><ol>
+<li>在平坦内存模型下,进程的虚拟地址与物理地址是一一对应的。操作系统不会进行地址转换,进程使用的虚拟地址就是对应物理内存的物理地址。</li>
+<li>由于虚拟地址直接对应物理地址,不需要进行地址转换,所以省去了地址转换所带来的性能开销。</li>
+<li>程序直接使用虚拟地址访问物理内存,不需要区分逻辑地址和物理地址,编程模型简单。</li>
+<li>64位系统拥有极其大的虚拟地址空间(16EB),使得直接映射成为可能。虚拟地址空间大于目前的物理内存容量。</li>
+<li>由于省去了内存虚拟化,无法实现弹性调配物理页框,可能会出现较严重的内存碎片。</li>
+<li>很多64位系统不会选择完全平坦的模型,而是在一定范围内做映射,同时配合页表实现虚拟内存。综合利用了平坦模型与传统虚拟内存的优点。</li>
+</ol>
+<h3 id="MMU-Memory-Management-Unit"><a href="#MMU-Memory-Management-Unit" class="headerlink" title="MMU(Memory Management Unit)"></a>MMU(Memory Management Unit)</h3><p>有些系统MMU集成在CPU中，有些系统是单独芯片实现，通过地址总线和CPU连接。（地址总线、数据总线、控制总线–&gt;传递信号）</p>
+<ol>
+<li>地址转换 MMU负责将CPU产生的虚拟地址转换成物理地址。转换过程需要参考TLB,根据虚拟地址的高位找到对应的页表项,翻译出物理页号,与虚拟地址的低位组合成物理地址。</li>
+<li>页面置换 当访问的页面不在物理内存时,MMU会触发页面置换（<em>页面置换算法通常不是由MMU(内存管理单元)直接实现的,而是由操作系统内核的虚拟内存管理子系统来实现。页表和地址转换是由MMU硬件来完成,但确定哪些页面需要换出、加载,以及页面替换策略则由操作系统内核的虚拟内存管理机制决定。</em>）,将内存中的某一页换出,将需要访问的页换入物理内存。</li>
+<li>存取权限检查 MMU会检查每次地址转换后的物理内存访问权限,例如是否可读、可写、可执行,避免非法访问。</li>
+<li>缓存一致性 MMU会与CPU缓存协同工作,实现缓存一致性,保证内存访问正确。</li>
+<li>地址空间隔离 MMU为每个进程维护一个独立的地址空间,实现进程间的内存隔离。</li>
+<li>中断与异常 若地址非法或者缺页等异常,MMU会触发中断信号,通知CPU进行异常处理。</li>
+<li>硬件缓存 部分MMU集成了TLB等缓存结构,加速地址转换的速度。</li>
+</ol>
+<h3 id="为什么MMU可以解决内存碎片的问题？"><a href="#为什么MMU可以解决内存碎片的问题？" class="headerlink" title="为什么MMU可以解决内存碎片的问题？"></a>为什么MMU可以解决内存碎片的问题？</h3><ol>
+<li>MMU实现了虚拟地址到物理地址的映射,程序只需要一个连续的虚拟地址空间。操作系统可以将不连续的物理内存片段映射到该连续虚拟地址空间上。通过这种映射,即使物理内存分布不连续,程序视图也是一个连续空间,可以任意使用而不会出现碎片。操作系统会负责这些不连续物理页的映射和调度,对上层应用透明。</li>
+<li>当物理内存使用产生外部碎片时,虚拟存储技术可以进行碎片回收,将闲置的小块内存映射给其他程序使用。</li>
+<li>同时,虚拟内存可以将暂时不用的内存页换出到磁盘,腾出物理内存空间供其他程序使用,减少内存碎片。</li>
+<li>进而避免了严重的外部碎片,提高了物理内存的利用效率。</li>
+</ol>
+<h3 id="缓存一致性"><a href="#缓存一致性" class="headerlink" title="缓存一致性"></a>缓存一致性</h3><p>一个计算系统通常包含多级缓存,任何两个存储层次之间都可能存在数据一致性的问题。</p>
+<ol>
+<li><p>CPU缓存与硬盘缓存</p>
+</li>
+<li><p>多核CPU之间</p>
+</li>
+<li><p>各级系统缓存之间</p>
+<p> MMU与CPU缓存的一致性是通过以下几种方式实现的:<br> a. 缓存一致性协议 CPU和MMU之间通过一定的硬件协议(如Intel的MESI协议)来维持缓存和主存的数据一致性。当缓存数据被修改时,会根据协议规则通知MMU将主存更新。</p>
+<p> b. 缓存锁定 针对一些关键数据,CPU缓存会被锁定,每次访问必须从MMU加载,而不是缓存中的拷贝。保证了这部分数据的一致性。</p>
+<p> c. 地址翻译表同步 地址翻译表如TLB也存放在CPU高速缓存中,MMU会同步更新CPU中的翻译表缓存,保证访问获取的是最新翻译关系。</p>
+<p> d. 缓存行注释 MMU可以向缓存中的缓存行添加标记信息,如是否可缓存、是否已修改等,方便缓存控制。</p>
+</li>
+<li><p>分布式缓存系统</p>
+</li>
+<li><p>存储设备之间</p>
+</li>
+<li><p>客户端缓存</p>
+</li>
+</ol>
+<h3 id="malloc调用时什么时候用sys-mmap-什么时候用brk？"><a href="#malloc调用时什么时候用sys-mmap-什么时候用brk？" class="headerlink" title="malloc调用时什么时候用sys_mmap, 什么时候用brk？"></a>malloc调用时什么时候用sys_mmap, 什么时候用brk？</h3><p>在调用malloc时会产生系统调用，切换到内核态，然后执行系统调用<br>在malloc调用时,是否使用sys_mmap或brk分配内存,主要取决于请求的内存大小:</p>
+<ol>
+<li>对于较小的内存请求,malloc通常会使用brk系统调用去扩展程序的堆区。</li>
+<li>当请求较大内存页(一般超过128KB)时,malloc会使用mmap系统调用去映射匿名内存页。</li>
+</ol>
+<p>mmap相比brk的优势在于:</p>
+<ul>
+<li>可以指定地址对齐,提高效率</li>
+<li>可以随时释放不连续的大内存块</li>
+<li>避免堆区碎片</li>
+</ul>
+</div><div class="tags"></div><div class="post-nav"><a class="pre" href="/2023/08/17/bufferpool/">CMU15-445 buffer pool manager</a><a class="next" href="/2023/08/15/hexo_Cannot_GET/">hexo Cannot GET/</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://example.com"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="About"><img class="nofancybox" src="/img/logo.jpg"/></a><p>Kelin is a boring girl, but not always.</p></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/data-structure/">data_structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/frontend/">frontend</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/os/">os</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/solutions/">solutions</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tcs/">tcs</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/CMU15-445/" style="font-size: 15px;">CMU15-445</a> <a href="/tags/cpp/" style="font-size: 15px;">cpp</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2023/12/05/%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/">利用hexo和github搭建静态博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/10/18/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">前端基础学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/10/10/%E3%80%90c++%E3%80%91%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/">C++代码调试</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/10/10/%E3%80%90c++%E3%80%91-threads/">C++多线程模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/10/08/cs50/">CS50</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/08/25/exec-program/">执行一个程序的过程</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/08/21/Concurrency-Control/">CMU15-445 Concurrency Control</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/08/21/concurrency_notes/">CMU15-445 Concurrency study note</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/08/17/Query-Execution/">CMU15-445 Query_Execution</a></li><li class="post-list-item"><a class="post-list-link" href="/2023/08/17/B-tree/">CMU15-445 B+tree</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> Links</i></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">Kelin's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0"></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.css"><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="Copy Successed!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
