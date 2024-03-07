@@ -4,26 +4,30 @@ date: 2024-03-07 15:03:28
 cagegories: frontend
 ---
 ## 需求整理
-popup.html：
+**popup.html：**
 - 是否开启划词翻译
 - 选择划词翻译的默认目标语言
 - 是否开启输入翻译
 - 输入框翻译的简介
 - 项目地址
-popup.js
+
+**popup.js**
 - 从popup界面接收信息，如果用户更新设置，就更新存储在浏览器中的值，同时发送消息给content脚本，让其监听
 - 监听用户是否点击项目地址
 - 每次点开popup界面都重新从浏览器中加载存储的设置
-content.js
+
+**content.js**
 - 从浏览器中获取设置
 - 监听用户的输入
 - 监听用户是否复制文本
 - 将信息发送给background脚本
 - 显示翻译框
-background.js
+  
+**background.js**
 - 接收content脚本发来的信息
 - 发送请求给API，同时接收应答信息
 - 将翻译后的内容发送给content脚本
+
 翻译展示框：
 - 上方：左边显示logo，右边显示关闭按钮
 - 中间显示译文
