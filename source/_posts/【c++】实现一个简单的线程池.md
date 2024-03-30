@@ -1,8 +1,8 @@
 ﻿---
 title: C++实现一个简单的线程池
 date: 2022-09-15 07:33:02
-categories: cpp
-tags: [cpp]
+categories: CPP
+tags: [CPP]
 ---
 
 ![](../imgs/image-8.png)

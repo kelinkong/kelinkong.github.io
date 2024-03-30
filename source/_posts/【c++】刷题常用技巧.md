@@ -1,8 +1,8 @@
 ﻿---
 title: C++刷题常用技巧（自用）
 date: 2022-08-30 07:33:02
-categories: algorithm
-tags: [cpp]
+categories: Algorithm
+tags: [CPP]
 ---
 
 ### 自带的宏常量

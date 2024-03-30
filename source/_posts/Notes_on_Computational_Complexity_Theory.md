@@ -1,7 +1,7 @@
 ---
 title: 计算复杂性原理学习笔记
 date: 2022-06-15 16:38:52
-categories: tcs
+categories: Math
 mathjax: true  
 ---
 ### 图灵机

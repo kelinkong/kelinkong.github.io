@@ -1,8 +1,8 @@
 ---
 title: C++多线程模型
 date: 2023-10-10 06:47:41
-categories: cpp
-tags: [cpp]
+categories: CPP
+tags: [CPP]
 ---
 
 ## 线程同步和线程通信

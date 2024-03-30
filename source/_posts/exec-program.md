@@ -1,7 +1,7 @@
 ---
 title: 执行一个程序的过程
 date: 2023-08-25 10:09:26
-categories: os
+categories: Operating System
 ---
 
 ## 冯诺依曼模型

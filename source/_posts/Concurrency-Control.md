@@ -1,7 +1,7 @@
 ---
 title: CMU15-445 Concurrency Control
 date: 2023-08-21 04:39:32
-categories: database
+categories: DataBase
 tags: CMU15-445
 ---
 

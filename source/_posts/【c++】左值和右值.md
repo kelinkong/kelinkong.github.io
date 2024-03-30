@@ -1,8 +1,8 @@
 ﻿---
 title: 左值和右值
 date: 2022-08-15 07:33:02
-categories: cpp
-tags: [cpp]
+categories: CPP
+tags: [CPP]
 ---
 
 ### 左值和右值

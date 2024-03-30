@@ -1,7 +1,7 @@
 ---
 title: CMU15-445 buffer pool manager
 date: 2023-08-17 06:29:40
-categories: database
+categories: DataBase
 tags: [CMU15-445]
 ---
 

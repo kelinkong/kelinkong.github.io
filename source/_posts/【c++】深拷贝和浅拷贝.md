@@ -1,8 +1,8 @@
 ﻿---
 title: C++深拷贝和浅拷贝
 date: 2021-09-18 07:33:02
-categories: cpp
-tags: [cpp]
+categories: CPP
+tags: [CPP]
 ---
 
 ## 两个的区别

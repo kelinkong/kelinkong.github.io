@@ -1,8 +1,8 @@
 ﻿---
 title: C++虚函数和虚函数表
 date: 2022-08-26 07:33:02
-categories: cpp
-tags: [cpp]
+categories: CPP
+tags: [CPP]
 ---
 
 ### 多态

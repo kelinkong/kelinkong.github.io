@@ -1,7 +1,7 @@
 ---
 title: input-translation开发日志（下）
 date: 2024-03-07 15:03:28
-cagegories: frontend
+cagegories: Frontend
 ---
 ## 需求整理
 **popup.html：**

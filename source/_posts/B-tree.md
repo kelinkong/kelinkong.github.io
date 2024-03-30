@@ -1,7 +1,7 @@
 ---
 title: CMU15-445 B+tree
 date: 2023-08-17 07:07:54
-categories: database
+categories: DataBase
 tags: [CMU15-445]
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: malloc是如何和物理地址关联上的？
 date: 2023-08-16 17:38:52
-categories: os
+categories: Operating System
 ---
 
 ![](../imgs/image-19.png)
