@@ -118,7 +118,7 @@ widgets: ## Seven widgets in sidebar provided: search, info, category, tag, rece
   - search
   - info
   - category
-  # - tag
+  - tag
   # - recent_posts
   # - recent_comments
   # - links
