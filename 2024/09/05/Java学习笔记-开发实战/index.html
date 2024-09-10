@@ -1,0 +1,150 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>Java学习笔记-开发实战一 | Kelin's blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/latest/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/grids-responsive-min.min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script type="text/javascript" src="//lib.baomitu.com/clipboard.js/latest/clipboard.min.js"></script><script type="text/javascript" src="//lib.baomitu.com/toastr.js/latest/toastr.min.js"></script><link rel="stylesheet" href="//lib.baomitu.com/toastr.js/latest/toastr.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Java学习笔记-开发实战一</h1><a id="logo" href="/.">Kelin's blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Java学习笔记-开发实战一</h1><div class="post-meta">2024-09-05<span> | </span><span class="category"><a href="/categories/Java/">Java</a></span><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 3.7k</span><span class="post-meta-item-text"> Words</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i><span class="post-count"> 14</span><span class="post-meta-item-text"> Minutes</span></span></span></div><div class="post-content"><h2 id="项目背景"><a href="#项目背景" class="headerlink" title="项目背景"></a>项目背景</h2><p>开发一个通用项目管理项目，前端使用react，后端使用Spring Boot</p>
+<h2 id="开发中遇到的知识点"><a href="#开发中遇到的知识点" class="headerlink" title="开发中遇到的知识点"></a>开发中遇到的知识点</h2><h3 id="Spring-Boot的开发框架"><a href="#Spring-Boot的开发框架" class="headerlink" title="Spring Boot的开发框架"></a>Spring Boot的开发框架</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">project-root/</span><br><span class="line">│</span><br><span class="line">├── src/</span><br><span class="line">│   ├── main/</span><br><span class="line">│   │   ├── java/</span><br><span class="line">│   │   │   └── com/example/project/</span><br><span class="line">│   │   │       ├── controller/ # 存放控制器类,处理HTTP请求</span><br><span class="line">│   │   │       ├── service/ # 存放业务逻辑类</span><br><span class="line">│   │   │       ├── repository/ #  存放数据访问层的接口和实现</span><br><span class="line">│   │   │       ├── model/ # 存放实体类和数据传输对象(DTO)</span><br><span class="line">│   │   │       ├── └── dto/ </span><br><span class="line">│   │   │       └── ProjectApplication.java # Spring Boot的主应用类,包含main()方法</span><br><span class="line">│   │   │</span><br><span class="line">│   │   └── resources/</span><br><span class="line">│   │       ├── static/ # 存放静态资源如CSS、JavaScript、图片等。</span><br><span class="line">│   │       ├── templates/ # 存放模板文件(如Thymeleaf模板)。</span><br><span class="line">│   │       ├── db/ # 存放sql文件，scheme.sql  data.sql</span><br><span class="line">│   │       └── application.properties # 主配置文件,用于设置应用程序属性。</span><br><span class="line">│   │</span><br><span class="line">│   └── test/  # 存放测试代码。</span><br><span class="line">│       └── java/</span><br><span class="line">│           └── com/example/project/</span><br><span class="line">│</span><br><span class="line">├── target/ # Maven构建生成的目录,包含编译后的类文件和可执行JAR</span><br><span class="line">├── pom.xml # Maven项目配置文件,定义项目依赖和构建过程。</span><br><span class="line">└── README.md</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="Lombok"><a href="#Lombok" class="headerlink" title="Lombok"></a>Lombok</h3><p><a target="_blank" rel="noopener" href="https://javabetter.cn/springboot/lombok.html">Spring Boot 整合 Lombok，用注解简化 Java 代码，比如说 getter和setter | 二哥的Java进阶之路 (javabetter.cn)</a></p>
+<p>Lombok可以更方便的生成set、get方法，在Maven管理的Java项目中，需要添加：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.projectlombok&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;lombok&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;1.18.6&lt;/version&gt;   # 在jdk21以上的版本，需要设置版本为1.18.30以上</span><br><span class="line">	&lt;scope&gt;provided&lt;/scope&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<p>其中<code> scope=provided</code>，就说明 Lombok 只在编译阶段生效。也就是说，Lombok 会在编译期静悄悄地将带 Lombok 注解的源码文件正确编译为完整的 class 文件。</p>
+<p>SpringBoot 2.1.x 版本后不需要再显式地添加 Lombok 依赖了。之后，还需要为 Intellij IDEA 安装 Lombok 插件，否则 Javabean 的 getter &#x2F; setter 就无法自动编译，也就不能被调用。不过，新版的 Intellij IDEA 也已经内置好了，不需要再安装。</p>
+<h4 id="常用的Lombok注解"><a href="#常用的Lombok注解" class="headerlink" title="常用的Lombok注解"></a>常用的Lombok注解</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">CmowerLombok</span> &#123;</span><br><span class="line">	<span class="meta">@Getter</span> <span class="meta">@Setter</span> <span class="keyword">private</span> <span class="type">int</span> age;</span><br><span class="line">	<span class="meta">@Getter</span> <span class="keyword">private</span> String name;</span><br><span class="line">	<span class="meta">@Setter</span> <span class="keyword">private</span> BigDecimal money;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CmowerLombok</span> &#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="type">int</span> age;</span><br><span class="line">	<span class="keyword">private</span> String name;</span><br><span class="line">	<span class="keyword">private</span> BigDecimal money;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span>. <span class="comment">// @Data 注解可以生成 getter / setter、equals、hashCode，以及 toString，是个总和的选项。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CmowerLombok</span> &#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="type">int</span> age;</span><br><span class="line">	<span class="keyword">private</span> String name;</span><br><span class="line">	<span class="keyword">private</span> BigDecimal money;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="JPA"><a href="#JPA" class="headerlink" title="JPA"></a>JPA</h3><p><a target="_blank" rel="noopener" href="https://javabetter.cn/springboot/jpa.html">Spring Boot 整合 JPA | 二哥的Java进阶之路 (javabetter.cn)</a></p>
+<p>JPA（Java Persistence API）是一种Java对象持久化技术，它提供了一种将Java对象映射到关系数据库表的机制。当我们定义一个实体类时，JPA会根据类上的注解（如@Entity、@Table、@Column等）来生成对应的数据库表结构。</p>
+<p>可以使用JPA创建：</p>
+<ul>
+<li>Entity（User）</li>
+<li>Repository（UserRepository）</li>
+</ul>
+<p>JPA可以通过实体类来生成数据库表（spring.jpa.hibernate.ddl-auto），常见的配置有：（在生成环境中，不建议使用create、create、drop、update）</p>
+<ul>
+<li>create: 每次应用程序启动时，都会删除现有的数据库表，并根据实体类重新创建。</li>
+<li>create-drop: 与create类似，但是在应用程序关闭时会删除所有表。</li>
+<li>update: 每次应用程序启动时，会根据实体类的定义来更新数据库表结构。</li>
+<li>validate: 仅验证数据库表结构与实体类是否匹配，不会做任何修改。</li>
+<li>none：不做任何操作。</li>
+</ul>
+<p>在<code>application.properties</code>中设置：<code>spring.jpa.hibernate.ddl-auto=update</code></p>
+<p><strong>更新数据库表时，不会自动更新实体类</strong></p>
+<p>JPA生成Repository内置了一些方法，但是也可以通过注解的方式来实现</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">TeamRepository</span> <span class="keyword">extends</span> <span class="title class_">JpaRepository</span>&lt;Team, Integer&gt;, JpaSpecificationExecutor&lt;Team&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Find all teams</span></span><br><span class="line">    <span class="meta">@Query(&quot;SELECT t FROM Team t&quot;)</span></span><br><span class="line">    List&lt;Team&gt; <span class="title function_">findAllTeams</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Find a team by its ID</span></span><br><span class="line">    <span class="meta">@Query(&quot;SELECT t FROM Team t WHERE t.id = :id&quot;)</span></span><br><span class="line">    Team <span class="title function_">findTeamById</span><span class="params">(<span class="meta">@Param(&quot;id&quot;)</span> Integer id)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Custom SQL query to find teams by name</span></span><br><span class="line">    <span class="meta">@Query(value = &quot;SELECT * FROM teams WHERE name = :name&quot;, nativeQuery = true)</span></span><br><span class="line">    List&lt;Team&gt; <span class="title function_">findTeamsByName</span><span class="params">(<span class="meta">@Param(&quot;name&quot;)</span> String name)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>@Query注解的nativeQuery属性作用：</p>
+<ul>
+<li>nativeQuery&#x3D;false：使用HQL，JPA会根据实体类和关联关系自动生成SQL。</li>
+<li>nativeQuery&#x3D;true：使用原生SQL，JPA直接执行你写的SQL语句</li>
+</ul>
+<h3 id="RequestMapping"><a href="#RequestMapping" class="headerlink" title="RequestMapping"></a>RequestMapping</h3><p>在Spring Boot中，<code>@RequestMapping</code> 是一个非常基础且强大的注解，用于将HTTP请求映射到特定的处理方法上。它可以配置请求路径、HTTP方法（GET、POST、PUT、DELETE等）、参数等信息。</p>
+<p>为了简化开发，Spring Boot提供了几个更具体的注解，它们都是<code>@RequestMapping</code>的缩写形式：</p>
+<ul>
+<li><strong>@GetMapping:</strong> 通常用于获取数据，比如查询列表、获取详情等。</li>
+<li><strong>@PostMapping:</strong> 通常用于创建新的资源，比如添加用户、提交表单等。</li>
+<li><strong>@PutMapping:</strong> 通常用于更新整个资源，比如修改用户信息。</li>
+<li><strong>@DeleteMapping:</strong> 通常用于删除资源，比如删除用户。</li>
+<li><strong>@PatchMapping:</strong> 通常用于部分更新资源，比如修改用户的部分信息。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/api/teams&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TeamController</span> &#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> TeamService teamService;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="title function_">TeamController</span><span class="params">(TeamService teamService)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.teamService = teamService;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@DeleteMapping(&quot;/&#123;teamId&#125;/members/&#123;userId&#125;&quot;)</span></span><br><span class="line"><span class="keyword">public</span> ResponseEntity&lt;Void&gt; <span class="title function_">deleteMember</span><span class="params">(<span class="meta">@PathVariable</span> Integer teamId, <span class="meta">@PathVariable</span> Integer userId)</span> &#123;</span><br><span class="line">    teamService.deleteMember(teamId, userId);</span><br><span class="line">    <span class="keyword">return</span> ResponseEntity.noContent().build();</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>@RequestMapping</code>注解可以接受多个参数，如<code>value</code>、<code>method</code>、<code>params</code>、<code>headers</code>等，用于指定请求路径、HTTP方法、请求参数、请求头等信息。例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(value = &quot;/api/teams&quot;, method = RequestMethod.GET)</span></span><br><span class="line"><span class="keyword">public</span> List&lt;Team&gt; <span class="title function_">getTeams</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> teamService.getTeams();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="用到的注解"><a href="#用到的注解" class="headerlink" title="用到的注解"></a>用到的注解</h3><h4 id="注解是什么？"><a href="#注解是什么？" class="headerlink" title="注解是什么？"></a>注解是什么？</h4><p>注解（Annotation）是一种提供元数据（metadata）的机制。它可以用于标记类、方法、字段等程序元素，从而为编译器或运行时环境提供额外的信息。注解本身不会影响程序的执行逻辑，但可以被编译器、IDE、框架等工具读取并进行相应的处理。</p>
+<h4 id="注解的实现原理"><a href="#注解的实现原理" class="headerlink" title="注解的实现原理"></a>注解的实现原理</h4><p>注解本质上是一个接口。当我们定义一个注解时，实际上是在定义一个接口，并且这个接口继承自<code>java.lang.annotation.Annotation</code>接口。</p>
+<ul>
+<li><strong>注解处理器：</strong><ul>
+<li>注解处理器是实现注解功能的关键。它们在编译时或运行时读取注解信息，并根据注解的定义执行相应的操作。</li>
+<li>常用的注解处理器有：<ul>
+<li><strong>编译时注解处理器：</strong> 在编译时处理注解，如APT（Annotation Processing Tool）。</li>
+<li><strong>运行时注解处理器：</strong> 在运行时处理注解，如反射机制。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>反射机制：</strong><ul>
+<li>通过反射机制，可以在运行时获取类、方法、字段的注解信息，并动态地调用这些元素。</li>
+</ul>
+</li>
+</ul>
+<h4 id="注解的作用"><a href="#注解的作用" class="headerlink" title="注解的作用"></a>注解的作用</h4><p>注解在Java开发中发挥着重要的作用，主要有以下几个方面：</p>
+<ul>
+<li><strong>提供元数据：</strong> 为编译器、IDE、框架等工具提供额外的信息，如：<ul>
+<li><strong>生成代码：</strong> 比如Lombok注解可以自动生成getter、setter、构造方法等。</li>
+<li><strong>配置信息：</strong> 比如Spring框架中的<code>@Autowired</code>注解用于自动装配Bean。</li>
+<li><strong>验证：</strong> 比如Hibernate Validator中的<code>@NotNull</code>注解用于验证字段不能为空。</li>
+</ul>
+</li>
+<li><strong>减少重复代码：</strong> 通过注解可以减少重复的代码编写，提高开发效率。</li>
+<li><strong>提高代码可读性：</strong> 注解可以明确地表达代码的意图，提高代码的可维护性。</li>
+<li><strong>实现AOP：</strong> 注解可以作为AOP切入点，实现横切关注点。</li>
+</ul>
+<h4 id="注解的分类"><a href="#注解的分类" class="headerlink" title="注解的分类"></a>注解的分类</h4><ul>
+<li><strong>内置注解：</strong> Java内置了一些注解，如<code>@Override</code>、<code>@Deprecated</code>等。</li>
+<li><strong>元注解：</strong> 用于定义注解的注解，如<code>@Target</code>、<code>@Retention</code>、<code>@Documented</code>等。</li>
+<li><strong>自定义注解：</strong> 开发者可以自定义注解，以满足特定的需求</li>
+</ul>
+<h4 id="用到的注解-1"><a href="#用到的注解-1" class="headerlink" title="用到的注解"></a>用到的注解</h4><ul>
+<li>声明 Bean 的注解<br>@Component：通用注解，可以标注任何类为 Spring 组件。<br>@Repository：专用于数据访问层（DAO）的组件。<br>@Service：专用于业务逻辑层（Service）的组件。<br>@Controller：专用于表现层（Controller）的组件。</li>
+<li>注入 Bean 的注解@Autowired：根据类型自动装配 Bean，可以用于字段、方法参数和构造函数。<br>@Qualifier：配合 @Autowired 使用，根据 Bean 的名称进行注入。<br>@Resource：来自 JSR-250，也可以用于注入 Bean，功能类似于 @Autowired。</li>
+<li>配置类相关的注解<br>@Configuration：声明一个配置类，等同于 XML 配置文件。<br>@ComponentScan：指定 Spring 在创建容器时要扫描的包。<br>@Bean：把方法的返回值作为 Bean 对象存入 Spring 容器。</li>
+<li>切面（AOP）相关的注解<br>@Aspect：声明一个切面。<br>@Before、@After、@Around：定义切面中的增强方法。<br>@Pointcut：声明切点，用于定义拦截规则。</li>
+<li>其他常用注解<br>@Value：注入配置文件中的值。<br>@RequestMapping：用于处理 Web 请求。<br>@ResponseBody：将方法的返回值直接写入 HTTP 响应体。<br>@RequestBody：将 HTTP 请求中的 JSON 数据绑定到 Java 对象。<br>@PathVariable：用于获取路径变量的值。<br>@Transactional：声明事务。</li>
+</ul>
+<h2 id="工具-技巧使用"><a href="#工具-技巧使用" class="headerlink" title="工具&#x2F;技巧使用"></a>工具&#x2F;技巧使用</h2><p>Intellj idea快速创建某个接口的实现类：<code>alt+enter</code></p>
+<h3 id="接口类和实现类的调用"><a href="#接口类和实现类的调用" class="headerlink" title="接口类和实现类的调用"></a>接口类和实现类的调用</h3><p>Java中的接口类类似C++中的抽象类。</p>
+<p>我的tokenServiceImpl是tokenService接口的实现，我在别的class中调用这个服务时，我应该使用tokenService还是tokenServiceImpl？</p>
+<blockquote>
+<p>应该使用tokenService。</p>
+<ul>
+<li><strong>依赖注入（Dependency Injection）：</strong> 当 Spring 容器管理你的 Bean 时，它会将 <code>TokenServiceImpl</code> 的实例注入到需要使用 token 服务的类中，但是注入的变量名通常是接口名 <code>tokenService</code>，而不是实现类名 <code>tokenServiceImpl</code>。</li>
+<li><strong>面向接口编程：</strong> 面向接口编程是一种良好的编程习惯。通过使用接口 <code>tokenService</code>，你的代码与具体的实现类解耦，提高了代码的可维护性、可测试性和扩展性。</li>
+<li><strong>多态：</strong> 由于 Java 的多态特性，当你使用 <code>tokenService</code> 时，实际上调用的是 <code>TokenServiceImpl</code> 中实现的方法。这样，如果你以后想更换 <code>TokenServiceImpl</code> 的实现，只需要修改 Spring 配置，而不需要修改调用代码。</li>
+</ul>
+</blockquote>
+<p><strong>Service的注解应该放到实现类上，而不是接口类。</strong></p>
+<h3 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h3><p>为什么要使用JUnit4、mock和verify？</p>
+<ul>
+<li><strong>JUnit4</strong> 是Java中最流行的单元测试框架，提供了丰富的断言和测试注解。</li>
+<li><strong>mock</strong> （模拟对象）可以让我们在测试中替换掉真实对象，从而隔离被测代码，方便测试。</li>
+<li><strong>verify</strong> 用于验证模拟对象的方法调用情况，确保代码的正确性。</li>
+</ul>
+<p>示例，测试一个简单的<code>UserService</code></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserService</span> &#123;</span><br><span class="line">    User <span class="title function_">getUserById</span><span class="params">(<span class="type">int</span> id)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserServiceImpl</span> <span class="keyword">implements</span> <span class="title class_">UserService</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> UserDao userDao; <span class="comment">// 依赖注入,在单元测试中，使用mock模拟</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">UserServiceImpl</span><span class="params">(UserDao userDao)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.userDao = userDao;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> User <span class="title function_">getUserById</span><span class="params">(<span class="type">int</span> id)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> userDao.getUserById(id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"><span class="keyword">import</span> org.mockito.Mockito;</span><br><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.mockito.Mockito.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserServiceImplTest</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testGetUserById</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 创建UserDao的模拟对象</span></span><br><span class="line">        <span class="type">UserDao</span> <span class="variable">userDao</span> <span class="operator">=</span> mock(UserDao.class);</span><br><span class="line">        <span class="comment">// 创建期望的User对象</span></span><br><span class="line">        <span class="type">User</span> <span class="variable">expectedUser</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">User</span>(<span class="number">1</span>, <span class="string">&quot;张三&quot;</span>); </span><br><span class="line">        <span class="comment">// 设置模拟对象的行为，当userDao调用getUserById(1)时，返回期望的User对象</span></span><br><span class="line">        when(userDao.getUserById(<span class="number">1</span>)).thenReturn(expectedUser);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 创建UserService实例，这是我们要测试的对象</span></span><br><span class="line">        <span class="type">UserService</span> <span class="variable">userService</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UserServiceImpl</span>(userDao);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 调用UserService的方法，这是我们要测试的方法</span></span><br><span class="line">        <span class="type">User</span> <span class="variable">actualUser</span> <span class="operator">=</span> userService.getUserById(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 验证UserDao的getUserById方法被调用了一次</span></span><br><span class="line">        verify(userDao, times(<span class="number">1</span>)).getUserById(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 断言实际的User对象和期望的User对象相等</span></span><br><span class="line">        assertEquals(expectedUser, actualUser);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="一些疑问"><a href="#一些疑问" class="headerlink" title="一些疑问"></a>一些疑问</h2><h3 id="在-RequestMapping注解中添加了url参数后，为什么前端就可以通过url传递参数？"><a href="#在-RequestMapping注解中添加了url参数后，为什么前端就可以通过url传递参数？" class="headerlink" title="在@RequestMapping注解中添加了url参数后，为什么前端就可以通过url传递参数？"></a>在@RequestMapping注解中添加了url参数后，为什么前端就可以通过url传递参数？</h3><p>@RequestMapping 注解在 Spring MVC 中起着至关重要的作用，它建立了 HTTP 请求与控制器方法之间的映射关系。当前端发送一个 HTTP 请求时，Spring MVC 框架会根据请求的 URL，去寻找匹配的 @RequestMapping 注解，然后调用对应的控制器方法来处理这个请求。</p>
+<p>整个过程可以简化为以下几步：</p>
+<ol>
+<li><strong>前端发送请求:</strong> 用户在浏览器中输入 URL，浏览器将这个请求发送到服务器。</li>
+<li><strong>Spring MVC 拦截请求:</strong> Spring MVC 作为 Web 框架，会拦截所有的 HTTP 请求。</li>
+<li><strong>匹配 @RequestMapping:</strong> Spring MVC 会根据请求的 URL，去容器中查找所有被<code>@RequestMapping</code> 注解标注的方法，并尝试匹配。</li>
+<li><strong>执行控制器方法:</strong> 如果找到了匹配的方法，Spring MVC 就会调用这个方法，并把请求参数传递给方法。</li>
+<li><strong>返回响应:</strong> 控制器方法执行完成后，会返回一个 ModelAndView 对象，Spring MVC 会将这个对象转换为 HTTP 响应，返回给前端。</li>
+</ol>
+<h3 id="Spring-MVC-与-Socket-的关系"><a href="#Spring-MVC-与-Socket-的关系" class="headerlink" title="Spring MVC 与 Socket 的关系"></a>Spring MVC 与 Socket 的关系</h3><ul>
+<li>Spring MVC 的工作原理： Spring MVC 作为一款基于 Servlet 的 Web 框架，其核心是处理 HTTP 请求。当一个 HTTP 请求到达服务器时，Servlet 容器会将请求封装成 HttpServletRequest 和 HttpServletResponse 对象，然后交给 DispatcherServlet 处理。<ul>
+<li>Servlet 和 Socket： Servlet 本质上是运行在 Servlet 容器中的一个 Java 类，它提供了处理 HTTP 请求和响应的接口。Servlet 容器（如 Tomcat、Jetty）则是基于 Socket 实现的，负责监听网络端口，接收客户端的 HTTP 请求，并将其传递给 Servlet。</li>
+</ul>
+</li>
+<li>Spring MVC 与 Socket 的关系：<ul>
+<li>间接依赖： Spring MVC 依赖于 Servlet 容器，而 Servlet 容器直接基于 Socket 工作。因此，Spring MVC 可以说是间接地利用了 Socket 的功能。</li>
+<li>抽象层级： Spring MVC 提供了一层更高级的抽象，将开发者从底层的 Socket编程细节中解放出来。开发者只需要关注业务逻辑，而不需要关心如何处理网络连接、协议解析等。</li>
+</ul>
+</li>
+<li>Socket 的作用：<ul>
+<li>建立连接： Socket 用于在客户端和服务器之间建立网络连接。</li>
+<li>数据传输： 通过 Socket 进行数据传输，实现客户端和服务器之间的通信。</li>
+<li>协议解析： Socket 负责解析 HTTP 协议，将请求和响应数据进行编码和解码。</li>
+</ul>
+</li>
+</ul>
+<h3 id="当我在使用Spring-boot开发时，我还需要手动建立数据库连接池吗？"><a href="#当我在使用Spring-boot开发时，我还需要手动建立数据库连接池吗？" class="headerlink" title="当我在使用Spring boot开发时，我还需要手动建立数据库连接池吗？"></a>当我在使用Spring boot开发时，我还需要手动建立数据库连接池吗？</h3><p><strong>一般情况下，在 Spring Boot 中，我们不需要手动创建数据库连接池。</strong> Spring Boot 默认集成了 HikariCP 这个高性能的数据库连接池，并提供了自动配置。只需在配置文件（如 application.properties 或 application.yml）中配置数据库连接信息，Spring Boot 就会自动创建并管理连接池。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">spring.datasource.url=jdbc:mysql:<span class="comment">//localhost:3306/mydatabase</span></span><br><span class="line">spring.datasource.username=root</span><br><span class="line">spring.datasource.password=yourpassword</span><br><span class="line">spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver <span class="comment">// 这个配置项在 Spring Boot 中用于指定连接数据库的 JDBC 驱动类的全限定名。</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Spring-Boot-如何处理多个用户请求"><a href="#Spring-Boot-如何处理多个用户请求" class="headerlink" title="Spring Boot 如何处理多个用户请求?"></a>Spring Boot 如何处理多个用户请求?</h3><p>通常情况下，不需要手动创建线程池。 Spring Boot 已经为您内置了许多自动配置，其中就包括线程池的创建和管理。</p>
+<p>Spring Boot 默认的线程池</p>
+<ul>
+<li>Tomcat线程池: 对于传统的 Servlet 容器 Tomcat，Spring Boot 会默认使用 Tomcat 的线程池来处理 HTTP 请求。</li>
+<li>Undertow线程池: 如果您使用的是 Undertow 作为嵌入式 Servlet 容器，那么 Spring Boot 会使用 Undertow 的线程池。</li>
+</ul>
+<p>这些线程池通常已经经过优化，可以满足大多数应用的并发处理需求。</p>
+</div><div class="tags"></div><div class="post-nav"><a class="next" href="/2024/09/04/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/">Java学习笔记-代码规范</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="http://example.com"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="About"><img class="nofancybox" src="/img/logo.jpg"/></a><p>Kelin is a boring girl, but not always.</p><a class="info-icon" href="https://github.com/kelinkong" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/CPP/">CPP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/DataBase/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network-Security/">Network Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Operating-System/">Operating System</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Solutions/">Solutions</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/CMU15-445/" style="font-size: 15px;">CMU15-445</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/CPP/" style="font-size: 15px;">CPP</a> <a href="/tags/note/" style="font-size: 15px;">note</a> <a href="/tags/architecture/" style="font-size: 15px;">architecture</a></div></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">Kelin's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0"></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.css"><script type="text/javascript" src="/js/love.js?v=1.0.0"></script><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="Copy Successed!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
