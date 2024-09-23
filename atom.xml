@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-09-10T13:02:53.886Z</updated>
+  <updated>2024-09-23T06:31:05.492Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,51 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>one-hot编码</title>
+    <link href="http://example.com/2024/09/23/one-hot%E7%BC%96%E7%A0%81/"/>
+    <id>http://example.com/2024/09/23/one-hot%E7%BC%96%E7%A0%81/</id>
+    <published>2024-09-23T06:22:51.000Z</published>
+    <updated>2024-09-23T06:31:05.492Z</updated>
+    
+    <content type="html"><![CDATA[<p>One-hot 编码是一种将类别数据（比如文本或分类标签）转换为数值表示的方法。它的基本思想是用一个二进制向量来表示每个类别，其中只有一个位置为1，其他位置全为0。</p><p>为什么需要 One-hot 编码？<br>在机器学习中，算法通常无法直接处理文字或类别，需要先将它们转化为数值才能输入模型。而 One-hot 编码就是其中一种常用的数值化方法。</p><h2 id="具体操作步骤："><a href="#具体操作步骤：" class="headerlink" title="具体操作步骤："></a>具体操作步骤：</h2><ol><li>记录每个特征的类别数量<br>在编码时，记录下每个特征有多少类别以及每个类别的顺序。例如：</li></ol><p>颜色特征：有3个类别 -&gt; [“红色”, “绿色”, “蓝色”]</p><p>大小特征：有2个类别 -&gt; [“小”, “大”]</p><ol start="2"><li>确定编码位置<br>在编码时，按照顺序将每个特征的 One-hot 向量拼接起来。根据特征的类别数量，确定每个特征占据向量中的哪些位置。</li></ol><p>例如：</p><p>颜色有3个类别，所以编码的第1到3个位置对应颜色：</p><p>红色 [1, 0, 0]<br>绿色 [0, 1, 0]<br>蓝色 [0, 0, 1]</p><p>大小有2个类别，所以编码的第4到5个位置对应大小：</p><p>小 [1, 0]<br>大 [0, 1]</p><p>因此，对于编码向量 [1, 0, 0, 0, 1]，我们知道：</p><p>前3个元素 [1, 0, 0] 对应颜色特征。<br>后2个元素 [0, 1] 对应大小特征。</p><ol start="3"><li>解码过程<br>根据上面记录的规则和位置，我们可以解码向量：</li></ol><p>前3个位置是 [1, 0, 0]，对应颜色特征 -&gt; 红色。<br>后2个位置是 [0, 1]，对应大小特征 -&gt; 大。</p><h2 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 定义特征类别</span></span><br><span class="line">color_categories = [<span class="string">&quot;红色&quot;</span>, <span class="string">&quot;绿色&quot;</span>, <span class="string">&quot;蓝色&quot;</span>]</span><br><span class="line">size_categories = [<span class="string">&quot;小&quot;</span>, <span class="string">&quot;大&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 编码函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">one_hot_encode</span>(<span class="params">color, size</span>):</span><br><span class="line">    color_one_hot = [<span class="number">1</span> <span class="keyword">if</span> color == c <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">for</span> c <span class="keyword">in</span> color_categories]</span><br><span class="line">    size_one_hot = [<span class="number">1</span> <span class="keyword">if</span> size == s <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">for</span> s <span class="keyword">in</span> size_categories]</span><br><span class="line">    <span class="keyword">return</span> color_one_hot + size_one_hot</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解码函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">one_hot_decode</span>(<span class="params">encoded_vector</span>):</span><br><span class="line">    color_encoded = encoded_vector[:<span class="built_in">len</span>(color_categories)]</span><br><span class="line">    size_encoded = encoded_vector[<span class="built_in">len</span>(color_categories):]</span><br><span class="line">  </span><br><span class="line">    <span class="comment"># 通过位置找到相应的类别</span></span><br><span class="line">    color = color_categories[color_encoded.index(<span class="number">1</span>)]</span><br><span class="line">    size = size_categories[size_encoded.index(<span class="number">1</span>)]</span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> color, size</span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例数据</span></span><br><span class="line">encoded = one_hot_encode(<span class="string">&quot;红色&quot;</span>, <span class="string">&quot;大&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;编码: <span class="subst">&#123;encoded&#125;</span>&quot;</span>)  <span class="comment"># 输出: [1, 0, 0, 0, 1]</span></span><br><span class="line"></span><br><span class="line">decoded = one_hot_decode(encoded)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;解码: <span class="subst">&#123;decoded&#125;</span>&quot;</span>)  <span class="comment"># 输出: (&#x27;红色&#x27;, &#x27;大&#x27;)</span></span><br><span class="line"></span><br></pre></td></tr></table></figure><h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><h3 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h3><ul><li>简单直观：<ul><li>One-hot 编码非常容易理解和实现，每个类别被表示为独立的二进制向量，清晰明确。</li></ul></li><li>无序关系：<ul><li>One-hot 编码不会引入类别之间的顺序关系或大小关系，这对于类别之间没有天然顺序的特征（如颜色、城市名称等）是非常合适的。</li></ul></li><li>减少分类误差：<ul><li>不同类别之间不会有直接的数值距离。例如，如果用 1, 2, 3 表示不同类别，模型可能会认为“1”和“2”之间的距离比“1”和“3”之间更近，但使用 One-hot 编码就避免了这种误解。</li></ul></li><li>广泛使用：<ul><li>在各种分类算法和神经网络中，One-hot 编码是一种标准的类别处理方法，特别是在 NLP、图像分类等领域。</li></ul></li></ul><h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点:"></a>缺点:</h3><ul><li>维度爆炸：<ul><li>高维稀疏性：如果类别特征有很多不同的类别，One-hot 编码会导致非常大的稀疏矩阵。比如有1000个不同的类别，One-hot 编码后每个数据点的向量长度就是1000，这不仅增加了存储开销，还可能导致计算性能下降。</li></ul></li><li>无法捕捉类别之间的相似性：<ul><li>One-hot 编码把每个类别都看作彼此独立，不能表达类别之间的相似性或关联。例如，“猫”和“狗”之间可能比“猫”和“车”更相似，但 One-hot 编码无法反映这种信息。</li></ul></li><li>不适用于高基数特征：<ul><li>如果类别的取值非常多（例如用户ID、商品ID等高基数特征），One-hot 编码会生成过大的编码向量，导致计算资源消耗过高，难以处理。</li></ul></li><li>缺乏信息量：<ul><li>虽然 One-hot 编码能够区分类别，但它不包含类别的任何附加信息。每个类别仅通过单独的位表示，不包括类别的重要性、相关性等信息。</li></ul></li></ul><h3 id="何时使用-One-hot-编码："><a href="#何时使用-One-hot-编码：" class="headerlink" title="何时使用 One-hot 编码："></a>何时使用 One-hot 编码：</h3><ul><li>类别数量较少：如果某个特征的类别数量适中（比如10~100个类别），One-hot 编码通常是很好的选择。</li><li>类别没有顺序关系：当类别之间没有自然的顺序或等级时，One-hot 编码能够避免引入不必要的偏差。</li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;One-hot 编码是一种将类别数据（比如文本或分类标签）转换为数值表示的方法。它的基本思想是用一个二进制向量来表示每个类别，其中只有一个位置为1，其他位置全为0。&lt;/p&gt;
+&lt;p&gt;为什么需要 One-hot 编码？&lt;br&gt;在机器学习中，算法通常无法直接处理文字或类别，需要先</summary>
+      
+    
+    
+    
+    <category term="LLVM" scheme="http://example.com/categories/LLVM/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>提示工程</title>
+    <link href="http://example.com/2024/09/23/%E6%8F%90%E7%A4%BA%E5%B7%A5%E7%A8%8B/"/>
+    <id>http://example.com/2024/09/23/%E6%8F%90%E7%A4%BA%E5%B7%A5%E7%A8%8B/</id>
+    <published>2024-09-23T02:24:55.000Z</published>
+    <updated>2024-09-23T06:27:09.489Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><h3 id="模型设置"><a href="#模型设置" class="headerlink" title="模型设置"></a>模型设置</h3><p>参考<a href="https://www.promptingguide.ai/zh">提示工程指南</a></p><ul><li>Temperature：准确度和发散程度</li><li>Top_p：准确度和发散程度</li><li>Max Length：回复的最大token数</li><li>Stop Sequences：组织模型生成token</li><li>Frequency Penalty</li><li>Presence Penalty</li></ul><h3 id="提示词格式"><a href="#提示词格式" class="headerlink" title="提示词格式"></a>提示词格式</h3><p><strong>零样本提示：</strong></p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Q: &lt;问题&gt;?</span><br><span class="line">A: </span><br></pre></td></tr></table></figure><p>提示词可以包含以下任意要素：</p><p>指令：想要模型执行的特定任务或指令。  例如：请将文本分为中性、否定或肯定.</p><p>上下文：包含外部信息或额外的上下文信息，引导语言模型更好地响应。 </p><p>输入数据：用户输入的内容或问题。  例如：我觉得食物还可以。</p><p>输出指示：指定输出的类型或格式。 例如：情绪：</p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">请将文本分为中性、否定或肯定</span><br><span class="line">文本：我觉得食物还可以。</span><br><span class="line">情绪：</span><br></pre></td></tr></table></figure><h3 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h3><p>你可以使用命令来指示模型执行各种简单任务，例如“写入”、“分类”、“总结”、“翻译”、“排序”等，从而为各种简单任务设计有效的提示。</p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">提取以下文本中的地名。</span><br><span class="line"></span><br><span class="line">所需格式：</span><br><span class="line">地点：&lt;逗号分隔的公司名称列表&gt;</span><br><span class="line"></span><br><span class="line">输入：“虽然这些发展对研究人员来说是令人鼓舞的，但仍有许多谜团。里斯本未知的香帕利莫德中心的神经免疫学家 Henrique Veiga-Fernandes 说：“我们经常在大脑和我们在周围看到的效果之间有一个黑匣子。”“如果我们想在治疗背景下使用它，我们实际上需要了解机制。””</span><br></pre></td></tr></table></figure><h4 id="通用技巧"><a href="#通用技巧" class="headerlink" title="通用技巧"></a>通用技巧</h4><ul><li>避免不明确，尽量数字化，如几句话：2～3句话</li><li>避免说不要做什么，而要说要做什么</li></ul><h4 id="一些示例"><a href="#一些示例" class="headerlink" title="一些示例"></a>一些示例</h4><p>Explain the above in one sentence</p><p>Mention the large language model based product mentioned in the paragraph above:</p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Classify the text into neutral, negative or positive. </span><br><span class="line"></span><br><span class="line">Text: I think the vacation is okay.</span><br><span class="line">Sentiment: neutral </span><br><span class="line"></span><br><span class="line">Text: I think the food was okay. </span><br><span class="line">Sentiment:</span><br></pre></td></tr></table></figure><h3 id="少样本提示"><a href="#少样本提示" class="headerlink" title="少样本提示"></a>少样本提示</h3><p><strong>零样本提示：</strong></p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Q: &lt;问题&gt;?</span><br><span class="line">A: </span><br></pre></td></tr></table></figure><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">“whatpu”是坦桑尼亚的一种小型毛茸茸的动物。一个使用whatpu这个词的句子的例子是：</span><br><span class="line">我们在非洲旅行时看到了这些非常可爱的whatpus。</span><br><span class="line">“farduddle”是指快速跳上跳下。一个使用farduddle这个词的句子的例子是：</span><br></pre></td></tr></table></figure><p><strong>标签</strong></p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">这太棒了！// Negative</span><br><span class="line">这太糟糕了！// Positive</span><br><span class="line">哇，那部电影太棒了！// Positive</span><br><span class="line">多么可怕的节目！//</span><br></pre></td></tr></table></figure><h3 id="链式思考"><a href="#链式思考" class="headerlink" title="链式思考"></a>链式思考</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">这组数中的奇数加起来是偶数：4、8、9、15、12、2、1。</span><br><span class="line">A：将所有奇数相加（9、15、1）得到25。答案为False。</span><br><span class="line"></span><br><span class="line">这组数中的奇数加起来是偶数：17、10、19、4、8、12、24。</span><br><span class="line">A：将所有奇数相加（17、19）得到36。答案为True。</span><br><span class="line"></span><br><span class="line">这组数中的奇数加起来是偶数：16、11、14、4、8、13、24。</span><br><span class="line">A：将所有奇数相加（11、13）得到24。答案为True。</span><br><span class="line"></span><br><span class="line">这组数中的奇数加起来是偶数：17、9、10、12、13、4、2。</span><br><span class="line">A：将所有奇数相加（17、9、13）得到39。答案为False。</span><br><span class="line"></span><br><span class="line">这组数中的奇数加起来是偶数：15、32、5、13、82、7、1。</span><br><span class="line">A：</span><br></pre></td></tr></table></figure><p><strong>自动思维链</strong><br>Auto-CoT 主要由两个阶段组成：</p><ul><li>阶段1：问题聚类：将给定问题划分为几个聚类</li><li>阶段2：演示抽样：从每组数组中选择一个具有代表性的问题，并使用带有简单启发式的 Zero-Shot-CoT 生成其推理链</li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;h3 id=&quot;模型设置&quot;&gt;&lt;a href=&quot;#模型设置&quot; class=&quot;headerlink&quot; title=&quot;模型设置&quot;&gt;&lt;/a&gt;模型设置&lt;/h</summary>
+      
+    
+    
+    
+    <category term="LLVM" scheme="http://example.com/categories/LLVM/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Java学习笔记-开发实战一</title>
@@ -448,56 +493,6 @@
     
     
     <category term="CMU15-445" scheme="http://example.com/tags/CMU15-445/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CMU15-445 buffer pool manager</title>
-    <link href="http://example.com/2023/08/17/bufferpool/"/>
-    <id>http://example.com/2023/08/17/bufferpool/</id>
-    <published>2023-08-16T22:29:40.000Z</published>
-    <updated>2024-03-30T03:53:39.910Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="数据库中为什么需要buffer-pool？"><a href="#数据库中为什么需要buffer-pool？" class="headerlink" title="数据库中为什么需要buffer pool？"></a>数据库中为什么需要buffer pool？</h3><p>数据是存储在磁盘里的，但是也不能每次都从磁盘里面读取数据，这样性能是极差的。</p><p>要想提升查询性能，添加缓存。所以，当数据从磁盘中取出后，缓存内存中，下次查询同样的数据的时候，直接从内存中读取。</p><p>通常存储的数据划分为若干个「页」，以页作为磁盘和内存交互的基本单位，一个页的默认大小为 16KB。因此，Buffer Pool 同样需要按「页」来划分。</p><p>在MySQL中，InnoDB 会为 Buffer Pool 申请一片连续的内存空间，然后按照默认的16KB的大小划分出一个个的页(<code>frame</code>)， Buffer Pool 中的页就叫做缓存页。此时这些缓存页都是空闲(<code>free list</code>)的，之后随着程序的运行，才会有磁盘上的页被缓存到 Buffer Pool 中。</p><h3 id="Buffer-Pool-Manager-需要实现的功能："><a href="#Buffer-Pool-Manager-需要实现的功能：" class="headerlink" title="Buffer Pool Manager 需要实现的功能："></a>Buffer Pool Manager 需要实现的功能：</h3><p><code>auto NewPgImp(page_id_t *page_id) -&gt; Page * override</code><br>返回一个<code>Page</code>（首先检查free list中有没有空闲的Page，如果有从free list返回，如果没有使用LRU_K算法replace一个页面之后返回, 注意这里的<code>page_id</code>是一个传入参数）</p><p><code>auto FetchPgImp(page_id_t page_id) -&gt; Page * override;</code><br>在buffer pool中可能存在这个page_id, 标记为visit之后返回，不存在就和创建新的Page一样操作</p><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">UnpinPgImp</span><span class="params">(<span class="type">page_id_t</span> page_id, <span class="type">bool</span> is_dirty)</span> -&gt; <span class="type">bool</span> <span class="keyword">override</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">FlushPgImp</span><span class="params">(<span class="type">page_id_t</span> page_id)</span> -&gt; <span class="type">bool</span> <span class="keyword">override</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">FlushAllPgsImp</span><span class="params">()</span> <span class="keyword">override</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">DeletePgImp</span><span class="params">(<span class="type">page_id_t</span> page_id)</span> -&gt; <span class="type">bool</span> <span class="keyword">override</span></span>;</span><br></pre></td></tr></table></figure><h3 id="Extendible-Hash-Table"><a href="#Extendible-Hash-Table" class="headerlink" title="Extendible Hash Table"></a>Extendible Hash Table</h3><h4 id="为什么这里需要一个hash表？"><a href="#为什么这里需要一个hash表？" class="headerlink" title="为什么这里需要一个hash表？"></a>为什么这里需要一个hash表？</h4><p>外部使用的参数为<code>page_id</code> , 内部转换为<code>frame_id</code>, 每一个frame对应着一个page。从<code>page_id</code>转换为<code>frame_id</code>通过hash表实现。</p><p><strong>重点在于如何去管理桶，当桶满了再插入时应该如何操作。</strong></p><p>每个桶（bucket）都有一个本地深度（local depth）和一个全局深度（global depth）</p><p>本地深度是指每个桶中存储的键值对的哈希值的前缀长度。例如，如果本地深度为2，则桶中存储的键值对的哈希值的前两位必须相同。</p><p>全局深度是指哈希表中所有桶的本地深度的最大值。它表示哈希表的索引空间的大小。</p><p>如果插入时全局深度等于本地深度，哈希目录扩展为两倍（左移一位）<br>此时针对桶的处理最简单的办法是也新建一倍的桶，每一个桶对应着每个索引，但是这样很浪费空间，当有数据插入的时候再考虑新建桶。<br>扩展目录为double，更新index，将桶中的数据重新插入到新的桶中。</p><p><img src="/../imgs/image-21.png" alt="Alt text"></p><h3 id="LRU-K算法"><a href="#LRU-K算法" class="headerlink" title="LRU_K算法"></a>LRU_K算法</h3><p>和传统的LRU不一样的地方在于，传统的LRU是淘汰最近未使用的，而LRU_K多维护了一个record链表，用于记录访问次数大于等于K的Page，当淘汰时优先淘汰访问次数小于K次的，若所有的Page访问次数都大于K次才从record链表中去淘汰。</p><p><img src="/../imgs/image-20.png" alt="Alt text"></p><h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h3><p><img src="/../imgs/bufferpool.png"></p><h3 id="tips"><a href="#tips" class="headerlink" title="tips"></a>tips</h3><ul><li><p>是否是dirty，是在Page内部用变量标识的，在buffer pool中没有使用额外的list管理脏页。</p></li><li><p>在buffer pool中的Page array的作用：<code>pages_</code>用来管理已经在bufferp pool中的Page</p><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (page_table_-&gt;<span class="built_in">Find</span>(page_id, frame_id)) &#123;</span><br><span class="line">    replacer_-&gt;<span class="built_in">RecordAccess</span>(frame_id);</span><br><span class="line">    replacer_-&gt;<span class="built_in">SetEvictable</span>(frame_id, <span class="literal">false</span>);</span><br><span class="line">    pages_[frame_id].pin_count_++;</span><br><span class="line">    <span class="keyword">return</span> &amp;pages_[frame_id];</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h3 id=&quot;数据库中为什么需要buffer-pool？&quot;&gt;&lt;a href=&quot;#数据库中为什么需要buffer-pool？&quot; class=&quot;headerlink&quot; title=&quot;数据库中为什么需要buffer pool？&quot;&gt;&lt;/a&gt;数据库中为什么需要buffer pool？&lt;/</summary>
-      
-    
-    
-    
-    <category term="DataBase" scheme="http://example.com/categories/DataBase/"/>
-    
-    
-    <category term="CMU15-445" scheme="http://example.com/tags/CMU15-445/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>malloc是如何和物理地址关联上的？</title>
-    <link href="http://example.com/2023/08/16/malloc%E6%98%AF%E5%A6%82%E4%BD%95%E5%92%8C%E7%89%A9%E7%90%86%E5%9C%B0%E5%9D%80%E5%85%B3%E8%81%94%E4%B8%8A%E7%9A%84/"/>
-    <id>http://example.com/2023/08/16/malloc%E6%98%AF%E5%A6%82%E4%BD%95%E5%92%8C%E7%89%A9%E7%90%86%E5%9C%B0%E5%9D%80%E5%85%B3%E8%81%94%E4%B8%8A%E7%9A%84/</id>
-    <published>2023-08-16T09:38:52.000Z</published>
-    <updated>2024-03-30T03:55:21.277Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="/../imgs/image-19.png"></p><ol><li><p>malloc函数用于在堆上动态分配内存,它会向操作系统请求一块未使用的内存,然后返回这块内存的地址。</p></li><li><p>操作系统维护着可用物理内存的信息,知道哪些内存地址 当前未被使用。当收到malloc的请求时,它会从可用物理内存中选择一块未使用的内存,将其标记为已分配,并返回给应用程序。</p></li><li><p>在32位系统中,malloc返回的地址是虚拟地址,需要经过MMU地址转换找到对应的物理地址。64位系统中,malloc的地址空间通常就直接对应物理地址空间。</p><p> a. 在32位系统中,CPU可以寻址的虚拟地址空间比较小,一般为4GB左右。而物理内存可能会超过4GB。为了让进程可以访问超过4GB的物理内存,操作系统会使用虚拟内存技术,将虚拟地址映射到物理地址上。malloc返回的虚拟地址需要通过MMU(内存管理单元)翻译成物理地址,才能真正访问到内存。</p><p> b. 而在64位系统中,虚拟地址空间巨大(16EB),远远大于当前的物理内存大小。所以操作系统可以选择把虚拟地址直接映射到物理地址上,这种称为平坦内存模型。在这种情况下,malloc返回的地址就是物理地址,不需要再做地址转换。应用程序把malloc返回的地址直接作为物理地址使用即可。</p></li></ol><h3 id="平坦内存模型-Flat-Memory-Model"><a href="#平坦内存模型-Flat-Memory-Model" class="headerlink" title="平坦内存模型(Flat Memory Model)"></a>平坦内存模型(Flat Memory Model)</h3><ol><li>在平坦内存模型下,进程的虚拟地址与物理地址是一一对应的。操作系统不会进行地址转换,进程使用的虚拟地址就是对应物理内存的物理地址。</li><li>由于虚拟地址直接对应物理地址,不需要进行地址转换,所以省去了地址转换所带来的性能开销。</li><li>程序直接使用虚拟地址访问物理内存,不需要区分逻辑地址和物理地址,编程模型简单。</li><li>64位系统拥有极其大的虚拟地址空间(16EB),使得直接映射成为可能。虚拟地址空间大于目前的物理内存容量。</li><li>由于省去了内存虚拟化,无法实现弹性调配物理页框,可能会出现较严重的内存碎片。</li><li>很多64位系统不会选择完全平坦的模型,而是在一定范围内做映射,同时配合页表实现虚拟内存。综合利用了平坦模型与传统虚拟内存的优点。</li></ol><h3 id="MMU-Memory-Management-Unit"><a href="#MMU-Memory-Management-Unit" class="headerlink" title="MMU(Memory Management Unit)"></a>MMU(Memory Management Unit)</h3><p>有些系统MMU集成在CPU中，有些系统是单独芯片实现，通过地址总线和CPU连接。（地址总线、数据总线、控制总线–&gt;传递信号）</p><ol><li>地址转换 MMU负责将CPU产生的虚拟地址转换成物理地址。转换过程需要参考TLB,根据虚拟地址的高位找到对应的页表项,翻译出物理页号,与虚拟地址的低位组合成物理地址。</li><li>页面置换 当访问的页面不在物理内存时,MMU会触发页面置换（<em>页面置换算法通常不是由MMU(内存管理单元)直接实现的,而是由操作系统内核的虚拟内存管理子系统来实现。页表和地址转换是由MMU硬件来完成,但确定哪些页面需要换出、加载,以及页面替换策略则由操作系统内核的虚拟内存管理机制决定。</em>）,将内存中的某一页换出,将需要访问的页换入物理内存。</li><li>存取权限检查 MMU会检查每次地址转换后的物理内存访问权限,例如是否可读、可写、可执行,避免非法访问。</li><li>缓存一致性 MMU会与CPU缓存协同工作,实现缓存一致性,保证内存访问正确。</li><li>地址空间隔离 MMU为每个进程维护一个独立的地址空间,实现进程间的内存隔离。</li><li>中断与异常 若地址非法或者缺页等异常,MMU会触发中断信号,通知CPU进行异常处理。</li><li>硬件缓存 部分MMU集成了TLB等缓存结构,加速地址转换的速度。</li></ol><h3 id="为什么MMU可以解决内存碎片的问题？"><a href="#为什么MMU可以解决内存碎片的问题？" class="headerlink" title="为什么MMU可以解决内存碎片的问题？"></a>为什么MMU可以解决内存碎片的问题？</h3><ol><li>MMU实现了虚拟地址到物理地址的映射,程序只需要一个连续的虚拟地址空间。操作系统可以将不连续的物理内存片段映射到该连续虚拟地址空间上。通过这种映射,即使物理内存分布不连续,程序视图也是一个连续空间,可以任意使用而不会出现碎片。操作系统会负责这些不连续物理页的映射和调度,对上层应用透明。</li><li>当物理内存使用产生外部碎片时,虚拟存储技术可以进行碎片回收,将闲置的小块内存映射给其他程序使用。</li><li>同时,虚拟内存可以将暂时不用的内存页换出到磁盘,腾出物理内存空间供其他程序使用,减少内存碎片。</li><li>进而避免了严重的外部碎片,提高了物理内存的利用效率。</li></ol><h3 id="缓存一致性"><a href="#缓存一致性" class="headerlink" title="缓存一致性"></a>缓存一致性</h3><p>一个计算系统通常包含多级缓存,任何两个存储层次之间都可能存在数据一致性的问题。</p><ol><li><p>CPU缓存与硬盘缓存</p></li><li><p>多核CPU之间</p></li><li><p>各级系统缓存之间</p><p> MMU与CPU缓存的一致性是通过以下几种方式实现的:<br> a. 缓存一致性协议 CPU和MMU之间通过一定的硬件协议(如Intel的MESI协议)来维持缓存和主存的数据一致性。当缓存数据被修改时,会根据协议规则通知MMU将主存更新。</p><p> b. 缓存锁定 针对一些关键数据,CPU缓存会被锁定,每次访问必须从MMU加载,而不是缓存中的拷贝。保证了这部分数据的一致性。</p><p> c. 地址翻译表同步 地址翻译表如TLB也存放在CPU高速缓存中,MMU会同步更新CPU中的翻译表缓存,保证访问获取的是最新翻译关系。</p><p> d. 缓存行注释 MMU可以向缓存中的缓存行添加标记信息,如是否可缓存、是否已修改等,方便缓存控制。</p></li><li><p>分布式缓存系统</p></li><li><p>存储设备之间</p></li><li><p>客户端缓存</p></li></ol><h3 id="malloc调用时什么时候用sys-mmap-什么时候用brk？"><a href="#malloc调用时什么时候用sys-mmap-什么时候用brk？" class="headerlink" title="malloc调用时什么时候用sys_mmap, 什么时候用brk？"></a>malloc调用时什么时候用sys_mmap, 什么时候用brk？</h3><p>在调用malloc时会产生系统调用，切换到内核态，然后执行系统调用<br>在malloc调用时,是否使用sys_mmap或brk分配内存,主要取决于请求的内存大小:</p><ol><li>对于较小的内存请求,malloc通常会使用brk系统调用去扩展程序的堆区。</li><li>当请求较大内存页(一般超过128KB)时,malloc会使用mmap系统调用去映射匿名内存页。</li></ol><p>mmap相比brk的优势在于:</p><ul><li>可以指定地址对齐,提高效率</li><li>可以随时释放不连续的大内存块</li><li>避免堆区碎片</li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;&lt;img src=&quot;/../imgs/image-19.png&quot;&gt;&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;malloc函数用于在堆上动态分配内存,它会向操作系统请求一块未使用的内存,然后返回这块内存的地址。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;操作系统维护着可用物理内存的信息,知道</summary>
-      
-    
-    
-    
-    <category term="Operating System" scheme="http://example.com/categories/Operating-System/"/>
-    
     
   </entry>
   
