@@ -1,7 +1,7 @@
 ---
 title: Java学习笔记-语法基础篇
 date: 2024-08-28 14:13:28
-categories: Java
+categories: [Java]
 ---
 
 ### 扫盲，Java和C++的一些区别

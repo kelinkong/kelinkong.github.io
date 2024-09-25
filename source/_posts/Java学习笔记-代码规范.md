@@ -1,7 +1,7 @@
 ---
 title: Java学习笔记-代码规范
 date: 2024-09-04 09:56:31
-categories: Java
+categories: [Java]
 ---
 ## 代码规范
 

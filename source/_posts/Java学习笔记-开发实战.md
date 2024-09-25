@@ -1,6 +1,6 @@
 title: Java学习笔记-开发实战一
 date: 2024-09-05 11:47:07
-categories: Java
+categories: [Java]
 ----------------
 
 ## 项目背景
