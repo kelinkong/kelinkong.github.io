@@ -173,22 +173,21 @@ void staticMethod() {
 ```java
 public String publicMethod(String name) {
     try{
-        // 调用其他服务
+        // 调用其他服务  name + " service"
         String name1 = mockService.serviceMethod(name);
-        // 调用类内私有方法
+        // 调用类内私有方法  name + " private"
         String name2 = privateMethod(name);
-        // 调用静态方法
+        // 调用静态方法 name + " static"
         String name3 = staticMethod(name);
-        // 不带参的构造函数
+        // 不带参的构造函数 name + " service"
         MockService mockService2 = new MockService();
         String name4 = mockService2.serviceMethod(name);
-        // 带参的构造函数
+        // 带参的构造函数 name + " tmp"
         MockTmp mocktmp = new MockTmp(mockService2);
         String name5 = mocktmp.tmpMethod(name);
 
         return name1 + " " + name2 + " "  + name3 + " "  + name4 + " "  + name5;
     } catch (RuntimeException e){
-         // 异常处理
         throw new RuntimeException("Exception");
     }
 }
@@ -224,6 +223,11 @@ void publicMethod() {
     }
 }
 ```
+最后输出的结果是`test test private test test test`。
+
+可以看出，只有`privateMethod`方法没有被`mock`掉，其他方法都被`mock`掉了。
+
+目前还没有找到方法去`mock`类内私有方法（基于不能修改源代码、也不能使用powerMockito）。（如果有大佬看到，求教，邮箱1763605980@qq.com）
 
 #### 异常处理
 ```java
@@ -287,13 +291,16 @@ public class MockUser {
 
     public String publicMethod(String name) {
         try{
+            // 调用其他服务  name + " service"
             String name1 = mockService.serviceMethod(name);
+            // 调用类内私有方法  name + " private"
             String name2 = privateMethod(name);
+            // 调用静态方法 name + " static"
             String name3 = staticMethod(name);
-            // 不带参的构造函数
+            // 不带参的构造函数 name + " service"
             MockService mockService2 = new MockService();
             String name4 = mockService2.serviceMethod(name);
-            // 带参的构造函数
+            // 带参的构造函数 name + " tmp"
             MockTmp mocktmp = new MockTmp(mockService2);
             String name5 = mocktmp.tmpMethod(name);
 
