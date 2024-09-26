@@ -148,6 +148,8 @@ public class Main {
 
 在Java的类中，有构造函数，但是没有析构函数。Java的垃圾回收器会自动回收不再使用的对象。
 
+**但是Java同样会有内存泄漏的问题，比如静态变量、集合类等。**
+
 在Java的类中，也有一个this关键字，表示当前实例对象。
 
 ```java
@@ -197,6 +199,10 @@ public class Student extends Person {
 - 和C++一样，在Java中可以使用父类的引用指向子类的实例。
 - Java中的方法可以被子类覆写，使用`@Override`注解可以让编译器检查是否正确覆写了父类的方法。
 - 在Java中 ，同样存在抽象类，使用`abstract`关键字修饰，抽象类不能被实例化，只能被继承。`abstract class Person {}`
+
+**实例化子类时，会调用父类的构造器，Java是单继承，且所有的类都继承于Object类，那么是这条线上的所有父类、祖父类的构造器都会被调用吗？**
+
+>是的，在 Java 中，当实例化一个子类时，父类、祖父类乃至更高层次的所有父类的构造函数都会被依次调用，直到根类 Object 的构造函数。这个过程是通过构造函数链实现的。
 
 #### 接口
 [接口-参考文献](https://liaoxuefeng.com/books/java/oop/basic/interface/index.html)
@@ -260,6 +266,7 @@ public class Main {
 |接口|interface|class|
 |包|package|namespace|
 |异常处理|[try-catch-finally](https://liaoxuefeng.com/books/java/exception/java-exception/index.html)|try-catch|
+|泛型|List\<String\>|vector\<string\> 模版|
 
 #### Java和C++中的STL容器区别
 |容器|Java|C++|
@@ -356,5 +363,5 @@ public class Main {
 3.	使用场景：
 - Java注解常见于企业级应用中的配置和元数据标注。
 - Python装饰器用于简化代码、提高复用性，特别是在Web开发和数据处理领域。
-- 
+  
 两者虽然都是用于增强代码的功能性，但Java注解偏向于静态配置，而Python装饰器偏向于动态行为修改。
