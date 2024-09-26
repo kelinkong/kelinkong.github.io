@@ -204,6 +204,10 @@ public class Student extends Person {
 
 >是的，在 Java 中，当实例化一个子类时，父类、祖父类乃至更高层次的所有父类的构造函数都会被依次调用，直到根类 Object 的构造函数。这个过程是通过构造函数链实现的。
 
+**在Java中，继承是一棵树，构造函数的调用是从下往上的，即先调用子类的构造函数，再调用父类的构造函数，直到根类的构造函数。**
+
+**在C++中，继承是一个图。**
+
 #### 接口
 [接口-参考文献](https://liaoxuefeng.com/books/java/oop/basic/interface/index.html)
 

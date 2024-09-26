@@ -1,6 +1,6 @@
 ﻿---
 title: leetcode题解合集
-categories: Algorithm
+categories: [Algorithm]
 date: 2022-10-15 07:33:02
 mathjax: true
 ---
