@@ -6,7 +6,7 @@
   <link href="https://kelinkong.github.io/atom.xml" rel="self"/>
   
   <link href="https://kelinkong.github.io/"/>
-  <updated>2024-09-30T03:04:55.947Z</updated>
+  <updated>2024-09-30T03:39:32.063Z</updated>
   <id>https://kelinkong.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>包管理器相关</title>
+    <link href="https://kelinkong.github.io/2024/09/30/%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8%E7%9B%B8%E5%85%B3/"/>
+    <id>https://kelinkong.github.io/2024/09/30/%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8%E7%9B%B8%E5%85%B3/</id>
+    <published>2024-09-30T03:14:49.000Z</published>
+    <updated>2024-09-30T03:39:32.063Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>每次配置什么环境都是从网上找个教程，然后安装教程一步步走，遇到问题继续搜索，直到配置完成。</p><p>到现在已经接触到很多包管理器，比如 <code>npm</code>、<code>yarn</code>、<code>pip</code>、<code>brew</code>、<code>apt</code>、<code>yum</code>、<code>docker</code>、<code>composer</code> 等等。</p><p>于是想到，这些包管理器都是怎么实现的呢？它们之间有什么区别呢？</p><h2 id="什么是包管理器"><a href="#什么是包管理器" class="headerlink" title="什么是包管理器"></a>什么是包管理器</h2><p>包管理器是一种工具，用于自动化管理软件包（libraries, dependencies）的下载、安装、更新和卸载。它帮助开发人员轻松处理项目所需的依赖项，确保不同的库和工具能够正确地协同工作。</p><p>如果不使用包管理器，那么就需要手动下载、安装、更新和卸载软件包，这样会导致很多问题，比如版本冲突、依赖关系、安装路径等等。</p><h2 id="包管理器的包是从哪里来的呢？"><a href="#包管理器的包是从哪里来的呢？" class="headerlink" title="包管理器的包是从哪里来的呢？"></a>包管理器的包是从哪里来的呢？</h2><p>包管理器的包通常存储在一个或多个远程仓库中，开发人员可以从这些仓库中下载所需的软件包。这些仓库通常由软件的开发者或维护者维护，确保软件包的安全性和可靠性。</p><p>有些包管理的仓库服务器在国外，下载速度可能会比较慢，所以有些国内的公司会搭建自己的镜像仓库，比如淘宝的 <code>npm</code> 镜像、阿里云的 <code>docker</code> 镜像等等。（这里涉及到更换源）</p><p>那么理论上来说，也可以在本地搭建一个仓库，然后使用包管理器从本地仓库下载软件包。</p><h2 id="包管理器的作用"><a href="#包管理器的作用" class="headerlink" title="包管理器的作用"></a>包管理器的作用</h2><ul><li>安装依赖项：根据项目的配置文件（如<code>package.json</code>、<code>pom.xml</code>等），自动下载并安装项目所需的依赖包。</li><li>版本管理：包管理器能够处理依赖包的版本，确保项目使用兼容的版本，避免版本冲突。</li><li>更新：可以检查并更新到某个包的最新版本，或者锁定在特定版本。</li><li>卸载：移除不再需要的依赖包。</li></ul><h2 id="包管理器的分类"><a href="#包管理器的分类" class="headerlink" title="包管理器的分类"></a>包管理器的分类</h2><h3 id="1-操作系统级别的包管理器"><a href="#1-操作系统级别的包管理器" class="headerlink" title="1. 操作系统级别的包管理器"></a>1. 操作系统级别的包管理器</h3><p>这些包管理器用于管理操作系统中的软件包和库，通常用于安装和管理操作系统级别的应用程序和工具。它们主要处理的是操作系统中的二进制文件或预编译的软件包</p><ul><li>APT (Advanced Package Tool)：Debian 和 Ubuntu 系统上常用的包管理器。</li><li>YUM (Yellowdog Updater, Modified)：CentOS、RHEL 系统上的包管理器。</li><li>brew：macOS 上的包管理器。</li><li>Chocolatey：Windows 上的包管理器。</li></ul><h3 id="2-编程语言级别的包管理器"><a href="#2-编程语言级别的包管理器" class="headerlink" title="2. 编程语言级别的包管理器"></a>2. 编程语言级别的包管理器</h3><p>这些包管理器用于管理编程语言中的软件包和库，通常用于安装和管理项目级别的依赖项。它们主要处理的是源代码或库文件，通常会下载源代码并编译安装。</p><ul><li>npm (Node Package Manager)：JavaScript 的包管理器，用于 Node.js 项目。</li><li>yarn：JavaScript 的包管理器，用于 Node.js 项目。</li><li>pip：Python 的包管理器。</li><li>Maven：管理 Java 项目的依赖项和构建的工具。</li><li>Gradle：更灵活的构建和依赖管理工具，适用于多种编程语言，包括 Java。</li></ul><h2 id="版本管理器"><a href="#版本管理器" class="headerlink" title="版本管理器"></a>版本管理器</h2><p>这里的版本管理器指conda、nvm、rbenv、pyenv等，它们用于管理不同版本的编程语言或工具。</p><ul><li>conda：Python 的版本管理器，用于创建和管理 Python 环境。</li><li>nvm (Node Version Manager)：Node.js 的版本管理器，用于管理 Node.js 的不同版本。</li></ul><p>在踩坑之前，我觉得conda、nvm都很麻烦，我使用一个版本的python就好了，为什么还需要去做多个版本管理？</p><p>但是在实际开发中，有一次是安装别的工具，这个工具自己下载了一个合适的python版本，并且将我默认的python版本改成了这个版本，导致我之前的项目无法运行，当时的解决方式是更换环境变量，但是这种手动的切换十分麻烦，所以版本管理器就显得很有必要了。</p><p>像node.js也是一样，不同的版本就会出现各种问题，所以本地配置往往需要很多个版本去适应不同的项目。</p><blockquote><p>使用 <code>pip</code> 在不同的 <code>Python</code> 版本（如 Python 3.10 和 Python 3.11）下安装包时，包不能直接在另一个版本下使用，因为每个 <code>Python</code> 版本有自己独立的环境和库安装路径。切换 <code>Python</code> 版本后，之前为另一个版本安装的包不会自动可用。</p><p>正确的做法是为每个 <code>Python</code> 项目指定一个独立的虚拟环境。这样可以确保每个项目拥有独立的依赖项，避免不同项目之间产生冲突或兼容性问题。虚拟环境允许隔离项目的 <code>Python</code> 版本和包管理，使得每个项目可以使用其特定的 <code>Python</code> 版本和依赖库。</p></blockquote><h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p><strong>CMake算是一个包管理器吗？</strong></p><p>我们都知道Cmake的功能是用于管理项目的构建过程，它可以生成Makefile、Visual Studio项目文件等，但是它并不是一个包管理器，它只是一个构建工具。</p><p><strong>CMake并不能自动下载和安装依赖项，需要提前安装好，并且在CMakeLists.txt 中指定依赖项</strong></p><p>那么，C++是如何做包管理的呢？（程序员手动管理哈哈）</p><p>C++没有像Java、Python、JavaScript那样有一个统一的包管理器，不过有一些第三方的包管理器，比如：</p><ul><li>Conan：C++ 的包管理器，用于管理 C++ 项目的依赖项。</li><li>vcpkg：微软开发的 C++ 包管理器，用于管理 C++ 项目的依赖项。</li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;每次配置什么环境都是从网上找个教程，然后安装教程一步步走，遇到问题继续搜索，直到配置完成。&lt;/p&gt;
+&lt;p&gt;到现在已经接触到很多包管理器，比如</summary>
+      
+    
+    
+    
+    
+    <category term="architecture" scheme="https://kelinkong.github.io/tags/architecture/"/>
+    
+  </entry>
   
   <entry>
     <title>Java学习笔记-AOP</title>
@@ -460,32 +483,6 @@
     
     
     <category term="note" scheme="https://kelinkong.github.io/tags/note/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>执行一个程序的过程</title>
-    <link href="https://kelinkong.github.io/2023/08/25/exec-program/"/>
-    <id>https://kelinkong.github.io/2023/08/25/exec-program/</id>
-    <published>2023-08-25T02:09:26.000Z</published>
-    <updated>2024-03-30T03:54:50.300Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="冯诺依曼模型"><a href="#冯诺依曼模型" class="headerlink" title="冯诺依曼模型"></a>冯诺依曼模型</h2><ul><li>运算器</li><li>控制器</li><li>存储器</li><li>输入设备</li><li>输出设备</li></ul><p><img src="/../imgs/image-44.png" alt="图来源于小林coding"></p><h3 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h3><p>程序和数据都是存储在内存中，存储的区域是线性的。存储数据的基本单位是<strong>字节（byte）</strong>，一字节等于8位（bit），每一个字节对应着一个内存地址。</p><h3 id="中央处理器CPU"><a href="#中央处理器CPU" class="headerlink" title="中央处理器CPU"></a>中央处理器CPU</h3><p>32位和64位CPU最主要区别在于一次能计算多少字节的数据</p><ul><li>32位一次能计算4个字节，虚拟内存空间大小为$2^{32}$，4G</li><li>64位一次能计算8个字节</li></ul><h4 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h4><ul><li>通用寄存器：用来存放需要进行运算的数据(执行单元)</li><li>程序计数器：用来存储CPU要执行下一条指令所在的内存地址（此时指令仍然在内存中）（控制单元）</li><li>指令寄存器：用来存放正在执行的指令（控制单元）</li></ul><h3 id="存储器接口-Memory-Interface"><a href="#存储器接口-Memory-Interface" class="headerlink" title="存储器接口(Memory Interface)"></a>存储器接口(Memory Interface)</h3><p>与内存交互,读写数据。</p><h4 id="控制单元"><a href="#控制单元" class="headerlink" title="控制单元"></a>控制单元</h4><p>提取指令、解析指令、产生控制信号。</p><h4 id="执行单元-Execution-Unit"><a href="#执行单元-Execution-Unit" class="headerlink" title="执行单元(Execution Unit)"></a>执行单元(Execution Unit)</h4><p>包含算术逻辑单元ALU和通用寄存器组,执行各种运算和数据处理。</p><h3 id="总线"><a href="#总线" class="headerlink" title="总线"></a>总线</h3><ul><li>地址总线：用于指定CPU将要操作的内存地址</li><li>数据总线：用于读写内存的数据</li><li>控制总线：用于发送和接收信号</li></ul><p>通过地址总线来指定内存内存的地址–&gt;通过控制总线控制是读或写命令–&gt;通过数据总线传输数据。</p><h2 id="程序是如何执行的？"><a href="#程序是如何执行的？" class="headerlink" title="程序是如何执行的？"></a>程序是如何执行的？</h2><p><img src="/../imgs/image-45.png"></p><p>指令：一串二进制数字的机器码，不同的CPU有不同的指令集</p><p><strong>指令是存放在虚拟内存里还是物理内存中？</strong></p><p>虚拟内存为每个进程提供一片连续的虚拟地址空间，各进程的虚拟地址空间是独立的，指令与数据位于不同进程的虚拟地址空间中，因此多个进程共同执行时，他们的指令集不会交叉。</p><p><strong>那么程序计数器加1的时候，是加的虚拟内存还是实际内存？CPU直接操作的是实际内存还是虚拟内存？</strong></p><p>程序计数器加1时,它加的都是虚拟地址。CPU在执行程序时,直接操作和访问的也都是虚拟地址,而不是实际物理地址。</p><ol><li>CPU送出的下一条指令虚拟地址到MMU</li><li>MMU根据页表查找虚拟地址到物理地址的映射</li><li>若对应页不在物理内存，则触发缺页中断，os将其从磁盘换入</li><li>MMU最终将虚拟地址翻译为物理地址，从物理地址中读取指令后，将指令发送至CPU</li><li>CPU执行该指令</li><li>程序计数器中的虚拟地址+1</li></ol><h3 id="对于一个C-程序而言，是如何把代码变成指令集的？"><a href="#对于一个C-程序而言，是如何把代码变成指令集的？" class="headerlink" title="对于一个C++程序而言，是如何把代码变成指令集的？"></a>对于一个C++程序而言，是如何把代码变成指令集的？</h3><h4 id="预处理-Preprocessing"><a href="#预处理-Preprocessing" class="headerlink" title="预处理(Preprocessing)"></a>预处理(Preprocessing)</h4><p>预编译器处理头文件包含、宏定义展开等预处理工作,生成扩展后的源代码。<code>#define</code></p><h4 id="编译-Compilation"><a href="#编译-Compilation" class="headerlink" title="编译(Compilation)"></a>编译(Compilation)</h4><p>编译器将预处理后的C++源代码编译成汇编语言。这个过程包括词法分析、语法分析、语义分析、中间代码生成、目标代码生成等步骤。内联函数会被直接插入到每一个调用点，省去了函数调用的过程。</p><h4 id="汇编-Assembly"><a href="#汇编-Assembly" class="headerlink" title="汇编(Assembly)"></a>汇编(Assembly)</h4><p>汇编程序将汇编语言转换成机器语言,生成目标文件。</p><h4 id="链接-Linking"><a href="#链接-Linking" class="headerlink" title="链接(Linking)"></a>链接(Linking)</h4><p>链接器将多个目标文件和系统库链接生成完整的可执行程序。</p><p>在这个过程中,C++源代码经过编译器的编译和汇编程序的汇编,最终被转换成机器指令,这些指令保存在可执行文件的代码段,可以直接被CPU执行。</p><h3 id="编译前和编译后代码是存放在哪里？"><a href="#编译前和编译后代码是存放在哪里？" class="headerlink" title="编译前和编译后代码是存放在哪里？"></a>编译前和编译后代码是存放在哪里？</h3><h4 id="编译前"><a href="#编译前" class="headerlink" title="编译前:"></a>编译前:</h4><p>源代码以文本文件的形式存储在文件系统中,使用高级语言编写,对人更友好。</p><p>源代码包含了数据结构定义、算法流程、程序逻辑等信息。但不能直接被计算机执行。</p><h4 id="编译后："><a href="#编译后：" class="headerlink" title="编译后："></a>编译后：</h4><p>经过编译器编译后,会生成机器代码,存放在可执行文件的代码段中。</p><p>机器代码使用机器指令组成,可以直接被CPU执行。</p><p>举个例子：当我调用<code>new</code>关键字去为一个对象分配内存时，在编译前这仅仅是一个抽象的概念，<strong>内存分配是在运行时发生的</strong>。</p><h3 id="在编译的时候，编译顺序是怎么样的？"><a href="#在编译的时候，编译顺序是怎么样的？" class="headerlink" title="在编译的时候，编译顺序是怎么样的？"></a>在编译的时候，编译顺序是怎么样的？</h3><p>以下面的代码为例：</p><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span> <span class="comment">// 预处理阶段</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Node</span>&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Node</span>(<span class="type">int</span> val):<span class="built_in">val</span>(val)&#123;&#125; <span class="comment">// 构造函数和析构函数机器码</span></span><br><span class="line">    ~<span class="built_in">Node</span>()&#123;&#125; <span class="comment">// </span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="type">static</span> <span class="title">sFunc</span><span class="params">()</span></span>; <span class="comment">// 没有this指针，所以只能调用静态成员变量</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="type">int</span> val;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> c_val = <span class="number">1</span>;</span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> s_val = <span class="number">1</span>; <span class="comment">// 所有实例共享，不属于类</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="function">Node <span class="title">node</span><span class="params">(<span class="number">1</span>)</span></span>;</span><br><span class="line">    Node * node_ptr = <span class="keyword">new</span> <span class="built_in">Node</span>(<span class="number">1</span>);</span><br><span class="line">    node.<span class="built_in">func</span>();</span><br><span class="line">    node_ptr.<span class="built_in">func</span>();</span><br><span class="line">    <span class="keyword">delete</span> node_ptr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><h3 id="main函数执行之前，需要做什么？"><a href="#main函数执行之前，需要做什么？" class="headerlink" title="main函数执行之前，需要做什么？"></a>main函数执行之前，需要做什么？</h3><ol><li>设置栈指针</li><li>初始化静态static变量和global变量。静态类的构造函数在这里被调用</li><li>初始化全局变量，全局对象的构造函数也在main之前被调用</li><li>将main函数所需参数传递给main函数</li></ol><h3 id="在main函数之后，需要执行什么？"><a href="#在main函数之后，需要执行什么？" class="headerlink" title="在main函数之后，需要执行什么？"></a>在main函数之后，需要执行什么？</h3><ol><li>全局对象的析构函数</li><li>可以使用<code>atexit</code>注册一个函数，会在main之后执行</li></ol><h3 id="静态成员函数也是放在代码区的吗？"><a href="#静态成员函数也是放在代码区的吗？" class="headerlink" title="静态成员函数也是放在代码区的吗？"></a>静态成员函数也是放在代码区的吗？</h3><p>是的。编译器会为静态成员函数生成对应的机器代码，不需要实例化类就可以调用，机器代码独立生成，不依赖任何实例。</p><h3 id="函数调用时是如何传递参数的？"><a href="#函数调用时是如何传递参数的？" class="headerlink" title="函数调用时是如何传递参数的？"></a>函数调用时是如何传递参数的？</h3><ol><li>把参数的值从寄存器或内存加载到CPU的通用寄存器中。</li><li>调用指令将程序控制流跳转到函数代码地址。</li><li>在跳转前,调用指令会将返回地址等寄存器信息压入调用栈,用于保留调用环境。</li><li>跳转执行函数代码,函数中的局部变量也可能在栈上分配。</li><li>在函数执行前,根据调用约定从寄存器或栈空间中读取参数值。</li><li>函数执行完后,使用返回指令跳回调用点。</li><li>返回前依照调用约定将返回值写入寄存器或内存。</li><li>返回后,调用栈恢复,继续执行调用代码。</li></ol>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;冯诺依曼模型&quot;&gt;&lt;a href=&quot;#冯诺依曼模型&quot; class=&quot;headerlink&quot; title=&quot;冯诺依曼模型&quot;&gt;&lt;/a&gt;冯诺依曼模型&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;运算器&lt;/li&gt;
-&lt;li&gt;控制器&lt;/li&gt;
-&lt;li&gt;存储器&lt;/li&gt;
-&lt;li&gt;输入设备&lt;/li&gt;</summary>
-      
-    
-    
-    
-    <category term="Operating System" scheme="https://kelinkong.github.io/categories/Operating-System/"/>
-    
     
   </entry>
   
