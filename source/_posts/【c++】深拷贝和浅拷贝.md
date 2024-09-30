@@ -1,7 +1,7 @@
 ﻿---
 title: C++深拷贝和浅拷贝
 date: 2021-09-18 07:33:02
-categories: CPP
+categories: [CPP]
 tags: [CPP]
 ---
 

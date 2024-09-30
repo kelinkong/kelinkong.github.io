@@ -1,7 +1,7 @@
 ﻿---
 title: C++虚函数和虚函数表
 date: 2022-08-26 07:33:02
-categories: CPP
+categories: [CPP]
 tags: [CPP]
 ---
 

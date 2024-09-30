@@ -1,7 +1,7 @@
 ﻿---
 title: C++运算符重载的一些规则
 date: 2022-08-16 07:33:02
-categories: CPP
+categories: [CPP]
 tags: [CPP]
 ---
 

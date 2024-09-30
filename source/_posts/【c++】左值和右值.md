@@ -1,7 +1,7 @@
 ﻿---
 title: 左值和右值
 date: 2022-08-15 07:33:02
-categories: CPP
+categories: [CPP]
 tags: [CPP]
 ---
 
