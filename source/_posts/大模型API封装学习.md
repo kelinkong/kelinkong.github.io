@@ -26,6 +26,8 @@ src
      ├── java
      │    └── com
      │         └── example
+     │              ├── controller
+     │              │    └── OpenAIController.java
      │              ├── biz
      │              │    └── OpenAIService.java
      │              ├── client
@@ -199,7 +201,7 @@ Mono 和 Flux 是响应式编程模型中的核心部分，分别表示单个元
 
  ### 假设和前端进行交互，controller如下
  ```java
- @RestController
+@RestController
 @RequestMapping("/api/openai")
 public class OpenAIController {
 
@@ -217,26 +219,35 @@ public class OpenAIController {
         Flux<String> responseFlux = openAIService.generateText(request);
 
         responseFlux.subscribe(
+            // 这是一个 Lambda 表达式，表示每当 Flux<String> 中有新的文本片段 result，服务器会执行这个代码块：
                 result -> {
                     try {
-                        emitter.send(SseEmitter.event().data(result));  // 推送每段响应
+                        emitter.send(SseEmitter.event().data(result));  // 将生成的文本片段作为 SSE 事件发送到客户端。
                     } catch (Exception e) {
                         emitter.completeWithError(e);  // 处理异常
                     }
-                },
+                }, // 每次 Flux 产生新文本段时，调用这个回调函数，将该段文本发送给客户端。
                 emitter::completeWithError,  // 处理错误
                 emitter::complete  // 完成
         );
-
+        /*
+         * 客户端发送请求后，服务器返回一个 SseEmitter 对象，告诉客户端这将是一个持续的数据流。
+         * SseEmitter 用于推送多次数据（在文本逐步生成的过程中）。
+         * 当推送完毕后，SseEmitter 会通过 complete() 方法关闭连接。
+         */
         return emitter;
     }
 }
 ```
 #### SseEmitter
 
-`SseEmitter` 是 Spring WebFlux 提供的一个用于推送 Server-Sent Events（SSE）的类。SSE 是一种基于 HTTP 的服务器推送技朮，允许服务器向客户端推送事件流。
-
+`SseEmitter` 是 Spring 提供的一个类，用于处理 `Server-Sent Events (SSE)`，一种服务器端推送技术。
+通过 `SseEmitter`，服务器可以持续向客户端发送事件，而客户端只需要建立一次连接即可接收多个事件。
+SSE 是基于 HTTP 协议的持久连接，这使它在实时数据更新场景中非常有用，例如股票价格、社交媒体通知、实时聊天消息等。
 ### 服务类 (`biz/OpenAIService.java`)
+
+- 连接是单向的，服务器推送数据，客户端接收数据。
+- 客户端通过 `EventSource API` 来接收服务器推送的事件。
 
 ```java
 @Service
