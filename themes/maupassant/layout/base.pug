@@ -44,3 +44,24 @@ html(lang=config.language)
       include _partial/totop.pug
     
     include _partial/after_footer.pug
+
+block footer
+  // 插入 Dify 大模型助手代码
+  script.
+    window.difyChatbotConfig = {
+      token: '4gcHypq3JpvHcBxt'
+    }
+  script(src="https://udify.app/embed.min.js" id="4gcHypq3JpvHcBxt" defer)
+  style.
+    #dify-chatbot-bubble-button {
+      background-color: #1C64F2 !important;
+      position: fixed !important;
+      bottom: 20px !important;
+      left: 20px !important;
+    }
+    #dify-chatbot-bubble-window {
+      width: 24rem !important;
+      height: 40rem !important;
+      bottom: 70px !important; /* 确保窗口在按钮上方 */
+      left: 20px !important;
+    }
