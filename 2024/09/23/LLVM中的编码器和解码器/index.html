@@ -1,0 +1,198 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>LLVM中的编码器和解码器 | Kelin's blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/latest/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/grids-responsive-min.min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script type="text/javascript" src="//lib.baomitu.com/clipboard.js/latest/clipboard.min.js"></script><script type="text/javascript" src="//lib.baomitu.com/toastr.js/latest/toastr.min.js"></script><link rel="stylesheet" href="//lib.baomitu.com/toastr.js/latest/toastr.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">LLVM中的编码器和解码器</h1><a id="logo" href="/.">Kelin's blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">LLVM中的编码器和解码器</h1><div class="post-meta">2024-09-23<span> | </span><span class="category"><a href="/categories/LLVM/">LLVM</a></span><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 3.6k</span><span class="post-meta-item-text"> Words</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i><span class="post-count"> 12</span><span class="post-meta-item-text"> Minutes</span></span></span></div><div class="post-content"><h2 id="为什么需要编码和解码？"><a href="#为什么需要编码和解码？" class="headerlink" title="为什么需要编码和解码？"></a>为什么需要编码和解码？</h2><p>在机器学习中，算法通常无法直接处理文字或类别，需要先将它们转化为数值才能输入模型。</p>
+<p>编码器的作用是接收输入序列，并将其转换成固定长度的上下文向量（context vector）。这个向量是输入序列的一种内部表示，捕获了输入信息的关键特征。在自然语言处理的应用中，输入序列通常是一系列词语或字符。</p>
+<h2 id="Embedding-编码-和-One-hot-编码的比较"><a href="#Embedding-编码-和-One-hot-编码的比较" class="headerlink" title="Embedding 编码 和 One-hot 编码的比较"></a>Embedding 编码 和 One-hot 编码的比较</h2><p><strong>One-hot编码</strong>和<strong>Embedding编码</strong>是机器学习和深度学习中常用的两种数据表示方法，主要用于将类别数据或离散数据转换成神经网络可以处理的数值向量。</p>
+<h3 id="1-One-hot编码"><a href="#1-One-hot编码" class="headerlink" title="1. One-hot编码"></a>1. <strong>One-hot编码</strong></h3><p><strong>One-hot编码</strong>是一种简单的、常用于处理分类变量的表示方法。每个类别被表示为一个只有一个位置为1，其余位置全为0的二进制向量。</p>
+<h4 id="特点："><a href="#特点：" class="headerlink" title="特点："></a>特点：</h4><ul>
+<li><strong>稀疏表示</strong>：对于有 ( N ) 个类别的分类变量，每个类别都会被编码为一个长度为 ( N ) 的向量，只有该类别对应的位置是1，其它位置是0。</li>
+<li><strong>无嵌入信息</strong>：不同类别之间没有相似性或顺序上的信息，所有类别被认为是完全独立的。</li>
+</ul>
+<h4 id="举例："><a href="#举例：" class="headerlink" title="举例："></a>举例：</h4><p>假设你有三个类别：“苹果”、“橙子”和“香蕉”，用One-hot编码如下表示：</p>
+<ul>
+<li>“苹果” &#x3D; [1, 0, 0]</li>
+<li>“橙子” &#x3D; [0, 1, 0]</li>
+<li>“香蕉” &#x3D; [0, 0, 1]</li>
+</ul>
+<p>如果有1000个类别，One-hot编码的向量长度就是1000，虽然每个向量只有一个1，但需要存储很多0，这使得它在大规模分类问题中效率较低。</p>
+<h4 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h4><ul>
+<li><strong>简单直观</strong>：One-hot编码很容易理解和实现。</li>
+<li><strong>适用于小型分类问题</strong>：如果类别数较少，One-hot编码是一个不错的选择。</li>
+</ul>
+<h4 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h4><ul>
+<li><strong>向量维度高</strong>：随着类别数量的增加，One-hot编码的维度会非常高，导致内存占用增加。</li>
+<li><strong>没有表达类别之间的关系</strong>：所有类别被认为是独立的，没有任何相似性信息。</li>
+</ul>
+<hr>
+<h3 id="2-Embedding编码"><a href="#2-Embedding编码" class="headerlink" title="2. Embedding编码"></a>2. <strong>Embedding编码</strong></h3><p><strong>Embedding编码</strong>是一种密集的、低维度的表示方法，通常用于表示高维度的类别数据或者词汇。Embedding是通过将离散的类别映射到连续的实数向量空间中，使得类别之间的相似性可以通过向量之间的距离表示。</p>
+<h4 id="特点：-1"><a href="#特点：-1" class="headerlink" title="特点："></a>特点：</h4><ul>
+<li><strong>密集表示</strong>：每个类别被编码为一个长度相对较小的实数向量，而不是一个高维的稀疏向量。</li>
+<li><strong>学习得到的表示</strong>：Embedding通常是通过模型训练得到的，模型会根据任务的目标自动调整Embedding向量，使得相似的类别会有相似的向量表示。</li>
+<li><strong>适合大规模数据</strong>：Embedding编码能够处理大规模的类别数据，特别适合用于处理文本数据中的词汇表示。</li>
+</ul>
+<h4 id="举例：-1"><a href="#举例：-1" class="headerlink" title="举例："></a>举例：</h4><p>假设我们仍然有“苹果”、“橙子”和“香蕉”这三个类别，经过Embedding编码，它们可能被映射到一个2维的向量空间中：</p>
+<ul>
+<li>“苹果” &#x3D; [0.25, 0.78]</li>
+<li>“橙子” &#x3D; [0.31, 0.81]</li>
+<li>“香蕉” &#x3D; [0.15, 0.67]</li>
+</ul>
+<p>这些向量不再是稀疏的0和1的表示，而是实数值。模型通过学习这些向量，使得相似的类别（如“苹果”和“橙子”）可能在向量空间中距离较近。</p>
+<h4 id="优点：-1"><a href="#优点：-1" class="headerlink" title="优点："></a>优点：</h4><ul>
+<li><strong>低维度和密集表示</strong>：Embedding向量维度较低，适合处理类别数量非常大的数据集，如词汇表。</li>
+<li><strong>表达类别之间的关系</strong>：Embedding能够捕捉类别之间的相似性和关系，使得相似类别在向量空间中距离较近。</li>
+<li><strong>灵活性强</strong>：Embedding可以通过模型进行优化，使其适应具体的任务需求。</li>
+</ul>
+<h4 id="缺点：-1"><a href="#缺点：-1" class="headerlink" title="缺点："></a>缺点：</h4><ul>
+<li><strong>需要训练</strong>：Embedding通常需要通过模型训练来得到，如果训练数据不足，Embedding可能无法有效表达类别之间的关系。</li>
+<li><strong>解释性较差</strong>：相比One-hot编码，Embedding向量的物理意义不直观，难以解释具体维度的含义。</li>
+</ul>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li><strong>One-hot编码</strong>是一种简单的、易于实现的高维稀疏表示，适合类别数量较少且没有类别关系的场景。</li>
+<li><strong>Embedding编码</strong>是一种低维密集表示，通过模型训练可以捕捉类别之间的相似性，适合类别数量多、存在复杂关系的场景，如自然语言处理中的词向量表示。</li>
+</ul>
+<p>在实际应用中，One-hot编码多用于简单分类任务，而Embedding编码通常用于处理复杂的、高维度的类别数据，比如文本、推荐系统等领域。</p>
+<h2 id="词向量"><a href="#词向量" class="headerlink" title="词向量"></a>词向量</h2><p><strong>词向量（Word Vector）</strong>：<br>词向量是一种深度学习技术，旨在将词语映射到一个高维空间中，使得相似的词语在空间中距离较近。词向量可以捕捉到词语之间的语义关系和相似度。例如，如果我们有三个词语 [“cat”, “dog”, “bird”]，词向量后的结果将是：</p>
+<ul>
+<li>cat: [0.1, 0.2, 0.3, …] (维度为 100)</li>
+<li>dog: [0.4, 0.5, 0.6, …] (维度为 100)</li>
+<li>bird: [0.7, 0.8, 0.9, …] (维度为 100)</li>
+</ul>
+<p>词向量的优点是：</p>
+<ul>
+<li>能够捕捉到词语之间的语义关系和相似度。</li>
+<li>可以减少维度灾难，因为词向量的维度可以远小于 One-Hot 编码。</li>
+</ul>
+<p>词向量的缺点是：</p>
+<ul>
+<li>需要大量的计算资源和数据来训练模型。</li>
+<li>训练时间较长。</li>
+</ul>
+<h3 id="word2vec"><a href="#word2vec" class="headerlink" title="word2vec"></a>word2vec</h3><p><strong>Word2Vec</strong>是一个常用的词嵌入（word embedding）技术，用来将文本中的词转换成连续的、低维的向量。它通过捕捉词汇的上下文关系，学习到能够表示词语语义的向量。这种向量能反映出词汇之间的相似性，例如“苹果”和“橙子”可能会有相似的向量，因为它们都是水果。</p>
+<h3 id="Word2Vec的核心思想"><a href="#Word2Vec的核心思想" class="headerlink" title="Word2Vec的核心思想"></a>Word2Vec的核心思想</h3><p>Word2Vec的基本理念是：<strong>“相似上下文中的词应该有相似的向量表示”</strong>。它的原理可以简单理解为：如果两个词经常出现在相似的上下文中，那么它们的向量应该在向量空间中距离很近。</p>
+<p>Word2Vec有两种主要的模型：</p>
+<ol>
+<li><strong>CBOW（Continuous Bag of Words）</strong>：根据上下文来预测中间的词。</li>
+<li><strong>Skip-gram</strong>：根据一个词来预测它的上下文。</li>
+</ol>
+<h4 id="1-CBOW模型"><a href="#1-CBOW模型" class="headerlink" title="1. CBOW模型"></a>1. <strong>CBOW模型</strong></h4><ul>
+<li><strong>目标</strong>：给定上下文，预测中心词。</li>
+<li><strong>举例</strong>：假设句子是“我喜欢吃苹果”，在CBOW模型中，我们会使用“我”、“喜欢”和“吃”作为上下文来预测“苹果”这个词。</li>
+</ul>
+<p>这个模型通过考虑上下文中的多个词来训练，使得模型能更好地预测中心词，从而学到每个词的语义表示。</p>
+<h4 id="2-Skip-gram模型"><a href="#2-Skip-gram模型" class="headerlink" title="2. Skip-gram模型"></a>2. <strong>Skip-gram模型</strong></h4><ul>
+<li><strong>目标</strong>：给定一个词，预测它的上下文。</li>
+<li><strong>举例</strong>：同样的句子“我喜欢吃苹果”，在Skip-gram模型中，我们使用“苹果”这个词来预测它周围的词“我”、“喜欢”和“吃”。</li>
+</ul>
+<p>Skip-gram适用于小数据集并且效果较好，因为它能够更好地捕捉到稀有词汇的上下文。</p>
+<h3 id="Word2Vec的训练过程"><a href="#Word2Vec的训练过程" class="headerlink" title="Word2Vec的训练过程"></a>Word2Vec的训练过程</h3><p>无论是CBOW还是Skip-gram，它们的训练目标都是通过神经网络将词汇映射到一个低维的向量空间。在训练的过程中，Word2Vec会不断调整这些向量，使得相似的词语在向量空间中距离更近。</p>
+<ul>
+<li><strong>输入层</strong>：输入的是词汇的One-hot编码（即每个词都表示为一个高维稀疏向量）。</li>
+<li><strong>隐藏层</strong>：这层是我们希望学习到的词嵌入向量的维度，通常为100到300维。</li>
+<li><strong>输出层</strong>：CBOW模型的输出是词汇表中的所有词的概率分布，模型会尝试预测出正确的中心词。</li>
+</ul>
+<p>经过训练后，模型会学到一个嵌入矩阵，每个词的嵌入向量就保存在这个矩阵中。这个嵌入向量就是Word2Vec的输出，能够捕捉到词语的语义。</p>
+<h3 id="Word2Vec的优点"><a href="#Word2Vec的优点" class="headerlink" title="Word2Vec的优点"></a>Word2Vec的优点</h3><ul>
+<li><strong>低维表示</strong>：将词语表示为密集的向量，而不是高维的One-hot编码。</li>
+<li><strong>捕捉语义关系</strong>：学到的向量能够捕捉到词汇之间的语义相似性，例如“国王 - 男人 + 女人 &#x3D; 女王”。</li>
+</ul>
+<p><code>model = Word2Vec(sentences, vector_size=100, window=5, min_count=1, workers=4) </code></p>
+<ul>
+<li><code>sentences</code>：输入的句子列表。</li>
+<li><code>vector_size</code>：词向量的维度。</li>
+<li><code>window</code>：窗口大小，表示在训练时考虑的上下文词语的数量</li>
+<li><code>min_count</code>: 最小词语频率。只有频率大于或等于这个值的词语才会被纳入模型。默认值为 1</li>
+<li><code>workers</code>: 并行处理的 worker 数量。默认值为 3。</li>
+</ul>
+<h2 id="Transformer编码器和Word2Vec的对比"><a href="#Transformer编码器和Word2Vec的对比" class="headerlink" title="Transformer编码器和Word2Vec的对比"></a>Transformer编码器和Word2Vec的对比</h2><p><strong>Transformer编码器</strong>和<strong>Word2Vec</strong>虽然都是自然语言处理中的重要技术，但它们在设计理念、功能和应用上有显著差异。让我们逐步对比它们的不同点：</p>
+<h3 id="1-静态-vs-动态嵌入"><a href="#1-静态-vs-动态嵌入" class="headerlink" title="1. 静态 vs 动态嵌入"></a>1. <strong>静态 vs 动态嵌入</strong></h3><ul>
+<li><strong>Word2Vec</strong>：生成的是<strong>静态嵌入</strong>。也就是说，训练完模型后，每个词都会有一个固定的向量表示，词的含义不随上下文变化。例如，“bank”在所有场景中都对应相同的向量，无论它指的是“银行”还是“河岸”。</li>
+<li><strong>Transformer编码器</strong>：生成的是<strong>动态上下文嵌入</strong>。Transformer通过自注意力机制，使得词的表示能够根据它在句子中的上下文动态变化。例如，“bank”在不同上下文中会生成不同的嵌入表示，反映出它的不同含义。</li>
+</ul>
+<h3 id="2-上下文处理能力"><a href="#2-上下文处理能力" class="headerlink" title="2. 上下文处理能力"></a>2. <strong>上下文处理能力</strong></h3><ul>
+<li><strong>Word2Vec</strong>：仅能捕捉<strong>局部上下文信息</strong>。Word2Vec的模型（例如CBOW或Skip-gram）使用了固定的窗口大小，意味着它只能利用词汇前后有限的几个词进行预测。模型没有全局视角，无法很好地处理长距离依赖关系。</li>
+<li><strong>Transformer编码器</strong>：使用<strong>全局上下文信息</strong>。Transformer的<strong>自注意力机制</strong>能够让每个词都能与句子中的所有其他词交互，从而捕捉到长距离依赖关系。这样，Transformer能够更好地理解句子的整体含义，尤其是在复杂的语言现象中。</li>
+</ul>
+<h3 id="3-训练方式"><a href="#3-训练方式" class="headerlink" title="3. 训练方式"></a>3. <strong>训练方式</strong></h3><ul>
+<li><strong>Word2Vec</strong>：是基于<strong>浅层神经网络</strong>的模型，通常使用类似于Skip-gram或CBOW这样的简单架构来预测词与上下文之间的关系。模型只关注词汇和其局部上下文之间的关系，没有更深层次的网络结构。</li>
+<li><strong>Transformer编码器</strong>：是基于<strong>深层神经网络</strong>的架构，通常包含多个层级的编码器。每个编码器层都有多头自注意力机制和前馈神经网络，可以通过层层叠加的方式，逐步学习到更复杂的特征和表示。</li>
+</ul>
+<h3 id="4-处理序列的方式"><a href="#4-处理序列的方式" class="headerlink" title="4. 处理序列的方式"></a>4. <strong>处理序列的方式</strong></h3><ul>
+<li><strong>Word2Vec</strong>：使用的模型没有内置的位置感知机制，也就是说，Word2Vec无法捕捉词序信息。虽然它能够学习到词与词之间的语义关系，但不能很好地区分词的前后顺序。</li>
+<li><strong>Transformer编码器</strong>：采用了<strong>位置编码</strong>（Positional Encoding）来处理词序信息。因为Transformer不依赖于序列结构，它通过位置编码将位置信息显式添加到词嵌入中，帮助模型理解词序对句子意义的重要性。</li>
+</ul>
+<h3 id="5-模型的输出"><a href="#5-模型的输出" class="headerlink" title="5. 模型的输出"></a>5. <strong>模型的输出</strong></h3><ul>
+<li><strong>Word2Vec</strong>：输出的是每个词的<strong>静态向量表示</strong>，不随着任务或上下文变化。它的输出在某种程度上表示了词的全局语义相似性。</li>
+<li><strong>Transformer编码器</strong>：输出的是每个词的<strong>动态向量表示</strong>，这些表示不仅与词的本身有关，还包含它在上下文中的关系。因此，Transformer的输出是针对特定句子上下文的嵌入，捕捉到了句子层次的语义信息。</li>
+</ul>
+<h3 id="6-计算复杂度"><a href="#6-计算复杂度" class="headerlink" title="6. 计算复杂度"></a>6. <strong>计算复杂度</strong></h3><ul>
+<li><strong>Word2Vec</strong>：由于是浅层网络，计算量较小，训练速度较快，适用于快速生成词嵌入。它的计算复杂度与词汇量和嵌入维度成线性关系。</li>
+<li><strong>Transformer编码器</strong>：由于有多层自注意力机制，其计算复杂度较高，尤其是当处理长序列时，自注意力的计算复杂度是**O(n^2)**（n是序列长度）。因此，Transformer虽然功能强大，但对硬件要求较高。</li>
+</ul>
+<h3 id="7-语义表达能力"><a href="#7-语义表达能力" class="headerlink" title="7. 语义表达能力"></a>7. <strong>语义表达能力</strong></h3><ul>
+<li><strong>Word2Vec</strong>：虽然能够捕捉词语的语义相似性，但由于它是静态的，不能处理多义词和上下文变化。因此，它的语义表达能力有限，特别是在处理复杂句子结构时。</li>
+<li><strong>Transformer编码器</strong>：能够通过自注意力机制捕捉句子中每个词的上下文关系，因此语义表达能力更强，能够处理多义词以及更复杂的句法和语义结构。</li>
+</ul>
+<hr>
+<h3 id="具体对比总结"><a href="#具体对比总结" class="headerlink" title="具体对比总结"></a>具体对比总结</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Word2Vec</th>
+<th>Transformer编码器</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>嵌入类型</strong></td>
+<td>静态嵌入（同一词的向量固定）</td>
+<td>动态上下文嵌入（根据上下文生成不同向量）</td>
+</tr>
+<tr>
+<td><strong>上下文处理能力</strong></td>
+<td>局部上下文</td>
+<td>全局上下文</td>
+</tr>
+<tr>
+<td><strong>训练模型</strong></td>
+<td>浅层神经网络</td>
+<td>深层神经网络，多层自注意力</td>
+</tr>
+<tr>
+<td><strong>位置信息</strong></td>
+<td>无法处理词序</td>
+<td>使用位置编码捕捉词序</td>
+</tr>
+<tr>
+<td><strong>模型输出</strong></td>
+<td>词的固定向量表示</td>
+<td>词在特定上下文中的动态向量表示</td>
+</tr>
+<tr>
+<td><strong>计算复杂度</strong></td>
+<td>较低，训练快速</td>
+<td>较高，计算复杂，尤其是在长序列下</td>
+</tr>
+<tr>
+<td><strong>语义表达能力</strong></td>
+<td>较弱，无法处理多义词</td>
+<td>强大，能处理多义词和复杂语义</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><ul>
+<li><strong>Word2Vec</strong>是一种静态的词嵌入方法，适用于简单的NLP任务，如相似度计算和分类，但它不能处理上下文变化或长距离依赖。</li>
+<li><strong>Transformer编码器</strong>通过自注意力机制，生成动态的上下文敏感嵌入，能够更好地捕捉词汇在句子中的语义关系，是现代语言模型（如BERT、GPT等）的基础架构。</li>
+</ul>
+<p>因此，Transformer编码器可以看作是词嵌入技术的发展和延伸，提供了比Word2Vec更丰富、更上下文相关的词语表示。</p>
+</div><div class="tags"></div><div class="post-nav"><a class="pre" href="/2024/09/23/llvm%E4%B8%AD%E7%9A%84temperature/">llvm中的temperature</a><a class="next" href="/2024/09/23/llvm-%E6%8F%90%E7%A4%BA%E5%B7%A5%E7%A8%8B/">提示工程</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="https://kelinkong.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="About"><img class="nofancybox" src="/img/logo.jpg"/></a><p>Kelin is a boring girl, but not always.</p><a class="info-icon" href="https://github.com/kelinkong" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/CPP/">CPP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/DataBase/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/LLVM/">LLVM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network-Security/">Network Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Operating-System/">Operating System</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Solutions/">Solutions</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/frontend/">frontend</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/CMU15-445/" style="font-size: 15px;">CMU15-445</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/CPP/" style="font-size: 15px;">CPP</a> <a href="/tags/note/" style="font-size: 15px;">note</a> <a href="/tags/architecture/" style="font-size: 15px;">architecture</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/10/18/llvm-%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">llvm学习-人工神经网络</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/12/llvm-RAG%E5%AD%A6%E4%B9%A0/">llvm-RAG学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/10/%E5%A4%A7%E6%A8%A1%E5%9E%8BAPI%E5%B0%81%E8%A3%85%E5%AD%A6%E4%B9%A0/">大模型API封装学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/10/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-gradle/">Java学习笔记-gradle</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/08/axios%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">Axios学习笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/10/08/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-JWT/">Java学习笔记-JWT</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/30/%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8%E7%9B%B8%E5%85%B3/">包管理器相关</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/30/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-AOP/">Java学习笔记-AOP</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/26/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/">Java学习笔记-单元测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/09/25/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E7%BB%84%E5%90%88%E3%80%81%E7%BB%A7%E6%89%BF%E3%80%81%E6%8E%A5%E5%8F%A3/">Java学习笔记-组合、继承、接口</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">Kelin's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0"></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.css"><script type="text/javascript" src="/js/love.js?v=1.0.0"></script><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="Copy Successed!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html><!-- 插入 Dify 大模型助手代码--><script>window.difyChatbotConfig = {
+  token: '4gcHypq3JpvHcBxt'
+}</script><script src="https://udify.app/embed.min.js" id="4gcHypq3JpvHcBxt" defer></script><style>#dify-chatbot-bubble-button {
+  background-color: #1C64F2 !important;
+  position: fixed !important;
+  bottom: 20px !important;
+  left: 20px !important;
+}
+#dify-chatbot-bubble-window {
+  width: 24rem !important;
+  height: 40rem !important;
+  bottom: 70px !important; /* 确保窗口在按钮上方 */
+  left: 20px !important;
+}</style>
