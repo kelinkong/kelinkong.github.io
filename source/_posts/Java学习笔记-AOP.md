@@ -203,6 +203,8 @@ public class UserService {
 }
 ```
 2. 切面 (Aspect):我们创建一个切面，用于记录方法执行时间的逻辑。
+
+当以@Aspect作为注解时，Spring就会知道这是一个切面，然后就可以通过各类注解来进行通知了。
 ```java
 @Aspect
 public class LoggingAspect {
@@ -233,3 +235,11 @@ userService.login("Alice", "password123");
 User Alice is logging in.
 void UserService.login(String, String) executed in 50ms
 ```
+## 使用AOP实现数据库操作
+在AOP出现之前，使用JDBC操作数据库，往往需要：
+![](../imgs/image-56.png)
+但其中的，获取数据库连接、回滚、提交、释放连接，其实都是通用的。
+
+![](../imgs/image-57.png)
+
+使用注解`@Transactional`，就表明了该方法需要事物执行。
