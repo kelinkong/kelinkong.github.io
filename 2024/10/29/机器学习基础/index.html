@@ -43,8 +43,7 @@
 <p>$$<br>y^i &#x3D; W^T \cdot x^i + \epsilon^i<br>$$</p>
 <p>其中，$y^i$ 是预测值，$W^T$ 是权重向量，$x^i$ 是输入特征向量，$\epsilon^i$ 是误差。</p>
 <p>误差服从正态分布：</p>
-<p>$$<br>\epsilon^i \sim N(0, \sigma^2) \</p>
-<p>p(\epsilon^i) &#x3D; \frac{1}{\sqrt{2\pi\sigma^2}} \exp(-\frac{(\epsilon^i)^2}{2\sigma^2})<br>$$</p>
+<p>$$<br>p(\epsilon^i) &#x3D; \frac{1}{\sqrt{2\pi\sigma^2}} \exp(-\frac{(\epsilon^i)^2}{2\sigma^2})<br>$$</p>
 <p>将误差代入预测值：</p>
 <p>$$<br>p(y^i|x^i;W) &#x3D; \frac{1}{\sqrt{2\pi\sigma^2}} \exp(-\frac{(y^i - W^T \cdot x^i)^2}{2\sigma^2})<br>$$</p>
 <p>$x^i;W$组合之后的概率密度函数，就是我们的模型。我们希望$x^i;W$组合之后与$y^i$越接近越好。所以希望最大化这个概率密度函数。</p>
