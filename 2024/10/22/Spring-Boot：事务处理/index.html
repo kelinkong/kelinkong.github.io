@@ -183,14 +183,14 @@
 <h3 id="示例项目中使用-Transactional："><a href="#示例项目中使用-Transactional：" class="headerlink" title="示例项目中使用 @Transactional："></a>示例项目中使用 <code>@Transactional</code>：</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">OrderService</span> &#123;</span><br><span class="line">    <span class="meta">@Transactional(propagation = Propagation.REQUIRED)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">createOrder</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 创建订单的逻辑</span></span><br><span class="line">        paymentService.processPayment(); <span class="comment">// 调用另一个事务方法</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PaymentService</span> &#123;</span><br><span class="line">    <span class="meta">@Transactional(propagation = Propagation.REQUIRES_NEW)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">processPayment</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 处理支付逻辑</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在这个示例中，<code>createOrder()</code>使用<code>REQUIRED</code>传播行为，而<code>processPayment()</code>使用<code>REQUIRES_NEW</code>，即<code>processPayment()</code>将运行在一个独立的事务中。</p>
 <h2 id="一些疑问"><a href="#一些疑问" class="headerlink" title="一些疑问"></a>一些疑问</h2><h3 id="在Spring-boot中Transactional-readOnly-true-和-Transactional有什么区别？"><a href="#在Spring-boot中Transactional-readOnly-true-和-Transactional有什么区别？" class="headerlink" title="在Spring@ boot中Transactional(readOnly &#x3D; true)和@Transactional有什么区别？"></a>在Spring@ boot中Transactional(readOnly &#x3D; true)和@Transactional有什么区别？</h3><p>在 Spring Boot 中，<code>@Transactional</code> 注解用于管理事务边界，而 <code>@Transactional(readOnly = true)</code> 和 <code>@Transactional</code> 之间的主要区别在于<strong>事务的读写属性</strong>，从而影响数据库的操作方式和性能优化。具体来说：</p>
-<p> **<code>@Transactional(readOnly = true)</code>**：</p>
+<p><code>@Transactional(readOnly = true)</code>：</p>
 <ul>
 <li><strong>只读事务</strong>：指定该事务仅用于查询操作，即不会涉及对数据库的更新、插入或删除操作。</li>
 <li><strong>性能优化</strong>：Spring 在只读事务中可能对底层数据库连接进行优化，例如关闭脏数据检测等，提高查询性能。</li>
 <li><strong>数据库支持</strong>：某些数据库可以通过只读事务进行额外的性能优化，但要确保该事务中不包含写操作（更新、插入、删除），否则会抛出异常。</li>
 <li><strong>应用场景</strong>：适用于不需要更改数据的服务层方法，比如获取用户列表、查看订单信息等操作。</li>
 </ul>
-<p>**<code>@Transactional</code> (默认 <code>readOnly = false</code>)**：</p>
+<p><code>@Transactional</code> (默认 <code>readOnly = false</code>)：</p>
 <ul>
 <li><strong>读写事务</strong>：支持所有数据库操作，包括查询、插入、更新、删除。</li>
 <li><strong>数据一致性</strong>：该事务在执行过程中会进行数据一致性检查，确保数据库在事务中所有操作要么全部成功，要么在出现异常时全部回滚。</li>
