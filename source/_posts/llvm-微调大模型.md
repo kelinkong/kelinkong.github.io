@@ -33,6 +33,11 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 ```
 设置模型的根目录和设备名称。设备名称判断系统是否支持 CUDA（GPU 加速），如果不支持则使用 CPU。
 
+在mac中使用mps加速
+```python
+device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
+```
+
 ### 3. 数据集格式转换函数
 ```python
 def dataset_jsonl_transfer(origin_path, new_path):

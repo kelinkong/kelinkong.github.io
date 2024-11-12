@@ -4,6 +4,9 @@ date: 2024-11-07 10:36:51
 categories: [llvm]
 ---
 
+## 大模型的汇总仓库
+[awesome AI](https://github.com/ikaijua/Awesome-AITools/blob/main/README-CN.md)
+
 ## 使用大模型做具体场景助手
 
 使用开源工具来实现具体场景下的 AI 助手，流程可以简化如下：
