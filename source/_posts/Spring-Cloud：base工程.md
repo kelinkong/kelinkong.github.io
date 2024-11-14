@@ -1,5 +1,5 @@
 ---
-title: Spring Cloud学习笔记-base工程
+title: Spring Cloud：base工程
 date: 2024-11-13 15:31:35
 categories: [Java]
 ---
