@@ -1,5 +1,5 @@
 ---
-title: Spring Cloud:服务注册与发现
+title: Spring Cloud: 服务注册与发现
 date: 2024-11-14 10:51:57
 categories: [Java]
 ---
