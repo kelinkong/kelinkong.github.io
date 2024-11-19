@@ -53,3 +53,58 @@ public class OrderFeignController {
 }
 ```
 在上面的代码中，我们注入了 `PaymentFeignService` 接口，并调用了 `getPaymentById` 方法，实现了远程服务的调用。
+
+**OpenFeign天然支持负载均衡**，只需要在配置文件中配置服务提供者的服务名即可，无需关心具体的 IP 和端口。
+
+## 配置超时时间
+
+调用服务的超时时间是一个重要的配置，可以避免因为网络延迟导致的性能问题。
+
+在 OpenFeign 中，我们可以通过配置文件来设置超时时间，例如：
+```yaml
+cloud:
+    openfeign:
+        client:
+            config:
+            default: # 全局配置
+                connectTimeout: 5000
+                readTimeout: 5000
+            my-service: # 指定服务配置
+                connectTimeout: 5000
+                readTimeout: 5000
+```
+在上述代码中，我们设置了默认的超时时间为 5 秒。
+
+openFeign的默认超时时间是60s。
+
+## 配置重试机制
+在 OpenFeign 中，可以设置重试。
+
+```java
+// OpenFeignConfig.java
+public OpenFeignConfig{
+    
+    // 重试机制
+    @Bean
+    public Retryer myRetryer() {
+       return new Retryer.Default(100, 1, 3);
+    }
+
+    // 日志记录级别
+    @Bean
+    public Logger.Level feignLoggerLevel() {
+        return Logger.Level.FULL;
+    }
+}
+
+## 更换默认的client
+在 OpenFeign 中，我们可以通过配置文件来更换默认的 client，例如：
+```yaml
+cloud:
+    openfeign:
+        httpclient:
+            hc5:
+                enabled: true
+```
+在上述代码中，我们通过 `cloud.openfeign.httpclient.hc5.enabled` 属性来启用 HttpClient 5.x 版本。
+
