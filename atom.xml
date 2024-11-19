@@ -6,7 +6,7 @@
   <link href="https://kelinkong.github.io/atom.xml" rel="self"/>
   
   <link href="https://kelinkong.github.io/"/>
-  <updated>2024-11-19T01:00:01.615Z</updated>
+  <updated>2024-11-19T02:15:39.387Z</updated>
   <id>https://kelinkong.github.io/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Spring Cloud: 断路器</title>
+    <link href="https://kelinkong.github.io/2024/11/19/Spring-Cloud-%E6%96%AD%E8%B7%AF%E5%99%A8/"/>
+    <id>https://kelinkong.github.io/2024/11/19/Spring-Cloud-%E6%96%AD%E8%B7%AF%E5%99%A8/</id>
+    <published>2024-11-19T01:07:12.000Z</published>
+    <updated>2024-11-19T02:15:39.387Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><h3 id="断路器（Circuit-Breaker）简介"><a href="#断路器（Circuit-Breaker）简介" class="headerlink" title="断路器（Circuit Breaker）简介"></a>断路器（Circuit Breaker）简介</h3><p><strong>断路器</strong>是一种用于防止分布式系统中的故障扩散的机制。它借鉴了电路中的断路器原理，当某个服务出现故障或响应异常时，断路器会主动中断请求链路，避免故障传播到整个系统，保护系统的可用性和稳定性。</p><p>断路器通常在微服务架构中使用，结合服务治理框架（如 Spring Cloud Hystrix、Resilience4j 等）实现。</p><hr><h3 id="断路器的核心概念"><a href="#断路器的核心概念" class="headerlink" title="断路器的核心概念"></a>断路器的核心概念</h3><p>断路器有三种状态：<strong>关闭（Closed）</strong>、<strong>打开（Open）</strong> 和 <strong>半开（Half-Open）</strong>。</p><ol><li><p><strong>关闭状态（Closed）</strong>：</p><ul><li>默认状态，服务正常时断路器处于关闭状态。</li><li>请求直接转发到目标服务。</li><li>如果在一定时间内连续发生错误（如超时、异常等）超过预设阈值，断路器会进入<strong>打开状态</strong>。</li></ul></li><li><p><strong>打开状态（Open）</strong>：</p><ul><li>当断路器打开时，请求不再转发到目标服务，而是直接失败或返回预设的降级结果。</li><li>断路器会在打开状态维持一段时间（冷却时间），然后进入<strong>半开状态</strong>。</li></ul></li><li><p><strong>半开状态（Half-Open）</strong>：</p><ul><li>冷却时间结束后，断路器会允许少量请求通过，测试目标服务是否恢复。</li><li>如果测试请求成功率达到预期，断路器会切换回关闭状态。</li><li>如果测试请求仍然失败，则断路器重新进入打开状态。</li></ul></li></ol><hr><h3 id="断路器的作用"><a href="#断路器的作用" class="headerlink" title="断路器的作用"></a>断路器的作用</h3><ol><li><p><strong>避免级联故障</strong>：<br>当某个服务发生故障时，断路器能够切断请求，防止故障扩散到其他服务，保护系统的整体稳定性。</p></li><li><p><strong>快速失败</strong>：<br>在目标服务不可用时，断路器立即返回失败结果或降级响应，避免用户长时间等待，提高用户体验。</p></li><li><p><strong>系统保护</strong>：<br>减少对故障服务的访问压力，避免因请求积压导致服务雪崩。</p></li></ol><hr><h3 id="断路器的关键指标"><a href="#断路器的关键指标" class="headerlink" title="断路器的关键指标"></a>断路器的关键指标</h3><ol><li><p><strong>失败率</strong>：<br>一段时间内的失败请求占比。如果失败率超过阈值，断路器进入打开状态。</p></li><li><p><strong>请求数量</strong>：<br>设置触发断路器的最小请求数，确保断路器在足够的请求量下判断服务是否故障。</p></li><li><p><strong>熔断时间（冷却时间）</strong>：<br>指断路器打开后保持不再发送请求的时间，熔断时间过后进入半开状态。</p></li><li><p><strong>恢复检测</strong>：<br>在半开状态下，通过少量请求测试服务是否恢复，避免因误判直接恢复全部流量。</p></li></ol><hr><h3 id="常见断路器框架"><a href="#常见断路器框架" class="headerlink" title="常见断路器框架"></a>常见断路器框架</h3><ol><li><p><strong>Hystrix（已停止维护）</strong>：</p><ul><li>Netflix 开发，支持熔断器、线程隔离、请求缓存、请求合并等功能。</li><li>使用广泛，但因功能复杂导致性能损耗高，现已被 Resilience4j 替代。</li></ul></li><li><p><strong>Resilience4j</strong>：</p><ul><li>轻量级 Java 熔断器库，支持断路器、限流、重试、超时等功能。</li><li>性能优于 Hystrix，更适合现代微服务架构。</li></ul></li><li><p><strong>Spring Cloud Circuit Breaker</strong>：</p><ul><li>Spring 官方的断路器抽象层，支持多种断路器实现，如 Resilience4j 和 Sentinel。</li></ul></li></ol><hr><h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ol><li><p><strong>微服务调用失败</strong>：<br>处理服务超时、响应错误等异常情况，防止用户请求被无限制地转发到失败服务。</p></li><li><p><strong>高并发场景</strong>：<br>在流量激增时对服务降级，保护系统核心功能。</p></li><li><p><strong>依赖外部资源</strong>：<br>调用第三方接口或外部服务时，避免对其过度依赖导致自身系统故障。</p></li></ol><hr><h3 id="断路器的优缺点"><a href="#断路器的优缺点" class="headerlink" title="断路器的优缺点"></a>断路器的优缺点</h3><p><strong>优点</strong>：</p><ul><li>防止服务雪崩。</li><li>提升系统稳定性。</li><li>提高用户体验，避免长时间等待。</li></ul><p><strong>缺点</strong>：</p><ul><li>增加系统复杂度。</li><li>需要合理设置阈值，否则可能引发误判。</li><li>引入额外的延迟（如熔断检测）。</li></ul><hr><h3 id="实现示例（使用-Resilience4j）"><a href="#实现示例（使用-Resilience4j）" class="headerlink" title="实现示例（使用 Resilience4j）"></a>实现示例（使用 Resilience4j）</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PaymentService</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@CircuitBreaker(name = &quot;paymentService&quot;, fallbackMethod = &quot;paymentFallback&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">processPayment</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 调用目标服务</span></span><br><span class="line">        <span class="keyword">return</span> restTemplate.getForObject(<span class="string">&quot;http://payment-service/pay&quot;</span>, String.class);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 降级方法</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">paymentFallback</span><span class="params">(Throwable throwable)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Payment service is currently unavailable. Please try again later.&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>通过 @CircuitBreaker 注解指定断路器名称和降级方法，当目标服务出现异常时返回降级响应。</p><hr><p>通过断路器，分布式系统可以更好地处理服务故障和性能问题，确保高可用性和用户体验。</p><p>参考文档：<a href="https://github.com/lmhmhl/Resilience4j-Guides-Chinese/blob/main/index.md">Resilience4j</a></p><h2 id="案例实战"><a href="#案例实战" class="headerlink" title="案例实战"></a>案例实战</h2><p><img src="/../imgs/image-68.png"></p><p>配置断路器</p><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">circuitbreaker:</span> <span class="comment"># 降级熔断</span></span><br><span class="line">    <span class="attr">configs:</span></span><br><span class="line">    <span class="attr">default:</span></span><br><span class="line">        <span class="attr">failure-rate-threshold:</span> <span class="number">50</span> <span class="comment"># 调用失败达到50%后打开断路器</span></span><br><span class="line">        <span class="attr">sliding-window-type:</span> <span class="string">count_based</span> <span class="comment"># 滑动窗口类型</span></span><br><span class="line">        <span class="attr">sliding-window-size:</span> <span class="number">6</span> <span class="comment"># 滑动窗口大小 count_based6个请求 time_base6秒</span></span><br><span class="line">        <span class="attr">minimum-number-of-calls:</span> <span class="number">6</span> <span class="comment"># 每个滑动窗口的周期</span></span><br><span class="line">        <span class="attr">automatic-transition-from-open-to-half-open-enabled:</span> <span class="literal">true</span> <span class="comment"># 开始过度到半开状态</span></span><br><span class="line">        <span class="attr">wait-duration-in-open-state:</span> <span class="string">5s</span> <span class="comment"># 从开启到半开启需要5s</span></span><br><span class="line">        <span class="attr">permitted-number-of-calls-in-half-open-state:</span> <span class="number">2</span> <span class="comment">#半开状态允许通过的最大请求数</span></span><br><span class="line">        <span class="attr">record-exceptions:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">java.lang.Exception</span></span><br><span class="line">    <span class="attr">instances:</span></span><br><span class="line">    <span class="attr">cloud-payment-service:</span></span><br><span class="line">        <span class="attr">base-config:</span> <span class="string">default</span></span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;h3 id=&quot;断路器（Circuit-Breaker）简介&quot;&gt;&lt;a href=&quot;#断路器（Circuit-Breaker）简介&quot; class=&quot;</summary>
+      
+    
+    
+    
+    <category term="Java" scheme="https://kelinkong.github.io/categories/Java/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Spring Cloud: OpenFeign</title>
@@ -439,29 +461,6 @@
     
     <category term="Java" scheme="https://kelinkong.github.io/categories/Java/"/>
     
-    
-  </entry>
-  
-  <entry>
-    <title>包管理器相关</title>
-    <link href="https://kelinkong.github.io/2024/09/30/%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8%E7%9B%B8%E5%85%B3/"/>
-    <id>https://kelinkong.github.io/2024/09/30/%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8%E7%9B%B8%E5%85%B3/</id>
-    <published>2024-09-30T03:14:49.000Z</published>
-    <updated>2024-09-30T03:39:32.063Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>每次配置什么环境都是从网上找个教程，然后安装教程一步步走，遇到问题继续搜索，直到配置完成。</p><p>到现在已经接触到很多包管理器，比如 <code>npm</code>、<code>yarn</code>、<code>pip</code>、<code>brew</code>、<code>apt</code>、<code>yum</code>、<code>docker</code>、<code>composer</code> 等等。</p><p>于是想到，这些包管理器都是怎么实现的呢？它们之间有什么区别呢？</p><h2 id="什么是包管理器"><a href="#什么是包管理器" class="headerlink" title="什么是包管理器"></a>什么是包管理器</h2><p>包管理器是一种工具，用于自动化管理软件包（libraries, dependencies）的下载、安装、更新和卸载。它帮助开发人员轻松处理项目所需的依赖项，确保不同的库和工具能够正确地协同工作。</p><p>如果不使用包管理器，那么就需要手动下载、安装、更新和卸载软件包，这样会导致很多问题，比如版本冲突、依赖关系、安装路径等等。</p><h2 id="包管理器的包是从哪里来的呢？"><a href="#包管理器的包是从哪里来的呢？" class="headerlink" title="包管理器的包是从哪里来的呢？"></a>包管理器的包是从哪里来的呢？</h2><p>包管理器的包通常存储在一个或多个远程仓库中，开发人员可以从这些仓库中下载所需的软件包。这些仓库通常由软件的开发者或维护者维护，确保软件包的安全性和可靠性。</p><p>有些包管理的仓库服务器在国外，下载速度可能会比较慢，所以有些国内的公司会搭建自己的镜像仓库，比如淘宝的 <code>npm</code> 镜像、阿里云的 <code>docker</code> 镜像等等。（这里涉及到更换源）</p><p>那么理论上来说，也可以在本地搭建一个仓库，然后使用包管理器从本地仓库下载软件包。</p><h2 id="包管理器的作用"><a href="#包管理器的作用" class="headerlink" title="包管理器的作用"></a>包管理器的作用</h2><ul><li>安装依赖项：根据项目的配置文件（如<code>package.json</code>、<code>pom.xml</code>等），自动下载并安装项目所需的依赖包。</li><li>版本管理：包管理器能够处理依赖包的版本，确保项目使用兼容的版本，避免版本冲突。</li><li>更新：可以检查并更新到某个包的最新版本，或者锁定在特定版本。</li><li>卸载：移除不再需要的依赖包。</li></ul><h2 id="包管理器的分类"><a href="#包管理器的分类" class="headerlink" title="包管理器的分类"></a>包管理器的分类</h2><h3 id="1-操作系统级别的包管理器"><a href="#1-操作系统级别的包管理器" class="headerlink" title="1. 操作系统级别的包管理器"></a>1. 操作系统级别的包管理器</h3><p>这些包管理器用于管理操作系统中的软件包和库，通常用于安装和管理操作系统级别的应用程序和工具。它们主要处理的是操作系统中的二进制文件或预编译的软件包</p><ul><li>APT (Advanced Package Tool)：Debian 和 Ubuntu 系统上常用的包管理器。</li><li>YUM (Yellowdog Updater, Modified)：CentOS、RHEL 系统上的包管理器。</li><li>brew：macOS 上的包管理器。</li><li>Chocolatey：Windows 上的包管理器。</li></ul><h3 id="2-编程语言级别的包管理器"><a href="#2-编程语言级别的包管理器" class="headerlink" title="2. 编程语言级别的包管理器"></a>2. 编程语言级别的包管理器</h3><p>这些包管理器用于管理编程语言中的软件包和库，通常用于安装和管理项目级别的依赖项。它们主要处理的是源代码或库文件，通常会下载源代码并编译安装。</p><ul><li>npm (Node Package Manager)：JavaScript 的包管理器，用于 Node.js 项目。</li><li>yarn：JavaScript 的包管理器，用于 Node.js 项目。</li><li>pip：Python 的包管理器。</li><li>Maven：管理 Java 项目的依赖项和构建的工具。</li><li>Gradle：更灵活的构建和依赖管理工具，适用于多种编程语言，包括 Java。</li></ul><h2 id="版本管理器"><a href="#版本管理器" class="headerlink" title="版本管理器"></a>版本管理器</h2><p>这里的版本管理器指conda、nvm、rbenv、pyenv等，它们用于管理不同版本的编程语言或工具。</p><ul><li>conda：Python 的版本管理器，用于创建和管理 Python 环境。</li><li>nvm (Node Version Manager)：Node.js 的版本管理器，用于管理 Node.js 的不同版本。</li></ul><p>在踩坑之前，我觉得conda、nvm都很麻烦，我使用一个版本的python就好了，为什么还需要去做多个版本管理？</p><p>但是在实际开发中，有一次是安装别的工具，这个工具自己下载了一个合适的python版本，并且将我默认的python版本改成了这个版本，导致我之前的项目无法运行，当时的解决方式是更换环境变量，但是这种手动的切换十分麻烦，所以版本管理器就显得很有必要了。</p><p>像node.js也是一样，不同的版本就会出现各种问题，所以本地配置往往需要很多个版本去适应不同的项目。</p><blockquote><p>使用 <code>pip</code> 在不同的 <code>Python</code> 版本（如 Python 3.10 和 Python 3.11）下安装包时，包不能直接在另一个版本下使用，因为每个 <code>Python</code> 版本有自己独立的环境和库安装路径。切换 <code>Python</code> 版本后，之前为另一个版本安装的包不会自动可用。</p><p>正确的做法是为每个 <code>Python</code> 项目指定一个独立的虚拟环境。这样可以确保每个项目拥有独立的依赖项，避免不同项目之间产生冲突或兼容性问题。虚拟环境允许隔离项目的 <code>Python</code> 版本和包管理，使得每个项目可以使用其特定的 <code>Python</code> 版本和依赖库。</p></blockquote><h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p><strong>CMake算是一个包管理器吗？</strong></p><p>我们都知道Cmake的功能是用于管理项目的构建过程，它可以生成Makefile、Visual Studio项目文件等，但是它并不是一个包管理器，它只是一个构建工具。</p><p><strong>CMake并不能自动下载和安装依赖项，需要提前安装好，并且在CMakeLists.txt 中指定依赖项</strong></p><p>那么，C++是如何做包管理的呢？（程序员手动管理哈哈）</p><p>C++没有像Java、Python、JavaScript那样有一个统一的包管理器，不过有一些第三方的包管理器，比如：</p><ul><li>Conan：C++ 的包管理器，用于管理 C++ 项目的依赖项。</li><li>vcpkg：微软开发的 C++ 包管理器，用于管理 C++ 项目的依赖项。</li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;每次配置什么环境都是从网上找个教程，然后安装教程一步步走，遇到问题继续搜索，直到配置完成。&lt;/p&gt;
-&lt;p&gt;到现在已经接触到很多包管理器，比如</summary>
-      
-    
-    
-    
-    
-    <category term="architecture" scheme="https://kelinkong.github.io/tags/architecture/"/>
     
   </entry>
   
