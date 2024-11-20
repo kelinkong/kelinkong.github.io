@@ -1,7 +1,6 @@
 ---
 title: API-architecture
 date: 2024-03-31 15:39:41
-categories: [Frontend]
 tags: [architecture]
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: input-translation开发日志（上）
 date: 2024-03-05 17:07:30
-cagegories: Frontend
+categories: [Frontend]
 ---
 
 **本人是前端小白，写这个教程只是为了回顾用，可能会有错误的理解，请勿完全信任。**

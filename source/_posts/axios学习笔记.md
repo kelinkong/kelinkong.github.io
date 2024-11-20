@@ -1,7 +1,7 @@
 ---
 title: Axios学习笔记
 date: 2024-10-08 14:57:00
-categories: [frontend]
+categories: [Frontend]
 ---
 
 ## 前言

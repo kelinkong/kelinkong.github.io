@@ -1,7 +1,7 @@
 ---
 title: 使用 LCEL 构建一个简单的 LLM 应用
 date: 2024-11-06 09:43:04
-categories: [llvm]
+categories: [LLVM]
 ---
 
 ## 简单教程

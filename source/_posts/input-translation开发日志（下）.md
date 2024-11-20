@@ -1,8 +1,9 @@
 ---
 title: input-translation开发日志（下）
 date: 2024-03-07 15:03:28
-cagegories: Frontend
+categories: [Frontend]
 ---
+
 ## 需求整理
 **popup.html：**
 - 是否开启划词翻译
