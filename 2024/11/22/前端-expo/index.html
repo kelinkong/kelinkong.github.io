@@ -1,0 +1,109 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>前端-expo | Kelin's blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/latest/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/grids-responsive-min.min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script type="text/javascript" src="//lib.baomitu.com/clipboard.js/latest/clipboard.min.js"></script><script type="text/javascript" src="//lib.baomitu.com/toastr.js/latest/toastr.min.js"></script><link rel="stylesheet" href="//lib.baomitu.com/toastr.js/latest/toastr.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">前端-expo</h1><a id="logo" href="/.">Kelin's blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">前端-expo</h1><div class="post-meta">2024-11-22<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 957</span><span class="post-meta-item-text"> Words</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i><span class="post-count"> 3</span><span class="post-meta-item-text"> Minutes</span></span></span></div><div class="post-content"><h2 id="expo是什么？"><a href="#expo是什么？" class="headerlink" title="expo是什么？"></a>expo是什么？</h2><p>Expo 是一个用于构建原生应用的工具集合，它提供了一组工具和框架，用于开发跨平台应用。Expo 提供了简化原生应用的开发过程的工具，如自动构建和发布，以及集成各种第三方库。</p>
+<h3 id="Expo-的介绍"><a href="#Expo-的介绍" class="headerlink" title="Expo 的介绍"></a><strong>Expo 的介绍</strong></h3><p>Expo 是一个用于构建 React Native 应用的工具链，提供了一种快速搭建、开发、测试和发布移动应用的方法。它简化了 React Native 开发流程，使开发者可以更专注于业务逻辑，而无需担心底层的原生配置。</p>
+<h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a><strong>特点</strong></h4><ol>
+<li><strong>易用性</strong>：快速启动，无需配置复杂的环境。</li>
+<li><strong>跨平台支持</strong>：一次开发，适配 iOS 和 Android。</li>
+<li><strong>丰富的 API</strong>：内置支持摄像头、位置、通知等原生功能。</li>
+<li><strong>强大的工具链</strong>：<ul>
+<li><strong>Expo Go</strong>：一个移动应用，用于实时查看开发中的项目。</li>
+<li><strong>Expo CLI</strong>：命令行工具，管理项目的开发、打包和部署。</li>
+</ul>
+</li>
+<li><strong>托管服务</strong>：提供打包、发布和更新服务。</li>
+</ol>
+<hr>
+<h3 id="Expo-的安装"><a href="#Expo-的安装" class="headerlink" title="Expo 的安装"></a><strong>Expo 的安装</strong></h3><p>Expo 的安装分为工具安装和项目初始化。</p>
+<h4 id="前置要求"><a href="#前置要求" class="headerlink" title="前置要求"></a><strong>前置要求</strong></h4><ol>
+<li><strong>Node.js</strong>：安装最新的 LTS 版本（推荐使用 <a target="_blank" rel="noopener" href="https://github.com/nvm-sh/nvm">nvm</a> 管理 Node.js）。<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">node -v    <span class="comment"># 检查 Node.js 版本</span></span><br></pre></td></tr></table></figure></li>
+<li><strong>npm 或 yarn</strong>：Node.js 安装后会自带 <code>npm</code>，也可以选择安装 <code>yarn</code>。<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm -v     <span class="comment"># 检查 npm 版本</span></span><br><span class="line">yarn -v    <span class="comment"># 如果使用 yarn，检查其版本</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>现在推荐通过 <code>npx expo</code> 直接执行命令，而不是全局安装 <code>expo-cli</code>。这是为了减少全局依赖，确保使用的是最新版本的 Expo 命令行工具。</p>
+<hr>
+<h3 id="使用-npx-expo-的流程"><a href="#使用-npx-expo-的流程" class="headerlink" title="使用 npx expo 的流程"></a><strong>使用 npx expo 的流程</strong></h3><h4 id="1-初始化项目"><a href="#1-初始化项目" class="headerlink" title="1. 初始化项目"></a><strong>1. 初始化项目</strong></h4><p>你可以直接通过 <code>npx expo</code> 命令初始化一个新的 Expo 项目：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npx expo init my-new-project</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><strong>选择模板</strong>：执行命令后，你可以选择以下模板之一：</p>
+<ul>
+<li><strong>blank</strong>：空白项目。</li>
+<li>**blank (TypeScript)**：支持 TypeScript 的空白项目。</li>
+<li>**tabs (TypeScript)**：带底部导航栏的 TypeScript 项目。</li>
+</ul>
+</li>
+<li><p><strong>进入项目目录</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> my-new-project</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h4 id="2-启动开发服务器"><a href="#2-启动开发服务器" class="headerlink" title="2. 启动开发服务器"></a><strong>2. 启动开发服务器</strong></h4><p>在项目目录中运行以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npx expo start</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>打开浏览器后，你会看到一个开发面板：<ul>
+<li><strong>二维码</strong>：可以用手机上的 <strong>Expo Go</strong> 应用扫描来查看项目。</li>
+<li><strong>选择平台</strong>：可以选择在 iOS 模拟器、Android 模拟器或 Web 浏览器中运行。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="3-安装依赖"><a href="#3-安装依赖" class="headerlink" title="3. 安装依赖"></a><strong>3. 安装依赖</strong></h4><p>Expo 提供了一个专用的 <code>expo install</code> 命令，用来安装与当前 Expo SDK 版本兼容的依赖。</p>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npx expo install expo-camera expo-location</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="4-构建和发布应用"><a href="#4-构建和发布应用" class="headerlink" title="4. 构建和发布应用"></a><strong>4. 构建和发布应用</strong></h4><ul>
+<li><p><strong>构建应用</strong>：</p>
+<ul>
+<li>使用 <code>EAS Build</code>（推荐）来构建应用：<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npx expo install eas-cli</span><br><span class="line">npx eas build</span><br></pre></td></tr></table></figure></li>
+<li>Expo 已不再推荐直接使用 <code>expo build</code>，因为 EAS 提供了更现代的构建方式，支持自定义原生代码。</li>
+</ul>
+</li>
+<li><p><strong>发布应用</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npx expo publish</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h3 id="为什么推荐-npx？"><a href="#为什么推荐-npx？" class="headerlink" title="为什么推荐 npx？"></a><strong>为什么推荐 npx？</strong></h3><ol>
+<li><strong>确保使用最新版本</strong>：通过 <code>npx expo</code>，每次执行时都会自动下载最新的命令行工具。</li>
+<li><strong>减少全局安装依赖</strong>：无需全局安装 <code>expo-cli</code>，避免版本冲突。</li>
+<li><strong>简单易用</strong>：直接通过项目本地的工具执行命令，无需额外配置。</li>
+</ol>
+<hr>
+<h3 id="常用-npx-expo-命令"><a href="#常用-npx-expo-命令" class="headerlink" title="常用 npx expo 命令"></a><strong>常用 npx expo 命令</strong></h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>npx expo init</code></td>
+<td>初始化一个新的 Expo 项目</td>
+</tr>
+<tr>
+<td><code>npx expo start</code></td>
+<td>启动开发服务器，支持 Web 和移动设备测试</td>
+</tr>
+<tr>
+<td><code>npx expo install</code></td>
+<td>安装兼容 Expo 的依赖包</td>
+</tr>
+<tr>
+<td><code>npx expo upgrade</code></td>
+<td>升级 Expo 项目到最新版本</td>
+</tr>
+<tr>
+<td><code>npx eas build</code></td>
+<td>构建 iOS 和 Android 的生产版本</td>
+</tr>
+<tr>
+<td><code>npx expo export:web</code></td>
+<td>导出为静态 Web 应用</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h3><ul>
+<li>使用 <code>npx expo</code> 是当前最推荐的方式。</li>
+<li>无需全局安装 <code>expo-cli</code>，保持工具链轻量化。</li>
+<li>支持快速开发、调试和构建跨平台应用。</li>
+</ul>
+<p>如果需要详细指导，比如环境配置或特定功能开发，可以继续告诉我！</p>
+</div><div class="tags"></div><div class="post-nav"><a class="next" href="/2024/11/19/Spring-Cloud-%E6%96%AD%E8%B7%AF%E5%99%A8/">Spring Cloud: 断路器</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="https://kelinkong.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="About"><img class="nofancybox" src="/img/logo.jpg"/></a><p>Kelin is a boring girl, but not always.</p><a class="info-icon" href="https://github.com/kelinkong" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/CPP/">CPP</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/DataBase/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/LLVM/">LLVM</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network-Security/">Network Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Operating-System/">Operating System</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Solutions/">Solutions</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/CMU15-445/" style="font-size: 15px;">CMU15-445</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/CPP/" style="font-size: 15px;">CPP</a> <a href="/tags/note/" style="font-size: 15px;">note</a> <a href="/tags/architecture/" style="font-size: 15px;">architecture</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/11/22/%E5%89%8D%E7%AB%AF-expo/">前端-expo</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/19/Spring-Cloud-%E6%96%AD%E8%B7%AF%E5%99%A8/">Spring Cloud: 断路器</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/14/Spring-Cloud-OpenFeign/">Spring Cloud: OpenFeign</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/14/Spring-Cloud-%E6%96%B0%E5%A2%9E%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%A8%A1%E5%9D%97/">Spring Cloud:服务注册与发现</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/13/Spring-Cloud%EF%BC%9Abase%E5%B7%A5%E7%A8%8B/">Spring Cloud：base工程</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/13/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/">Java学习笔记-配置文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/07/lvvm-%E4%BD%BF%E7%94%A8langchain-chatchat%E5%92%8Collama%E6%9E%84%E5%BB%BA%E5%A4%A7%E6%A8%A1%E5%9E%8B/">llvm-使用langchain-chatchat和ollama构建大模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/07/llvm-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%9C%89%E5%85%B3%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B7%A5%E5%85%B7%E9%93%BE/">大模型有关的一些工具链</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/06/llvm-%E4%BD%BF%E7%94%A8LCEL-%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84-LLM-%E5%BA%94%E7%94%A8/">使用 LCEL 构建一个简单的 LLM 应用</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/01/llvm-%E5%BE%AE%E8%B0%83%E5%A4%A7%E6%A8%A1%E5%9E%8B/">llvm-微调大模型</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">Kelin's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0"></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.css"><script type="text/javascript" src="/js/love.js?v=1.0.0"></script><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="Copy Successed!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
