@@ -180,3 +180,10 @@ dify支持ollama，可以直接使用本地部署的模型。
 官网地址：[Groqcloud](https://console.groq.com/playground)
 
 GroqCloud 是由 Groq 公司提供的云服务，专注于快速 AI 推理。它利用 Groq 的语言处理单元（LPU）硬件和相关软件，推理速度很快，而且API便宜。
+
+## 向量知识库
+
+- 第一类是开源的专用向量数据库，如 Chroma、Vespa、LanceDB、Marqo、Qdrant 和 Milvus，这些数据库专门设计用于处理向量数据。
+- 第二类是支持向量搜索的开源数据库，如 OpenSearch、PostgreSQL、ClickHouse 和 Cassandra，它们是常规数据库，但支持向量搜索功能。
+- 第三类是商用的专用向量数据库，如 Weaviate 和 Pinecone，它们专门用于处理向量数据，但属于商业产品或通过商业许可获得源码。
+- 第四类是支持向量搜索的商用数据库，如 Elasticsearch、Redis、Rockset 和 SingleStore，这些常规数据库支持向量搜索功能，同时属于商业产品或可通过商业许可获得源码
