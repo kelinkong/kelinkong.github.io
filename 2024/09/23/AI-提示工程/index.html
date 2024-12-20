@@ -1,0 +1,145 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>提示工程 | Kelin's blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/latest/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/grids-responsive-min.min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script type="text/javascript" src="//lib.baomitu.com/clipboard.js/latest/clipboard.min.js"></script><script type="text/javascript" src="//lib.baomitu.com/toastr.js/latest/toastr.min.js"></script><link rel="stylesheet" href="//lib.baomitu.com/toastr.js/latest/toastr.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">提示工程</h1><a id="logo" href="/.">Kelin's blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">提示工程</h1><div class="post-meta">2024-09-23<span> | </span><span class="category"><a href="/categories/AI/">AI</a></span><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 2.1k</span><span class="post-meta-item-text"> Words</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i><span class="post-count"> 7</span><span class="post-meta-item-text"> Minutes</span></span></span></div><div class="post-content"><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><h3 id="模型设置"><a href="#模型设置" class="headerlink" title="模型设置"></a>模型设置</h3><p>参考<a target="_blank" rel="noopener" href="https://www.promptingguide.ai/zh">提示工程指南</a></p>
+<ul>
+<li>Temperature：准确度和发散程度</li>
+<li>Top_p：准确度和发散程度</li>
+<li>Max Length：回复的最大token数</li>
+<li>Stop Sequences：组织模型生成token</li>
+<li>Frequency Penalty</li>
+<li>Presence Penalty</li>
+</ul>
+<h3 id="提示词格式"><a href="#提示词格式" class="headerlink" title="提示词格式"></a>提示词格式</h3><p><strong>零样本提示：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Q: &lt;问题&gt;?</span><br><span class="line">A: </span><br></pre></td></tr></table></figure>
+
+<p>提示词可以包含以下任意要素：</p>
+<p>指令：想要模型执行的特定任务或指令。  例如：请将文本分为中性、否定或肯定.</p>
+<p>上下文：包含外部信息或额外的上下文信息，引导语言模型更好地响应。 </p>
+<p>输入数据：用户输入的内容或问题。  例如：我觉得食物还可以。</p>
+<p>输出指示：指定输出的类型或格式。 例如：情绪：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">请将文本分为中性、否定或肯定</span><br><span class="line">文本：我觉得食物还可以。</span><br><span class="line">情绪：</span><br></pre></td></tr></table></figure>
+
+<h3 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h3><p>你可以使用命令来指示模型执行各种简单任务，例如“写入”、“分类”、“总结”、“翻译”、“排序”等，从而为各种简单任务设计有效的提示。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">提取以下文本中的地名。</span><br><span class="line"></span><br><span class="line">所需格式：</span><br><span class="line">地点：&lt;逗号分隔的公司名称列表&gt;</span><br><span class="line"></span><br><span class="line">输入：“虽然这些发展对研究人员来说是令人鼓舞的，但仍有许多谜团。里斯本未知的香帕利莫德中心的神经免疫学家 Henrique Veiga-Fernandes 说：“我们经常在大脑和我们在周围看到的效果之间有一个黑匣子。”“如果我们想在治疗背景下使用它，我们实际上需要了解机制。””</span><br></pre></td></tr></table></figure>
+
+<h4 id="通用技巧"><a href="#通用技巧" class="headerlink" title="通用技巧"></a>通用技巧</h4><ul>
+<li>避免不明确，尽量数字化，如几句话：2～3句话</li>
+<li>避免说不要做什么，而要说要做什么</li>
+</ul>
+<h4 id="一些示例"><a href="#一些示例" class="headerlink" title="一些示例"></a>一些示例</h4><p>Explain the above in one sentence</p>
+<p>Mention the large language model based product mentioned in the paragraph above:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Classify the text into neutral, negative or positive. </span><br><span class="line"></span><br><span class="line">Text: I think the vacation is okay.</span><br><span class="line">Sentiment: neutral </span><br><span class="line"></span><br><span class="line">Text: I think the food was okay. </span><br><span class="line">Sentiment:</span><br></pre></td></tr></table></figure>
+
+<h3 id="少样本提示"><a href="#少样本提示" class="headerlink" title="少样本提示"></a>少样本提示</h3><p><strong>零样本提示：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Q: &lt;问题&gt;?</span><br><span class="line">A: </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">“whatpu”是坦桑尼亚的一种小型毛茸茸的动物。一个使用whatpu这个词的句子的例子是：</span><br><span class="line">我们在非洲旅行时看到了这些非常可爱的whatpus。</span><br><span class="line">“farduddle”是指快速跳上跳下。一个使用farduddle这个词的句子的例子是：</span><br></pre></td></tr></table></figure>
+
+<p><strong>标签</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">这太棒了！// Negative</span><br><span class="line">这太糟糕了！// Positive</span><br><span class="line">哇，那部电影太棒了！// Positive</span><br><span class="line">多么可怕的节目！//</span><br></pre></td></tr></table></figure>
+
+<h3 id="链式思考"><a href="#链式思考" class="headerlink" title="链式思考"></a>链式思考</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">这组数中的奇数加起来是偶数：4、8、9、15、12、2、1。</span><br><span class="line">A：将所有奇数相加（9、15、1）得到25。答案为False。</span><br><span class="line"></span><br><span class="line">这组数中的奇数加起来是偶数：17、10、19、4、8、12、24。</span><br><span class="line">A：将所有奇数相加（17、19）得到36。答案为True。</span><br><span class="line"></span><br><span class="line">这组数中的奇数加起来是偶数：16、11、14、4、8、13、24。</span><br><span class="line">A：将所有奇数相加（11、13）得到24。答案为True。</span><br><span class="line"></span><br><span class="line">这组数中的奇数加起来是偶数：17、9、10、12、13、4、2。</span><br><span class="line">A：将所有奇数相加（17、9、13）得到39。答案为False。</span><br><span class="line"></span><br><span class="line">这组数中的奇数加起来是偶数：15、32、5、13、82、7、1。</span><br><span class="line">A：</span><br></pre></td></tr></table></figure>
+
+<p><strong>自动思维链</strong><br>Auto-CoT 主要由两个阶段组成：</p>
+<ul>
+<li>阶段1：问题聚类：将给定问题划分为几个聚类</li>
+<li>阶段2：演示抽样：从每组数组中选择一个具有代表性的问题，并使用带有简单启发式的 Zero-Shot-CoT 生成其推理链</li>
+</ul>
+<h2 id="chat、agent、workflow、text-generation"><a href="#chat、agent、workflow、text-generation" class="headerlink" title="chat、agent、workflow、text generation"></a>chat、agent、workflow、text generation</h2><p>大模型场景中的 <strong>Chat</strong>、<strong>文本生成应用</strong>、<strong>Agent</strong> 和 <strong>工作流</strong> 具有不同的功能和应用目标，以下是对它们的详细区分：</p>
+<h3 id="1-Chat（对话）"><a href="#1-Chat（对话）" class="headerlink" title="1. Chat（对话）"></a>1. <strong>Chat（对话）</strong></h3><ul>
+<li><strong>定义</strong>：基于大模型的 <strong>Chat</strong> 应用允许用户与模型进行对话互动。它通常是一个文本输入&#x2F;输出的界面，用户可以提问或输入文本，模型则生成对应的回复或对话内容。</li>
+<li><strong>特点</strong>：<ul>
+<li>注重即时、交互式的对话体验。</li>
+<li>对用户输入进行实时处理并生成相应的回答。</li>
+<li>对话可以是上下文敏感的，模型会根据对话历史调整回答。</li>
+</ul>
+</li>
+<li><strong>应用场景</strong>：<ul>
+<li>客户支持或虚拟助手：如客服机器人。</li>
+<li>教育类对话：提供与学习者的互动，如语言学习助手。</li>
+<li>一般对话生成工具：如ChatGPT。</li>
+</ul>
+</li>
+</ul>
+<p>   <strong>示例</strong>：<br>   用户：”今天的天气怎么样？”<br>   模型：”今天阳光明媚，温度在20°C左右。”</p>
+<h3 id="2-文本生成应用"><a href="#2-文本生成应用" class="headerlink" title="2. 文本生成应用"></a>2. <strong>文本生成应用</strong></h3><ul>
+<li><strong>定义</strong>：文本生成应用是使用大模型生成完整文本的工具，通常不涉及对话，而是基于用户提供的提示生成特定类型的长文本，如文章、报告、新闻或故事。</li>
+<li><strong>特点</strong>：<ul>
+<li>生成的文本往往是单向的，即用户提供输入，模型生成一次性输出，通常不涉及交互。</li>
+<li>文本生成的长度较长，侧重于特定的主题或任务，如写作辅助、总结或内容创作。</li>
+</ul>
+</li>
+<li><strong>应用场景</strong>：<ul>
+<li>文章或报告生成：为博客、新闻或论文生成内容。</li>
+<li>创意写作：生成小说、短篇故事或剧本。</li>
+<li>文本摘要：从长篇文本中提取关键内容。</li>
+</ul>
+</li>
+</ul>
+<p>   <strong>示例</strong>：<br>   用户：”请为我生成一篇关于人工智能的文章。”<br>   模型：生成一篇多段落的关于人工智能历史和未来发展的文章。</p>
+<h3 id="3-Agent（智能代理）"><a href="#3-Agent（智能代理）" class="headerlink" title="3. Agent（智能代理）"></a>3. <strong>Agent（智能代理）</strong></h3><ul>
+<li><strong>定义</strong>：<strong>Agent</strong> 是一种具有更高自主性和执行力的智能系统。基于大模型，智能代理不仅可以进行对话或生成文本，还能主动执行任务、决策和与其他系统进行交互。它们通常能够访问外部工具或系统，并基于用户需求做出复杂的操作。</li>
+<li><strong>特点</strong>：<ul>
+<li>具备自主性，能够根据上下文或外部信息做出决定。</li>
+<li>可以与多个系统（如API、数据库等）交互，执行复杂的任务。</li>
+<li>具备持续对话和任务管理能力，能够跨多个步骤完成一个复杂任务。</li>
+</ul>
+</li>
+<li><strong>应用场景</strong>：<ul>
+<li>任务自动化：如个人助理，安排会议、发送邮件、处理日常任务。</li>
+<li>智能问答系统：结合外部数据源或工具执行复杂查询，如财务报表生成或系统监控。</li>
+<li>机器人：与环境互动的物理或虚拟机器人。</li>
+</ul>
+</li>
+</ul>
+<p>   <strong>示例</strong>：<br>   用户：”请帮我预订下周三的航班，并在日历中添加日程。”<br>   Agent：调用API预订航班，确认航班信息，并在用户的日历中添加行程。</p>
+<h3 id="4-工作流（Workflow）"><a href="#4-工作流（Workflow）" class="headerlink" title="4. 工作流（Workflow）"></a>4. <strong>工作流（Workflow）</strong></h3><ul>
+<li><strong>定义</strong>：工作流指的是一系列预定义的步骤或任务序列，通常是自动化的，允许模型或系统根据一套规则或条件执行多个任务。这种应用不仅涉及生成文本或回答问题，还可能涉及多个步骤和过程的自动化执行。</li>
+<li><strong>特点</strong>：<ul>
+<li>任务自动化：多个任务按顺序或并行执行。</li>
+<li>触发机制：工作流通常由特定事件或条件触发，按步骤执行各项任务。</li>
+<li>更强的结构化和自动化，通常与后台系统或企业流程集成。</li>
+</ul>
+</li>
+<li><strong>应用场景</strong>：<ul>
+<li>企业流程自动化：如合同审批流程、订单处理。</li>
+<li>数据处理管道：如自动化数据清洗、模型训练和部署流程。</li>
+<li>事件驱动的任务管理：如自动化报告生成，定期执行任务的调度。</li>
+</ul>
+</li>
+</ul>
+<p>   <strong>示例</strong>：<br>   用户提交申请表后，工作流自动执行以下步骤：1. 验证信息，2. 向相关人员发送通知，3. 生成批准文件。</p>
+<hr>
+<h3 id="区别总结"><a href="#区别总结" class="headerlink" title="区别总结"></a>区别总结</h3><table>
+<thead>
+<tr>
+<th>应用类型</th>
+<th>主要功能</th>
+<th>典型场景</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Chat</strong></td>
+<td>与用户进行互动对话</td>
+<td>客户支持、教育助手</td>
+<td>实时互动、上下文敏感</td>
+</tr>
+<tr>
+<td><strong>文本生成应用</strong></td>
+<td>基于提示生成较长文本或内容</td>
+<td>文章写作、总结生成、创意写作</td>
+<td>生成一次性输出，通常不涉及交互</td>
+</tr>
+<tr>
+<td><strong>Agent</strong></td>
+<td>自动化任务执行和智能交互</td>
+<td>任务自动化、智能助手、复杂决策</td>
+<td>具备自主性，能够调用外部系统并执行多步骤操作</td>
+</tr>
+<tr>
+<td><strong>工作流</strong></td>
+<td>自动化执行多个步骤或任务的预定义流程</td>
+<td>企业流程、任务自动化、数据处理管道</td>
+<td>结构化、自动化，触发机制，依赖于系统或条件驱动</td>
+</tr>
+</tbody></table>
+</div><script type="text/javascript" src="/js/share.js?v=1.0.0" async></script><a class="article-share-link" data-url="https://kelinkong.github.io/2024/09/23/AI-%E6%8F%90%E7%A4%BA%E5%B7%A5%E7%A8%8B/" data-id="cm4wgiliw003choog8as97se2" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACt0lEQVR42u3a0WrrMBAE0P7/T7dwn1paJzO7VtMLx0/GOImOA5I8u29v8fH+7/h8/vn4fufs/qvPfj+/+cDDw8MbDT35mWSgOWk2hvx+PDw8vNO8fDG4upJ8WzK5J7+VjBkPDw/vL/A255tB59trPDw8vL/Ja+9plxY8PDy8/4V3bxDweCizzx7PWvDw8PBi3mZSftX58foeHh4e3qiqviliRZvd0RiK0eLh4eEd4CUxa75g5Bvf5KHMRhK9MeDh4eGteS0yvydfHtq9cR3y4uHh4R3j7Sfi5Po+NXlcTsPDw8M7zcsHlJM2d26+/4dvwMPDwzvAayOGe6/kLQJ1AIGHh4d3gNe2N7UFsLx5K5nQ84Lcl/oeHh4e3q28TQkqj1bz5tRhjrJ5Y8DDw8Mb8e4qWeXTett80P4NeHh4eKd5eUDQFr2SB5HExKuUBQ8PD+8Yry2DtcHEPvxNFp4nbwx4eHh4a17bALqfvmcx7uMg4/IKHh4e3jFevhfNi/otuG3tihYJPDw8vF/hzSbxtliV89q21CcLAx4eHt5h3ibM3bdktSW0qPSFh4eHt+Y9yXfjTfYwLMj7Gsow9/I/xMPDw1vzZuWo2TZ6s3HPy294eHh4p3lth9ImVsibvVp2HiLj4eHh3ctrX/XbyXoTcMziEjw8PLwTvH0TVRsxzCb3Fo+Hh4f3Kt6slNViZlN/VELDw8PDO8BLgoB2cJsIeBOIFEg8PDy8Be+9PNoSfvuMZ7HF5Wjx8PDwDvDawth+p9o2XeXn9cYaDw8P79ZIYh8ltMtMGz083qzj4eHh/Q4viQzyloIkyGgXg+EyhoeHh/dSXouZDT1/Ayi6yfDw8PBeymsLXfmjaQPfaMONh4eHd4zXhhGzZoJZZNyWuPDw8PBO8/Y/mYQU+Wa93ZTvHygeHh5ezPsAln99gggkR00AAAAASUVORK5CYII=">Share</a><div class="tags"></div><div class="post-nav"><a class="pre" href="/2024/09/23/AI-%E7%9A%84%E7%BC%96%E7%A0%81%E5%99%A8%E5%92%8C%E8%A7%A3%E7%A0%81%E5%99%A8/">AI-编码器和解码器</a><a class="next" href="/2024/09/05/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98/">Java学习笔记-开发实战一</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="https://kelinkong.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="About"><img class="nofancybox" src="/img/logo.jpg"/></a><p>Kelin is a boring girl, but not always.</p><a class="info-icon" href="https://github.com/kelinkong" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/DataBase/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network-Security/">Network-Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Operating-System/">Operating-System</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/solutions/">solutions</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/CMU15-445/" style="font-size: 15px;">CMU15-445</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/architecture/" style="font-size: 15px;">architecture</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/12/20/AI-GraphRAG/">AI-GraphRAG</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/12/19/AI-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E4%B8%89%E4%B8%AA%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%EF%BC%9A%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E3%80%81%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E3%80%81%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">AI-神经网络中的三个基本概念：梯度下降、反向传播、损失函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/12/17/Java-%E5%BC%82%E6%AD%A5%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8/">Java-异步接口调用</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/22/%E5%89%8D%E7%AB%AF-expo/">前端-expo</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/19/Spring-Cloud-%E6%96%AD%E8%B7%AF%E5%99%A8/">Spring Cloud: 断路器</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/14/Spring-Cloud-OpenFeign/">Spring Cloud: OpenFeign</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/13/Spring-Cloud%EF%BC%9Abase%E5%B7%A5%E7%A8%8B/">Spring Cloud：base工程</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/13/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/">Java学习笔记-配置文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/07/AI-%E4%BD%BF%E7%94%A8langchain-chatchat%E5%92%8Collama%E6%9E%84%E5%BB%BA%E5%A4%A7%E6%A8%A1%E5%9E%8B/">llvm-使用langchain-chatchat和ollama构建大模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/07/AI-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%9C%89%E5%85%B3%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B7%A5%E5%85%B7%E9%93%BE/">AI-大模型有关的一些工具链</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">Kelin's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0"></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.css"><script type="text/javascript" src="/js/love.js?v=1.0.0"></script><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="Copy Successed!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>

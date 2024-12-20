@@ -1,0 +1,222 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>C++代码调试 | Kelin's blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/latest/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/grids-responsive-min.min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script type="text/javascript" src="//lib.baomitu.com/clipboard.js/latest/clipboard.min.js"></script><script type="text/javascript" src="//lib.baomitu.com/toastr.js/latest/toastr.min.js"></script><link rel="stylesheet" href="//lib.baomitu.com/toastr.js/latest/toastr.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">C++代码调试</h1><a id="logo" href="/.">Kelin's blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">C++代码调试</h1><div class="post-meta">2023-10-10<span> | </span><span class="category"><a href="/categories/C/">C++</a></span><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 1.1k</span><span class="post-meta-item-text"> Words</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i><span class="post-count"> 4</span><span class="post-meta-item-text"> Minutes</span></span></span></div><div class="post-content"><h2 id="GCC-工作流程"><a href="#GCC-工作流程" class="headerlink" title="GCC 工作流程"></a>GCC 工作流程</h2><table>
+<thead>
+<tr>
+<th>说明</th>
+<th>文件后缀</th>
+<th>参数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>预处理</td>
+<td>.c</td>
+<td>-</td>
+</tr>
+<tr>
+<td>编译</td>
+<td>.i</td>
+<td>-E</td>
+</tr>
+<tr>
+<td>汇编</td>
+<td>.s</td>
+<td>-S</td>
+</tr>
+<tr>
+<td>链接</td>
+<td>.o</td>
+<td>-c</td>
+</tr>
+</tbody></table>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 预处理。 -o 参数是为了指定编译后的文件名</span></span><br><span class="line">gcc -E test.c -o test.i</span><br><span class="line"><span class="comment"># 编译</span></span><br><span class="line">gcc -S test.i -o test.s </span><br><span class="line"><span class="comment"># 汇编</span></span><br><span class="line">gcc -c test.s -o test.o</span><br><span class="line"><span class="comment">#链接</span></span><br><span class="line">gcc test.o -o <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>gcc编译选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-g</td>
+<td>生成调试信息，即可调试</td>
+</tr>
+<tr>
+<td>-D</td>
+<td>指定一个宏</td>
+</tr>
+<tr>
+<td>-l</td>
+<td>指定链接库</td>
+</tr>
+<tr>
+<td>-std</td>
+<td>指定C++版本</td>
+</tr>
+<tr>
+<td>-I</td>
+<td>指定头文件路径</td>
+</tr>
+<tr>
+<td>-Wall</td>
+<td>打开所有警告信息</td>
+</tr>
+</tbody></table>
+<p><strong><code>-D</code>参数应用场景：</strong><br>在发布程序的时候，一般会将所有log输出去掉，如果不去掉会影响程序的执行效率。这时候可以在编译的时候加上<code>-D</code>参数，定义一个宏，然后在程序中使用这个宏，如果是发布程序，就不定义这个宏，这样就可以在编译的时候去掉所有的log输出。</p>
+<h3 id="多文件编译"><a href="#多文件编译" class="headerlink" title="多文件编译"></a>多文件编译</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gcc -o <span class="built_in">test</span> string.c main.c</span><br></pre></td></tr></table></figure>
+
+<h3 id="gcc和g"><a href="#gcc和g" class="headerlink" title="gcc和g++"></a>gcc和g++</h3><p><strong>在编译阶段：</strong></p>
+<ul>
+<li>后缀为.c的文件，gcc会将其当做C语言源文件，g++会将其当做C++语言源文件。</li>
+<li>后缀为.cpp的文件，两者都会将其当做C++语言源文件。</li>
+<li>g++会调用gcc，对于C++代码，两者是等价的，也就是说gcc和g++都可以编译C&#x2F;C++代码</li>
+</ul>
+<p><strong>在链接阶段：</strong></p>
+<ul>
+<li>gcc和g++都可以自动连接到标准C库</li>
+<li>g++会自动连接到标准C++库，gcc如果要链接到标准C++库需要加参数<code>-lstdc++</code></li>
+</ul>
+<h2 id="gdb调试"><a href="#gdb调试" class="headerlink" title="gdb调试"></a>gdb调试</h2><p><strong>gdb调试的代码必须添加-g参数，-g的作用是在可执行文件中加入源代码的信息，比如可执行文件中第几条机器指令对应源代码的第几行。</strong></p>
+<p><em>使用CMake编译的，添加<code>-DCMAKE_BUILD_TYPE=Debug</code>参数</em>。</p>
+<h3 id="启动和退出gdb"><a href="#启动和退出gdb" class="headerlink" title="启动和退出gdb"></a>启动和退出gdb</h3><p><strong>gdb进程启动之后，需要被调试的应用程序是没有执行的。</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gdb &lt;program&gt; <span class="comment"># 启动</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span> args &lt;arg1&gt; &lt;arg2&gt; <span class="comment"># 设置参数,启动应用程序之前可能需要传参</span></span><br><span class="line"></span><br><span class="line">show args <span class="comment"># 查看参数</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>在gdb中启动程序：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(gdb) run</span><br><span class="line">(gdb) start <span class="comment"># 会阻塞到main函数第一行</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="常用参数"><a href="#常用参数" class="headerlink" title="常用参数"></a>常用参数</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>run</td>
+<td>启动程序</td>
+<td></td>
+</tr>
+<tr>
+<td>continue &#x3D; c</td>
+<td>继续执行程序</td>
+<td></td>
+</tr>
+<tr>
+<td>quit &#x3D;&#x3D; q</td>
+<td>退出gdb</td>
+<td></td>
+</tr>
+<tr>
+<td>list &#x3D;&#x3D; l</td>
+<td>列出源代码</td>
+<td>l 行号, l 函数名， l 文件名：行号</td>
+</tr>
+<tr>
+<td>break &#x3D;&#x3D; b</td>
+<td>设置断点</td>
+<td>b 行号, b 函数名， b 文件名：行号， b 行数 if 变量名&#x3D;某个值</td>
+</tr>
+<tr>
+<td>info &#x3D;&#x3D; i</td>
+<td>查看信息</td>
+<td>i breakpoints, i locals, i args</td>
+</tr>
+<tr>
+<td>delete &#x3D; del &#x3D; d</td>
+<td>删除断点</td>
+<td>d 断点号</td>
+</tr>
+<tr>
+<td>disable &#x3D; dis</td>
+<td>禁用断点</td>
+<td>disable 断点号</td>
+</tr>
+<tr>
+<td>enable &#x3D; ena</td>
+<td>启用断点</td>
+<td>enable 断点号</td>
+</tr>
+<tr>
+<td>print &#x3D; p</td>
+<td>打印变量</td>
+<td>p 变量名</td>
+</tr>
+<tr>
+<td>ptype</td>
+<td>打印变量类型</td>
+<td>ptype 变量名</td>
+</tr>
+<tr>
+<td>display</td>
+<td>跟踪查看变量</td>
+<td>display 变量名</td>
+</tr>
+<tr>
+<td>step &#x3D; s</td>
+<td>单步执行，进入函数</td>
+<td></td>
+</tr>
+<tr>
+<td>finish</td>
+<td>执行到当前函数返回为止</td>
+<td></td>
+</tr>
+<tr>
+<td>next &#x3D; n</td>
+<td>单步执行，不进入函数</td>
+<td></td>
+</tr>
+<tr>
+<td>until</td>
+<td>跳出循环</td>
+<td></td>
+</tr>
+<tr>
+<td>set</td>
+<td>修改变量值</td>
+<td>set 变量名&#x3D;值</td>
+</tr>
+</tbody></table>
+<h2 id="CMake"><a href="#CMake" class="headerlink" title="CMake"></a>CMake</h2><p>参考<a target="_blank" rel="noopener" href="https://www.hahack.com/codes/cmake/">Cmake快速入门</a></p>
+<p>cmake的基本语法：</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">cmake &lt;<span class="keyword">option</span>&gt; &lt;path&gt;</span><br><span class="line">cmake -DCMAKE_BUILD_TYPE=Debug ..</span><br></pre></td></tr></table></figure>
+
+<h3 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h3><table>
+<thead>
+<tr>
+<th>含义</th>
+<th>指令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>编译</td>
+<td>cmake <code>&lt;path&gt;</code>, 当前目录为<code>.</code>,上一级目录为<code>..</code></td>
+</tr>
+<tr>
+<td>清理cmake缓存</td>
+<td><code>rm -rf CMakeFiles/ CMakeCache.txt cmake_install.cmake Makefile</code></td>
+</tr>
+</tbody></table>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ul>
+<li>每一个层级都需要写CMakeLists.txt文件</li>
+<li>需要在父层级添加子层级的目录</li>
+<li>需要在父层级添加子层级的库&#x2F;子目录包含可执行文件</li>
+</ul>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p><strong>文件结构：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">├── cmake_notes</span><br><span class="line">│   ├── build</span><br><span class="line">│   └── math</span><br><span class="line">│       ├── CMakeLists.txt</span><br><span class="line">|       ├── myfunction.h</span><br><span class="line">│       └── myfunction.cpp</span><br><span class="line">├── CMakeLists.txt</span><br><span class="line">└── main.txt</span><br></pre></td></tr></table></figure>
+
+<p>第一层级的CMakeLists.txt：</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 项目名称</span></span><br><span class="line"><span class="keyword">project</span>(Demo)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 是否用自己的 MathFunctions库</span></span><br><span class="line"><span class="keyword">option</span>(USE_MYMATH <span class="string">&quot;Use provided math implementation&quot;</span> <span class="keyword">OFF</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加自己的 MathFunctions库</span></span><br><span class="line"><span class="keyword">add_definitions</span>(-DUSE_MYMATH)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 是否加入MathFunctions库</span></span><br><span class="line"><span class="keyword">if</span> (USE_MYMATH)</span><br><span class="line">    <span class="keyword">include_directories</span>(<span class="string">&quot;$&#123;PROJECT_SOURCE_DIR&#125;/math&quot;</span>)</span><br><span class="line">    <span class="keyword">add_subdirectory</span>(<span class="keyword">math</span>)</span><br><span class="line"><span class="keyword">endif</span> (USE_MYMATH)</span><br><span class="line"></span><br><span class="line"><span class="comment"># add_executable(Demo main.cpp print.cpp)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查找当前目录下的所有源文件，保存到DIR_SRCS变量中</span></span><br><span class="line"><span class="keyword">aux_source_directory</span>(. DIR_SRCS)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成指定目标</span></span><br><span class="line"><span class="keyword">add_executable</span>(Demo <span class="variable">$&#123;DIR_SRCS&#125;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加子目录</span></span><br><span class="line"><span class="comment"># add_subdirectory(math)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 链接到库</span></span><br><span class="line"><span class="keyword">if</span> (USE_MYMATH)</span><br><span class="line">    <span class="keyword">target_link_libraries</span>(Demo MathFunctions)</span><br><span class="line"><span class="keyword">endif</span> (USE_MYMATH)</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_link_libraries</span>(Demo -lpthread)</span><br></pre></td></tr></table></figure>
+
+<p><strong>在源代码中使用：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> USE_MYMATH</span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;use my math&quot;</span>&lt;&lt;endl;</span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;use system math&quot;</span>&lt;&lt;endl;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span> <span class="comment">// USE_MYMATH</span></span></span><br></pre></td></tr></table></figure>
+
+<p><strong>子目录的CMakeLists文档，需要add_executable吗?</strong></p>
+<p>子目录包含可执行文件：</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在子目录的 CMakeLists.txt 中</span></span><br><span class="line"><span class="keyword">add_executable</span>(my_executable main.cpp other_source.cpp)</span><br></pre></td></tr></table></figure>
+
+<p>子目录只包含库代码：</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在子目录的 CMakeLists.txt 中</span></span><br><span class="line"><span class="keyword">add_library</span>(my_library my_source.cpp)</span><br></pre></td></tr></table></figure>
+
+<p>这将创建一个库目标而不是可执行文件，以便在主目录的CMakeLists.txt文件中或其他子目录中使用。</p>
+</div><script type="text/javascript" src="/js/share.js?v=1.0.0" async></script><a class="article-share-link" data-url="https://kelinkong.github.io/2023/10/10/%E3%80%90c++%E3%80%91%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95/" data-id="cm4wgibog0020hoogdh4sd7u1" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADJUlEQVR42u3aQW7jQAwEwPz/094HLCQ3yTFg0aWTESOSanJgyObfX3y9Lq7/v72/w/3n+7v1nju6sLGxsR/Cft1eCfuKd/+U3p2v7pBbsLGxsbeyqyXnVBHqfZuXw8ufY2NjY/8wu/dtfojVdgUbGxsbe8KuAu6fmM+C8lKKjY2N/TvsZKj0iZfuHU11RIWNjY29m33qdb/h80fybWxsbOwvZr+KVzLEz0OCvO3pve2lAhsbG3sROy8A+ZpOFZA3Hvf48vtjY2NjL2Int77/ebUUfYLUbFGwsbGxV7DnIW4er55aD+q925u6jY2Njf1wdjXunYey1RZlfvTY2NjY+9iTBcq8PchLUfWwRk0INjY29iJ2Usbmk5m8CFXf6vD8DBsbG/ux7N6gJy9Ck1A5+WMUCh42Njb2UnZ1yXK+LtkbKlU/v9lRwsbGxl7EPnC7VvTbGxL1GpLLuo2NjY39WHbeEiTUpCDNo9/qIKkabGBjY2M/kT0Ztedj/WpRTNqk0QFhY2Njr2NXw9d5ucpD3Mmw6bJMYmNjY69gJ83A/DHVlZ18qJS3N9jY2Nhb2XkbkP+7n2ep1aHS/LnY2NjYW9nVB/Takl4wXA0VylEENjY29gr2q3hNlm/y8pZHCPkKETY2NvY+9nz5Jmlm8rC2Wgh7YQM2Njb2PnZ1Xaaw4BgcZXUNqHqU5YqNjY2N/UD2X3BVh/jVliYH5EdZqNvY2NjYj2Xng5tqc1JtVPII4djvYmNjY69g5y9UHf30BkCTWLfQkGBjY2MvYvdGPPkx5ZFAb7nn/v7Re2JjY2OvYPderhcA5y93tqRdDpWwsbGxV7N7TUL1aOYtTVII36Tc2NjY2CvY1THNZGmmV4omwy9sbGzsrezJkk2yypMvAOWBwaSZaW4YYWNjY38xe1L3qvHt50Lf/DjKB4GNjY39EPakaOUtytnlngMHio2Njb2OPQpNW0s/kzD4WJuBjY2N/ZPsT0S8+brPZMyEjY2NjV39nIyikgNKGpI8KsbGxsbeys4bhrMh7vzpeaHFxsbG3squTmB6hSqPH/JSVP1jYGNjY69j/wME1+NfKJJY8wAAAABJRU5ErkJggg==">Share</a><div class="tags"></div><div class="post-nav"><a class="pre" href="/2023/10/18/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">前端基础学习</a><a class="next" href="/2023/10/10/%E3%80%90c++%E3%80%91-threads/">C++多线程模型</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="https://kelinkong.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="About"><img class="nofancybox" src="/img/logo.jpg"/></a><p>Kelin is a boring girl, but not always.</p><a class="info-icon" href="https://github.com/kelinkong" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/DataBase/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network-Security/">Network-Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Operating-System/">Operating-System</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/solutions/">solutions</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/CMU15-445/" style="font-size: 15px;">CMU15-445</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/architecture/" style="font-size: 15px;">architecture</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/12/20/AI-GraphRAG/">AI-GraphRAG</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/12/19/AI-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E4%B8%89%E4%B8%AA%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%EF%BC%9A%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E3%80%81%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E3%80%81%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">AI-神经网络中的三个基本概念：梯度下降、反向传播、损失函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/12/17/Java-%E5%BC%82%E6%AD%A5%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8/">Java-异步接口调用</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/22/%E5%89%8D%E7%AB%AF-expo/">前端-expo</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/19/Spring-Cloud-%E6%96%AD%E8%B7%AF%E5%99%A8/">Spring Cloud: 断路器</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/14/Spring-Cloud-OpenFeign/">Spring Cloud: OpenFeign</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/13/Spring-Cloud%EF%BC%9Abase%E5%B7%A5%E7%A8%8B/">Spring Cloud：base工程</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/13/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/">Java学习笔记-配置文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/07/AI-%E4%BD%BF%E7%94%A8langchain-chatchat%E5%92%8Collama%E6%9E%84%E5%BB%BA%E5%A4%A7%E6%A8%A1%E5%9E%8B/">llvm-使用langchain-chatchat和ollama构建大模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/07/AI-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%9C%89%E5%85%B3%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B7%A5%E5%85%B7%E9%93%BE/">AI-大模型有关的一些工具链</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">Kelin's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0"></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.css"><script type="text/javascript" src="/js/love.js?v=1.0.0"></script><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="Copy Successed!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>

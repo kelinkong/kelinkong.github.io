@@ -1,0 +1,126 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>CMU15-445 Concurrency study note | Kelin's blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/latest/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/grids-responsive-min.min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script type="text/javascript" src="//lib.baomitu.com/clipboard.js/latest/clipboard.min.js"></script><script type="text/javascript" src="//lib.baomitu.com/toastr.js/latest/toastr.min.js"></script><link rel="stylesheet" href="//lib.baomitu.com/toastr.js/latest/toastr.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">CMU15-445 Concurrency study note</h1><a id="logo" href="/.">Kelin's blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">CMU15-445 Concurrency study note</h1><div class="post-meta">2023-08-21<span> | </span><span class="category"><a href="/categories/DataBase/">DataBase</a></span><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 1.6k</span><span class="post-meta-item-text"> Words</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i><span class="post-count"> 5</span><span class="post-meta-item-text"> Minutes</span></span></span></div><div class="post-content"><p>在做project4之前，最好是先学习课件内容。<br><a target="_blank" rel="noopener" href="https://15445.courses.cs.cmu.edu/fall2022/slides/15-concurrencycontrol.pdf">课件地址</a></p>
+<p>Concurrency Control：avoid losting updates</p>
+<p>Recovery： Durability</p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><h3 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h3><p>A transaction is the execution of a sequence of  one or more operations (e.g., SQL queries) on a database to perform some higher-level function.</p>
+<p>Move $100 from Andy’s bank account to his bookie’s account.</p>
+<p>Transaction:</p>
+<ul>
+<li>Check whether Andy has $100.</li>
+<li>Deduct $100 from his account.</li>
+<li>Add $100 to his bookie’s account</li>
+</ul>
+<p>一个事务包含了许多操作，如果是并发执行事务时，就可能会导致很多问题。</p>
+<h4 id="事务状态"><a href="#事务状态" class="headerlink" title="事务状态"></a>事务状态</h4><p>A new txn starts with the <code>BEGIN</code> command.</p>
+<p>The txn stops with either <code>COMMIT</code> or <code>ABORT</code></p>
+<ul>
+<li>If commit, the DBMS either saves all the txn’s changes<br>or aborts it.</li>
+<li>If abort, all changes are undone so that it’s like as if the<br>txn never executed at all.</li>
+</ul>
+<h3 id="事务的特性"><a href="#事务的特性" class="headerlink" title="事务的特性"></a>事务的特性</h3><ul>
+<li>原子性：所有操作要么全部完成，要么全部不完成。undo log(回滚日志)</li>
+<li>隔离性：多个事务并发修改，不会互相干扰。MVCC（多版本并发机制）</li>
+<li>持久性：事务处理结束后，对事务的修改是永久的。redo log（重做日志）</li>
+<li>一致性：事务操作前和操作后，数据库保持一致性</li>
+</ul>
+<h3 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h3><ul>
+<li>脏读：读取到未提交的</li>
+<li>不可重复读：在一个事务内多次读取同一个数据，前后读取的数据不一致</li>
+<li>幻读：在一个事务内多次查询某个符合查询条件的「记录数量」，前后读取的记录数量不一致</li>
+</ul>
+<p><strong>隔离级别：</strong></p>
+<ul>
+<li>读未提交（read uncommitted），指一个事务还没提交时，它做的变更就能被其他事务看到；</li>
+<li>读提交（read committed），指一个事务提交之后，它做的变更才能被其他事务看到；— 解决脏读问题</li>
+<li>可重复读（repeatable read），指一个事务执行过程中看到的数据，一直跟这个事务启动时看到的数据是一致的，MySQL InnoDB 引擎的默认隔离级别； — 解决不可重复读问题</li>
+<li>串行化（serializable ）；会对记录加上读写锁，在多个事务对这条记录进行读写操作时，如果发生了读写冲突的时候，后访问的事务必须等前一个事务执行完成，才能继续执行； — 解决幻读问题</li>
+</ul>
+<p><strong>五种锁：</strong></p>
+<ul>
+<li>意向共享锁(IS):表示事务想要获得共享锁,与其他意向锁兼容,与排它锁冲突。用共享锁锁了里面的某些记录</li>
+<li>意向排它锁(IX):表示事务想要获得排它锁,与其他所有锁模式冲突。用排他锁锁了表里的某些记录</li>
+<li>共享锁(S):允许多个事务同时持有同一资源的共享锁,相互兼容。</li>
+<li>排它锁(X):只允许一个事务持有排它锁,与所有其他锁冲突。</li>
+<li>共享意向排他锁(SIX):表示持有共享锁的同时,想要获得排它锁,与排它锁冲突。用共享锁锁了整个表，用排他锁锁了里面的某些记录</li>
+</ul>
+<h3 id="锁管理器"><a href="#锁管理器" class="headerlink" title="锁管理器"></a>锁管理器</h3><p>管理锁的请求<br><img src="/../imgs/image-30.png" alt="Alt text"></p>
+<p><strong>过程：</strong></p>
+<ol>
+<li>Transactions request locks (or upgrades).</li>
+<li>Lock manager grants or blocks requests.</li>
+<li>Transactions release locks.</li>
+<li>Lock manager updates its internal lock-table.<br> It keeps track of what transactions hold what locks and what transactions are waiting to acquire any locks.</li>
+</ol>
+<h3 id="两阶段锁-2PL"><a href="#两阶段锁-2PL" class="headerlink" title="两阶段锁 2PL"></a>两阶段锁 2PL</h3><h4 id="Growing"><a href="#Growing" class="headerlink" title="Growing"></a>Growing</h4><p>只能加锁</p>
+<h4 id="Shrinking"><a href="#Shrinking" class="headerlink" title="Shrinking"></a>Shrinking</h4><p>只能解锁</p>
+<p>示意图：</p>
+<p><img src="/../imgs/image-32.png"></p>
+<p>但是无法避免接连回滚问题：这里事务一进入Shrinking阶段后，并没有提交，而是ABORT，最终回滚，由于事务二用的是事务一修改后的数据，也需要跟着回滚。</p>
+<p><img src="/../imgs/image-33.png"></p>
+<p>粗暴的解决方法：所有的锁都在commit的时候解锁，能解决脏读问题。</p>
+<p><strong>但是可能出现死锁：</strong></p>
+<p><img src="/../imgs/image-34.png"></p>
+<h3 id="死锁检测"><a href="#死锁检测" class="headerlink" title="死锁检测"></a>死锁检测</h3><p>使用waits-for graph</p>
+<ul>
+<li>node：事务</li>
+<li>edge：Ti to Tj表示Ti在等到Tj释放锁</li>
+</ul>
+<p>如果图种产生了环，需要解开环。<br><img src="/../imgs/image-35.png"></p>
+<p>解开环：选择一个事务victim(abort or restart)</p>
+<ul>
+<li>根据执行时间选择（执行时间短的）</li>
+<li>执行的SQL语句的多少</li>
+<li>已经加了多少把锁</li>
+<li>被回滚过多少次</li>
+</ul>
+<p><strong>回滚策略：</strong> victim完全回滚 or 回滚某些语句</p>
+<h3 id="死锁预防"><a href="#死锁预防" class="headerlink" title="死锁预防"></a>死锁预防</h3><h4 id="死锁产生条件"><a href="#死锁产生条件" class="headerlink" title="死锁产生条件"></a>死锁产生条件</h4><ul>
+<li>独占资源</li>
+<li>不可剥夺</li>
+<li>占用并等待</li>
+<li>循环引用</li>
+</ul>
+<h4 id="破坏其中的某一条"><a href="#破坏其中的某一条" class="headerlink" title="破坏其中的某一条"></a>破坏其中的某一条</h4><p>Assign priorities based on timestamps:</p>
+<ul>
+<li>Older Timestamp &#x3D; Higher Priority (e.g., T1 &gt; T2)</li>
+</ul>
+<p><img src="/../imgs/image-36.png"></p>
+<p>两个事务不会互相等待。</p>
+<p>为了避免饥饿，新的被kill掉之后，时间戳沿用以前的。</p>
+<h3 id="锁的粒度"><a href="#锁的粒度" class="headerlink" title="锁的粒度"></a>锁的粒度</h3><p>行锁？表锁？间隙锁？</p>
+<ul>
+<li>更少的锁的数量？粒度大，加锁的开销</li>
+<li>更好的并发？粒度小</li>
+</ul>
+<h3 id="意向锁"><a href="#意向锁" class="headerlink" title="意向锁"></a>意向锁</h3><p>并不是真的锁，只是一个意向。比如表A种某一个tuple被加了锁，此时需要对表A加意向锁，表示比表A粒度更细的内容被加了所，不能再对表A加表锁。</p>
+<p><img src="/../imgs/image-38.png"></p>
+<p>例如：要对Tuple1加S锁，需要先对Table R加IS锁</p>
+<p><img src="/../imgs/image-39.png"> </p>
+<p>两阶段锁是悲观锁。</p>
+<h2 id="乐观锁"><a href="#乐观锁" class="headerlink" title="乐观锁"></a>乐观锁</h2><p><a target="_blank" rel="noopener" href="https://15445.courses.cs.cmu.edu/fall2022/slides/17-timestampordering.pdf">课件地址</a></p>
+<p>根据时间戳排序，如果A的时间戳小与B的时间戳，那么最后执行的效果等于A先执行完B再去执行。</p>
+<p>时间戳来源：</p>
+<ul>
+<li>系统时钟（可能不准确）</li>
+<li>逻辑计数器，比如从1递增，分布式校准难</li>
+<li>Hybrid：结合</li>
+</ul>
+<p>每一个记录X都需要有两个时间戳：</p>
+<ul>
+<li><code>W-TS(x)</code> - 上一次被写的时间戳</li>
+<li><code>R-TS(x)</code> - 上一次被读的时间戳</li>
+</ul>
+<p>基准：<strong>不能操作来自未来的数据</strong></p>
+<p>读数据：</p>
+<p><img src="/../imgs/image-40.png"></p>
+<p>写数据：数据的任何操作都应该发生在过去</p>
+<p><img src="/../imgs/image-41.png"></p>
+<h3 id="THOMAS-WRITE-RULE"><a href="#THOMAS-WRITE-RULE" class="headerlink" title="THOMAS WRITE RULE"></a>THOMAS WRITE RULE</h3><p>如果我们当前要修改的数据A已经被未来的事务所修改，那么我们忽视写这个操作，因为现在写了一定会被未来写的数据所覆盖掉。</p>
+<p><img src="/../imgs/image-42.png"></p>
+<ul>
+<li>乐观锁不存在死锁，因为没有锁也没有等待</li>
+<li>长事务可能会饥饿，因为有可能碰到的所有数据都被未来的事务所修改</li>
+<li>必须要保证所有的修改都是在已经提交的基础上</li>
+</ul>
+<p>可能会读取到别人未提交的。</p>
+<h3 id="乐观的并发"><a href="#乐观的并发" class="headerlink" title="乐观的并发"></a>乐观的并发</h3><p>每一个事务都有一个workspace，所有的修改都在当前这个workspace进行，当事务提交时，DBMS对比workspace写集合，查看是否与其他事务冲突，没有冲突就写入原始数据库。</p>
+</div><script type="text/javascript" src="/js/share.js?v=1.0.0" async></script><a class="article-share-link" data-url="https://kelinkong.github.io/2023/08/21/db-concurrency_notes/" data-id="cm4wgi8mc001qhoogevav2rql" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACNUlEQVR42u3aS46DMBBFUfa/aVrqaQd8XxWoY/t6FCUEfDwoUZ/jwOv8Xfef/15/9evVNeRfrSVDhoxpGeftIoyrb9Itkrtd3keGDBkbMEiQTb/h9yfBffBfGTJkyChtlwdxGTJkyHgv4JLr+ZUyZMiQcc8gwTEFD9LOMLg/lovLkCFjQsZTjYE3Pv9Df0OGDBlfxjjDRe5ADqITZD88UYYMGUszyANIi5Enuk+1H+JzkiFDxuQMXsrnjYFOG4AfqwwZMnZg8EJ/PxB3eINDlCFDxgYM0gxIByZIAOUJ8yAoy5AhY2lGOsKVDlikg2XpCIgMGTL2YQQvYaAoVmtSdo5DhgwZOzDSMhwvmb1RmGsNh8mQIWNCBi+xdYYhiieH9yBDhox9GDyx7LzY8cGLoMEgQ4aM7RnpJmptzhrslbETGTJkfCWDBMda26CWBqclORkyZOzA4OWz+zYAD51p8W4QsmXIkLE0g6SgPGjyFiPZaHofGTJk7MOobaWWrPJjQq+wMmTIWJTBk9LaCEWtVcCfIkOGjH0YPAg+u/X7/7ZycRkyZCzE4Klj2jaoHUqnRSpDhoxVGWe4yJAESU15UQ+FaRkyZCzNSINdrTTGS3WtV0MZMmQszUiDbBp8awNh8UHIkCFjAwYJfJ2XvKO9BscnQ4YMGaD0xsttaXJbbGTKkCFjY0a6rXTkguM/JLEyZMhYmkGS2GdDZKcY18rFZciQMSGj3xjgYxm1NsNjGBkyZMzH+AG8HwPx+Ws0ygAAAABJRU5ErkJggg==">Share</a><div class="tags"><ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CMU15-445/" rel="tag">CMU15-445</a></li></ul></div><div class="post-nav"><a class="pre" href="/2023/08/25/exec-program/">执行一个程序的过程</a><a class="next" href="/2023/08/21/db-Concurrency-Control/">CMU15-445 Concurrency Control</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="https://kelinkong.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="About"><img class="nofancybox" src="/img/logo.jpg"/></a><p>Kelin is a boring girl, but not always.</p><a class="info-icon" href="https://github.com/kelinkong" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/DataBase/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network-Security/">Network-Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Operating-System/">Operating-System</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/solutions/">solutions</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/CMU15-445/" style="font-size: 15px;">CMU15-445</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/architecture/" style="font-size: 15px;">architecture</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/12/20/AI-GraphRAG/">AI-GraphRAG</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/12/19/AI-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E4%B8%89%E4%B8%AA%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%EF%BC%9A%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E3%80%81%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E3%80%81%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">AI-神经网络中的三个基本概念：梯度下降、反向传播、损失函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/12/17/Java-%E5%BC%82%E6%AD%A5%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8/">Java-异步接口调用</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/22/%E5%89%8D%E7%AB%AF-expo/">前端-expo</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/19/Spring-Cloud-%E6%96%AD%E8%B7%AF%E5%99%A8/">Spring Cloud: 断路器</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/14/Spring-Cloud-OpenFeign/">Spring Cloud: OpenFeign</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/13/Spring-Cloud%EF%BC%9Abase%E5%B7%A5%E7%A8%8B/">Spring Cloud：base工程</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/13/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/">Java学习笔记-配置文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/07/AI-%E4%BD%BF%E7%94%A8langchain-chatchat%E5%92%8Collama%E6%9E%84%E5%BB%BA%E5%A4%A7%E6%A8%A1%E5%9E%8B/">llvm-使用langchain-chatchat和ollama构建大模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/07/AI-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%9C%89%E5%85%B3%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B7%A5%E5%85%B7%E9%93%BE/">AI-大模型有关的一些工具链</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">Kelin's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0"></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.css"><script type="text/javascript" src="/js/love.js?v=1.0.0"></script><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="Copy Successed!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>

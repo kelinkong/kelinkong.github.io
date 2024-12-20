@@ -1,0 +1,106 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>AI-大模型有关的一些工具链 | Kelin's blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/latest/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/grids-responsive-min.min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script type="text/javascript" src="//lib.baomitu.com/clipboard.js/latest/clipboard.min.js"></script><script type="text/javascript" src="//lib.baomitu.com/toastr.js/latest/toastr.min.js"></script><link rel="stylesheet" href="//lib.baomitu.com/toastr.js/latest/toastr.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">AI-大模型有关的一些工具链</h1><a id="logo" href="/.">Kelin's blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">AI-大模型有关的一些工具链</h1><div class="post-meta">2024-11-07<span> | </span><span class="category"><a href="/categories/AI/">AI</a></span><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 1.9k</span><span class="post-meta-item-text"> Words</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i><span class="post-count"> 6</span><span class="post-meta-item-text"> Minutes</span></span></span></div><div class="post-content"><h2 id="大模型的汇总仓库"><a href="#大模型的汇总仓库" class="headerlink" title="大模型的汇总仓库"></a>大模型的汇总仓库</h2><p><a target="_blank" rel="noopener" href="https://github.com/ikaijua/Awesome-AITools/blob/main/README-CN.md">awesome AI</a></p>
+<h2 id="使用大模型做具体场景助手"><a href="#使用大模型做具体场景助手" class="headerlink" title="使用大模型做具体场景助手"></a>使用大模型做具体场景助手</h2><p>使用开源工具来实现具体场景下的 AI 助手，流程可以简化如下：</p>
+<ol>
+<li><p>Prompt 工程</p>
+<ul>
+<li>流程：设计并优化 prompt，让大模型生成符合需求的答案，进行 prompt 测试和调整。</li>
+<li>工具：可以使用 OpenAI API（如 GPT-3 开源替代品）结合 LangChain 或 LlamaIndex（前称 GPT Index）来管理和优化 prompt。</li>
+</ul>
+</li>
+<li><p>构建知识库</p>
+<ul>
+<li>流程：收集和清洗数据，将信息分块后存入知识库，并生成索引以便高效检索。</li>
+<li>工具：<ul>
+<li>Elasticsearch 或 FAISS：用于分块后的数据存储和快速检索。</li>
+<li>Haystack 或 LlamaIndex：可用于索引管理，便于与生成模型集成。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>检索增强生成（RAG）</p>
+<ul>
+<li>流程：通过检索模块先找到相关信息片段，再输入生成模型生成回答，增强内容准确性。</li>
+<li>工具：Haystack 或 LangChain，集成检索与生成，提供基于上下文的回答。</li>
+</ul>
+</li>
+<li><p>大模型微调</p>
+<ul>
+<li>流程：将场景相关数据准备好后对大模型进行微调，使其适应具体领域或场景。</li>
+<li>工具：<ul>
+<li>Hugging Face Transformers：用于加载和微调模型。</li>
+<li>Hugging Face Datasets：用于管理和预处理训练数据。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>模型量化</p>
+<ul>
+<li>流程：在部署前对模型进行量化，以减小模型体积并加快推理速度。</li>
+<li>工具：BitsAndBytes（4&#x2F;8 位量化）、ONNX Runtime（支持量化优化）。</li>
+</ul>
+</li>
+<li><p>部署</p>
+<ul>
+<li>流程：将微调和量化后的模型部署在服务器或云端。</li>
+<li>工具：<ul>
+<li>FastAPI 或 Flask：用于搭建 API 服务。</li>
+<li>Docker：用于容器化部署，保证环境一致性。</li>
+<li>Hugging Face Inference（如使用推理服务器）或 ONNX Runtime（加速推理）。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>简化流程示例</p>
+<p>设计 prompt → 构建知识库 → RAG 检索 → 大模型微调 → 模型量化 → 部署</p>
+<p>这些步骤结合开源工具能够实现高效的 AI 助手。</p>
+<h2 id="ollama"><a href="#ollama" class="headerlink" title="ollama"></a>ollama</h2><h3 id="ollama简介"><a href="#ollama简介" class="headerlink" title="ollama简介"></a>ollama简介</h3><p>ollama用来部署和运行大型语言模型，它提供了一个简单的命令行工具，可以用来运行模型、查看模型列表、下载模型等。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">设计 prompt → 构建知识库 → RAG 检索 → Ollama 微调 → Ollama 量化 → Ollama 部署</span><br></pre></td></tr></table></figure>
+
+<p>官网地址：<a target="_blank" rel="noopener" href="https://ollama.com/">ollama</a></p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>运行一个模型，如果本地不存在该模型，会自动到仓库下载，仓库地址：<br><a target="_blank" rel="noopener" href="https://ollama.com/library">ollama模型仓库</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ollama run llama3-8b-8192</span><br></pre></td></tr></table></figure>
+
+<p>一些指令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看模型列表</span></span><br><span class="line">ollama list</span><br><span class="line"><span class="comment"># 查看当前运行的模型</span></span><br><span class="line">ollama ps</span><br><span class="line"></span><br><span class="line"><span class="comment"># -h 查看帮助</span></span><br><span class="line">serve       Start ollama</span><br><span class="line">create      Create a model from a Modelfile</span><br><span class="line">show        Show information <span class="keyword">for</span> a model</span><br><span class="line">run         Run a model</span><br><span class="line">stop        Stop a running model</span><br><span class="line">pull        Pull a model from a registry</span><br><span class="line">push        Push a model to a registry</span><br><span class="line">list        List models</span><br><span class="line">ps          List running models</span><br><span class="line"><span class="built_in">cp</span>          Copy a model</span><br><span class="line"><span class="built_in">rm</span>          Remove a model</span><br><span class="line"><span class="built_in">help</span>        Help about any <span class="built_in">command</span></span><br></pre></td></tr></table></figure>
+
+<p>查看ollama是否正确启动：<a target="_blank" rel="noopener" href="http://127.0.0.1:11434/">http://127.0.0.1:11434</a></p>
+<h2 id="open-webui"><a href="#open-webui" class="headerlink" title="open-webui"></a>open-webui</h2><p>open-webui提供了一个简单的web界面，可以用来查看模型列表、运行模型等。</p>
+<p>仓库地址：<a target="_blank" rel="noopener" href="https://github.com/open-webui/open-webui">open-webui</a></p>
+<h3 id="安装和使用"><a href="#安装和使用" class="headerlink" title="安装和使用"></a>安装和使用</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install open-webui</span><br><span class="line">open-webui serve</span><br></pre></td></tr></table></figure>
+
+<h2 id="modelscope"><a href="#modelscope" class="headerlink" title="modelscope"></a>modelscope</h2><p>官网地址：<a target="_blank" rel="noopener" href="https://modelscope.ai/">modelscope</a></p>
+<p>github地址：<a target="_blank" rel="noopener" href="https://github.com/modelscope/modelscope/tree/master">modelscope</a></p>
+<h3 id="modelscope简介"><a href="#modelscope简介" class="headerlink" title="modelscope简介"></a>modelscope简介</h3><p>modelscope是一个 “模型即服务”(MaaS) 平台，旨在汇集来自 AI 社区的最先进的机器学习模型，并简化在实际应用中使用 AI 模型的流程。ModelScope 库使开发人员能够通过丰富的 API 设计执行推理、训练和评估，从而促进跨不同 AI 领域的最先进模型的统一体验。</p>
+<p>ModelScope Library 为模型贡献者提供了必要的分层 API，以便将来自 CV、NLP、语音、多模态以及科学计算的模型集成到 ModelScope 生态系统中。所有这些不同模型的实现都以一种简单统一访问的方式进行封装，用户只需几行代码即可完成模型推理、微调和评估。同时，灵活的模块化设计使得在必要时也可以自定义模型训练推理过程中的不同组件。</p>
+<h3 id="安装和使用-1"><a href="#安装和使用-1" class="headerlink" title="安装和使用"></a>安装和使用</h3><p>在ModelScope Hub 中有很多可以训练的模型。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">conda create -n modelscope python=3.10</span><br><span class="line">conda activate modelscope</span><br></pre></td></tr></table></figure>
+
+<p>模型下载需要先配置好Git LFS。</p>
+<blockquote>
+<p>git lfs 是一个 Git 的扩展，它用来存储大文件。它的设计目标是让 Git 能够更好地管理大文件，而不是让 Git 成为一个文件存储系统。Git LFS 通过将大文件存储在远程服务器上，而不是存储在 Git 仓库中，来解决 Git 仓库过大的问题。</p>
+</blockquote>
+<p>之后就可以下载用来训练的模型，和github上的代码一样，可以直接使用git clone。</p>
+<p>训练好的模型（微调）在部署时，通常还需要量化，这样才能在较小的设备上运行。</p>
+<h2 id="langchain和langchain-chatchat"><a href="#langchain和langchain-chatchat" class="headerlink" title="langchain和langchain-chatchat"></a>langchain和langchain-chatchat</h2><p>langchain是一个用于构建自然语言处理（NLP）应用的工具包。它提供了一种简单的方法来构建NLP应用，无需编写复杂的代码。langchain的核心是一个称为“链”的概念，链是一系列处理步骤，每个步骤都接收输入并生成输出。链可以包含各种处理步骤，例如模型、解析器和提示。</p>
+<p>这里有一个简单的教程:<a target="_blank" rel="noopener" href="https://www.langchain.com.cn/docs/tutorials/llm_chain/">langchain</a>，可以用来构建一个简单的LLM（Large Language Model）应用。</p>
+<p>核心就是构建链，链可以包含各种处理步骤，例如模型、解析器和提示。</p>
+<h3 id="langchain-chatchat"><a href="#langchain-chatchat" class="headerlink" title="langchain-chatchat"></a>langchain-chatchat</h3><p>仓库地址：<a target="_blank" rel="noopener" href="https://github.com/chatchat-space/Langchain-Chatchat?tab=readme-ov-files">langchain-chatchat</a></p>
+<p>一种利用 langchain 思想实现的基于本地知识库的问答应用，目标期望建立一套对中文场景与开源模型支持友好、可离线运行的知识库问答解决方案。</p>
+<p><strong>原理：</strong><br><img src="/../imgs/image-65.png"><br><img src="/../imgs/image-66.png"></p>
+<p>在这个项目中，并不涉及模型的微调。模型微调参考：<a href="https://kelinkong.github.io/2024/11/01/llvm-%E5%BE%AE%E8%B0%83%E5%A4%A7%E6%A8%A1%E5%9E%8B/">llvm-微调大模型</a></p>
+<h2 id="Dify"><a href="#Dify" class="headerlink" title="Dify"></a>Dify</h2><p>官网地址：<a target="_blank" rel="noopener" href="https://www.dify.ai/">Dify</a></p>
+<p>github地址：<a target="_blank" rel="noopener" href="https://github.com/langgenius/dify">Dify</a></p>
+<p>官方文档：<a target="_blank" rel="noopener" href="https://docs.dify.ai/">Dify文档</a></p>
+<p>Dify 是一款开源的大语言模型(LLM) 应用开发平台。它融合了后端即服务（Backend as Service）和 LLMOps 的理念，使开发者可以快速搭建生产级的生成式 AI 应用。即使你是非技术人员，也能参与到 AI 应用的定义和数据运营过程中。</p>
+<p>由于 Dify 内置了构建 LLM 应用所需的关键技术栈，包括对数百个模型的支持、直观的 Prompt 编排界面、高质量的 RAG 引擎、稳健的 Agent 框架、灵活的流程编排，并同时提供了一套易用的界面和 API。这为开发者节省了许多重复造轮子的时间，使其可以专注在创新和业务需求上。</p>
+<p>dify支持ollama，可以直接使用本地部署的模型。</p>
+<h2 id="Groqcloud"><a href="#Groqcloud" class="headerlink" title="Groqcloud"></a>Groqcloud</h2><p>官网地址：<a target="_blank" rel="noopener" href="https://console.groq.com/playground">Groqcloud</a></p>
+<p>GroqCloud 是由 Groq 公司提供的云服务，专注于快速 AI 推理。它利用 Groq 的语言处理单元（LPU）硬件和相关软件，推理速度很快，而且API便宜。</p>
+<h2 id="向量知识库"><a href="#向量知识库" class="headerlink" title="向量知识库"></a>向量知识库</h2><ul>
+<li>第一类是开源的专用向量数据库，如 Chroma、Vespa、LanceDB、Marqo、Qdrant 和 Milvus，这些数据库专门设计用于处理向量数据。</li>
+<li>第二类是支持向量搜索的开源数据库，如 OpenSearch、PostgreSQL、ClickHouse 和 Cassandra，它们是常规数据库，但支持向量搜索功能。</li>
+<li>第三类是商用的专用向量数据库，如 Weaviate 和 Pinecone，它们专门用于处理向量数据，但属于商业产品或通过商业许可获得源码。</li>
+<li>第四类是支持向量搜索的商用数据库，如 Elasticsearch、Redis、Rockset 和 SingleStore，这些常规数据库支持向量搜索功能，同时属于商业产品或可通过商业许可获得源码</li>
+</ul>
+</div><script type="text/javascript" src="/js/share.js?v=1.0.0" async></script><a class="article-share-link" data-url="https://kelinkong.github.io/2024/11/07/AI-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%9C%89%E5%85%B3%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B7%A5%E5%85%B7%E9%93%BE/" data-id="cm4wgil8y002xhooge5811ky1" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASYAAAEmCAAAAADqr2IGAAAEmklEQVR42u3ay47iQAwFUP7/p2e2Iw2Ea7uQYjisUHe6kjppqfx6POLPn38+r357/Vf/f16tfH3l9frJb1897YEPJkyYMGG6JdN8M9dk1QdNNn/9PdlvvndMmDBhwvQdTMlyyTbyw/t6hcmWetBvTDBhwoQJ088wVRFzsmriXf1JHppgwoQJE6ZfZspT5WqxuFdcrl6DCRMmTJh+kylfrkcwaWH2CrvV9Y/VwjFhwoQJ082Yei3A7/j+kfkmTJgwYcJ0G6Y/xU9ytOcrVxuQeSCSH/nRc2LChAkTprVM+QGZb7WayvaKvNVnqN4dEyZMmDB9K1P1MM7bir3jv/pieuuUu76YMGHChGkJU94OnBR/q63NSVCSByiFJ8eECRMmTF/BlCSu+dGeHOGnoCedx+h5MGHChAnTcqb8QauNyWrRNk9r8xR63mTFhAkTJkx7mXKaHmKVJlknT2XnY0OYMGHChGk7U3KD3mBN9WivNinnr7Cwa0yYMGHCtJxpklL2EuBeWXlyqOfP+eRKTJgwYcK0lilvFs7bhHlI8SZTbxWL86ZsAQsTJkyYMN2eKS+n5u3MU8lnc8im9T/y5l6YMGHChGktU290Jj+G84Q5SXerf5usUy5DY8KECROmVUzVtLDaaOwFHHnCPA9TIg1MmDBhwvQVTHnrsRoKTODyRDpvtZYFMGHChAnTWqZeqbSX4uYl3WrJ+FRh+o0GJkyYMGFayDQpmH4ivJgUaqsneOH5MWHChAnTWqbrI796VPfGaKql5GpIkYQjUaqMCRMmTJjWMvW23VtnUkHthSC9wVZMmDBhwvRNTGdT2WSctNqenDMlAcGbIAkTJkyYMC1kKoytHD3yTxVeJ43YZi0cEyZMmDCtYsozu+Q4P9t67L225JOXlV82NTFhwoQJ0yqm3hBndWN5abXXquwNAz3m7wETJkyYMN2eKUecZ4JnC7LVMaBeGIEJEyZMmPYyVeUm9nlBdj4yW03R3/xDYMKECROmtUx5+bU6TJMTJIXgXhiR3z0KJjBhwoQJ00KmTxyf+QPN10maptWk/ck1mDBhwoRpOVN1BKdXxu2l2ZPXVk2S3xR5MWHChAnTQqYkdawmmdUNJy+mevz3go9CRRwTJkyYMC1h6g215Nf31slBq0FM/hrexE2YMGHChGkJU5LEVkd5qjS9FmOvMJ2/hpdxEyZMmDBhWsWUP8qpsZtqYDEpK/fGkp78HBMmTJgwfSlTnprmm8+Hb+bJ82RI6FjSiwkTJkyYbsM0SWiTrumkDVkl6D3hy+fEhAkTJkxrmU4Vba+/52M3p1Dy1De/IyZMmDBh2sg0Kezm256vmafH1dQ6WhMTJkyYMK1lqh6QvTZnfsBfb3iymV748ujFEZgwYcKE6WZM1W3nbcJk2/Mi77w5igkTJkyYfoGp2tjrbawalSQvIL9mdEdMmDBhwvQzTL3Cbi/BniTnefL8kYAAEyZMmDAtZ5oM8SQHcFLMrW44v/7JlZgwYcKEaTnTqWGXs0XbPPE+NcRzoBaOCRMmTJhuxpQnlnkAUR336UHn6+RjOk0gTJgwYcJ0R6a/DGO/UBH37c0AAAAASUVORK5CYII=">Share</a><div class="tags"></div><div class="post-nav"><a class="pre" href="/2024/11/07/AI-%E4%BD%BF%E7%94%A8langchain-chatchat%E5%92%8Collama%E6%9E%84%E5%BB%BA%E5%A4%A7%E6%A8%A1%E5%9E%8B/">llvm-使用langchain-chatchat和ollama构建大模型</a><a class="next" href="/2024/11/06/AI-%E4%BD%BF%E7%94%A8LCEL-%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84-LLM-%E5%BA%94%E7%94%A8/">AI-使用 LCEL 构建一个简单的 LLM 应用</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="https://kelinkong.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="About"><img class="nofancybox" src="/img/logo.jpg"/></a><p>Kelin is a boring girl, but not always.</p><a class="info-icon" href="https://github.com/kelinkong" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/DataBase/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network-Security/">Network-Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Operating-System/">Operating-System</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/solutions/">solutions</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/CMU15-445/" style="font-size: 15px;">CMU15-445</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/architecture/" style="font-size: 15px;">architecture</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/12/20/AI-GraphRAG/">AI-GraphRAG</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/12/19/AI-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E4%B8%89%E4%B8%AA%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%EF%BC%9A%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E3%80%81%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E3%80%81%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">AI-神经网络中的三个基本概念：梯度下降、反向传播、损失函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/12/17/Java-%E5%BC%82%E6%AD%A5%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8/">Java-异步接口调用</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/22/%E5%89%8D%E7%AB%AF-expo/">前端-expo</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/19/Spring-Cloud-%E6%96%AD%E8%B7%AF%E5%99%A8/">Spring Cloud: 断路器</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/14/Spring-Cloud-OpenFeign/">Spring Cloud: OpenFeign</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/13/Spring-Cloud%EF%BC%9Abase%E5%B7%A5%E7%A8%8B/">Spring Cloud：base工程</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/13/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/">Java学习笔记-配置文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/07/AI-%E4%BD%BF%E7%94%A8langchain-chatchat%E5%92%8Collama%E6%9E%84%E5%BB%BA%E5%A4%A7%E6%A8%A1%E5%9E%8B/">llvm-使用langchain-chatchat和ollama构建大模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/07/AI-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%9C%89%E5%85%B3%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B7%A5%E5%85%B7%E9%93%BE/">AI-大模型有关的一些工具链</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">Kelin's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0"></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.css"><script type="text/javascript" src="/js/love.js?v=1.0.0"></script><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="Copy Successed!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>

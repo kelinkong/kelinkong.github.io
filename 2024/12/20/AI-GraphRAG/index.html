@@ -1,0 +1,156 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>AI-GraphRAG | Kelin's blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/latest/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/grids-responsive-min.min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script type="text/javascript" src="//lib.baomitu.com/clipboard.js/latest/clipboard.min.js"></script><script type="text/javascript" src="//lib.baomitu.com/toastr.js/latest/toastr.min.js"></script><link rel="stylesheet" href="//lib.baomitu.com/toastr.js/latest/toastr.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">AI-GraphRAG</h1><a id="logo" href="/.">Kelin's blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">AI-GraphRAG</h1><div class="post-meta">2024-12-20<span> | </span><span class="category"><a href="/categories/AI/">AI</a></span><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 3.2k</span><span class="post-meta-item-text"> Words</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i><span class="post-count"> 10</span><span class="post-meta-item-text"> Minutes</span></span></span></div><div class="post-content"><h2 id="GraphRAG"><a href="#GraphRAG" class="headerlink" title="GraphRAG"></a>GraphRAG</h2><p>仓库地址：<a target="_blank" rel="noopener" href="https://github.com/microsoft/graphrag">GraphRAG</a></p>
+<p>GraphRAG（Graph-based Retrieval Augmented Generation，基于图的检索增强生成）是一种利用图结构来增强大型语言模型（LLM）检索能力的先进方法。它旨在解决传统 RAG 方法在处理复杂关系、全局性问题和多跳推理方面的局限性。以下是 GraphRAG 的一些实现原理和技术要点：</p>
+<p><strong>核心思想：</strong></p>
+<p>GraphRAG 的核心是将文本数据转化为知识图谱，利用图的结构化信息来指导检索过程，从而更有效地为 LLM 提供上下文信息。与传统的基于向量相似度的检索方法不同，GraphRAG 侧重于实体之间的关系和整个数据集的结构，这使得它能够回答需要综合理解和推理的问题。</p>
+<p><strong>实现原理：</strong></p>
+<ol>
+<li><p><strong>文本分块与信息抽取：</strong> 首先将原始文本分割成较小的块（chunk），然后从每个文本块中提取实体、关系和属性等信息。这通常使用命名实体识别（NER）、关系抽取等 NLP 技术。</p>
+</li>
+<li><p><strong>构建知识图谱：</strong> 将提取出的实体作为图的节点，实体之间的关系作为图的边，构建知识图谱。这个图谱可以包含多种类型的关系，例如“属于”、“位于”、“是…的作者”等等。</p>
+</li>
+<li><p><strong>图社区检测：</strong> 使用图算法（例如 Louvain 算法、PageRank 算法）检测图中的社区或子图。这些社区通常代表了文本中相关的概念或主题。</p>
+</li>
+<li><p><strong>社区摘要：</strong> 为每个检测到的社区生成摘要，概述该社区的主要内容和关键信息。</p>
+</li>
+<li><p><strong>查询处理与图检索：</strong> 当用户提出查询时，GraphRAG 首先将查询转化为图查询，例如查找与某个实体相关的其他实体或关系。然后，在知识图谱上执行图查询，检索相关的社区或子图。</p>
+</li>
+<li><p><strong>上下文生成与 LLM 集成：</strong> 将检索到的社区摘要或子图信息作为上下文提供给 LLM，让 LLM 基于这些上下文生成最终的回答。</p>
+</li>
+</ol>
+<p><strong>技术要点：</strong></p>
+<ul>
+<li><p><strong>知识图谱构建：</strong></p>
+<ul>
+<li><strong>信息抽取质量：</strong> 实体和关系的准确提取至关重要，直接影响图谱的质量和检索效果。</li>
+<li><strong>图谱规模和稀疏性：</strong> 如何有效地处理大规模图谱和图谱中的稀疏性是一个挑战。</li>
+<li><strong>图谱的动态更新：</strong> 如何随着新数据的加入动态更新图谱，保持其时效性。</li>
+</ul>
+</li>
+<li><p><strong>图算法选择：</strong></p>
+<ul>
+<li><strong>社区检测算法：</strong> 选择合适的社区检测算法，以有效地发现图谱中的相关主题。</li>
+<li><strong>图查询算法：</strong> 如何高效地在图谱上执行查询，检索相关信息。</li>
+</ul>
+</li>
+<li><p><strong>上下文选择和融合：</strong></p>
+<ul>
+<li><strong>上下文的相关性：</strong> 如何选择与查询最相关的上下文信息。</li>
+<li><strong>上下文的长度和格式：</strong> 如何将图结构的信息有效地融入到 LLM 的输入中。</li>
+</ul>
+</li>
+<li><p><strong>与传统 RAG 的结合：</strong></p>
+<ul>
+<li><strong>混合检索策略：</strong> 将图检索和向量检索结合起来，充分利用两者的优势。</li>
+<li><strong>多阶段检索：</strong> 先使用图检索缩小检索范围，再使用向量检索进行精细化检索。</li>
+</ul>
+</li>
+</ul>
+<p><strong>GraphRAG 的优势：</strong></p>
+<ul>
+<li><strong>处理复杂关系：</strong> 能够更好地理解和处理实体之间的复杂关系，例如多跳关系。</li>
+<li><strong>回答全局性问题：</strong> 能够基于整个数据集的结构进行推理和总结，回答需要全局视野的问题。</li>
+<li><strong>提高检索效率：</strong> 通过图结构的引导，可以更有效地检索相关信息，减少不必要的计算。</li>
+</ul>
+<p><strong>GraphRAG 的挑战：</strong></p>
+<ul>
+<li><strong>知识图谱构建的复杂性：</strong> 构建高质量的知识图谱需要大量的工程和技术投入。</li>
+<li><strong>图算法的选择和优化：</strong> 选择合适的图算法并进行优化需要一定的专业知识。</li>
+<li><strong>与 LLM 的有效集成：</strong> 如何将图结构的信息有效地传递给 LLM，并让 LLM 充分利用这些信息。</li>
+</ul>
+<h2 id="举个例子"><a href="#举个例子" class="headerlink" title="举个例子"></a>举个例子</h2><p>为了帮助你更好地理解 GraphRAG，我将举一个具体的例子，并结合实际应用场景进行说明。</p>
+<p><strong>场景：</strong> 假设我们有一个关于电影的数据库，其中包含电影的各种信息，例如电影名称、导演、演员、类型、上映日期、剧情简介等。我们希望构建一个问答系统，用户可以提出关于电影的各种问题，例如“克里斯托弗·诺兰导演的科幻电影有哪些？”或者“《盗梦空间》的主演是谁？”。</p>
+<p><strong>传统 RAG 方法的局限性：</strong> 如果使用传统的 RAG 方法，我们可能会将电影信息分割成文本块，并使用向量相似度来检索与用户查询相关的文本块。这种方法在回答简单的问题时可能有效，但在回答需要多跳推理或全局信息的问题时就显得力不从心。例如，如果用户问“与莱昂纳多·迪卡普里奥合作过两次以上的导演有哪些？”，传统 RAG 方法可能难以有效地回答，因为它需要检索多个电影的信息，并进行关联和统计。</p>
+<p><strong>使用 GraphRAG 的解决方案：</strong></p>
+<ol>
+<li><p><strong>构建知识图谱：</strong></p>
+<ul>
+<li><strong>实体：</strong> 电影名称、导演、演员、类型等。</li>
+<li><strong>关系：</strong> “导演”、“主演”、“属于类型”、“上映于”等。</li>
+</ul>
+<p>例如，《盗梦空间》可以表示为一个节点，“克里斯托弗·诺兰”和“莱昂纳多·迪卡普里奥”也分别表示为节点。“克里斯托弗·诺兰”和《盗梦空间》之间存在“导演”关系，《莱昂纳多·迪卡普里奥》和《盗梦空间》之间存在“主演”关系。</p>
+</li>
+<li><p><strong>图社区检测（可选）：</strong> 可以使用社区检测算法将相关的电影、导演和演员聚类成不同的社区。例如，可以将克里斯托弗·诺兰导演的电影聚类成一个社区，将某个类型的电影聚类成另一个社区。</p>
+</li>
+<li><p><strong>查询处理与图检索：</strong> 当用户提出查询“与莱昂纳多·迪卡普里奥合作过两次以上的导演有哪些？”时，GraphRAG 的处理步骤如下：</p>
+<ul>
+<li>将查询转化为图查询：查找与“莱昂纳多·迪卡普里奥”节点相连的“导演”节点，并统计每个“导演”节点与“莱昂纳多·迪卡普里奥”节点之间边的数量（即合作次数）。</li>
+<li>在知识图谱上执行图查询：遍历图谱，找到所有与“莱昂纳多·迪卡普里奥”节点相连的“导演”节点，并统计它们之间的连接次数。</li>
+<li>返回结果：返回合作次数超过两次的导演列表，例如“马丁·斯科塞斯”。</li>
+</ul>
+</li>
+<li><p><strong>上下文生成与 LLM 集成：</strong> 将检索到的导演列表以及相关的电影信息（例如电影名称、上映日期等）作为上下文提供给 LLM。LLM 基于这些上下文生成最终的回答，例如“莱昂纳多·迪卡普里奥与马丁·斯科塞斯合作过多次，包括《华尔街之狼》、《禁闭岛》等电影。”。</p>
+</li>
+</ol>
+<p><strong>具体例子图示：</strong></p>
+<p>假设我们的知识图谱包含以下信息：</p>
+<ul>
+<li>《盗梦空间》- 导演：克里斯托弗·诺兰</li>
+<li>《盗梦空间》- 主演：莱昂纳多·迪卡普里奥</li>
+<li>《禁闭岛》- 导演：马丁·斯科塞斯</li>
+<li>《禁闭岛》- 主演：莱昂纳多·迪卡普里奥</li>
+<li>《华尔街之狼》- 导演：马丁·斯科塞斯</li>
+<li>《华尔街之狼》- 主演：莱昂纳多·迪卡普里奥</li>
+</ul>
+<p>当用户查询“与莱昂纳多·迪卡普里奥合作过两次以上的导演有哪些？”时，GraphRAG 会在图谱上找到以下路径：</p>
+<ul>
+<li>莱昂纳多·迪卡普里奥 -&gt; 《盗梦空间》-&gt; 克里斯托弗·诺兰</li>
+<li>莱昂纳多·迪卡普里奥 -&gt; 《禁闭岛》-&gt; 马丁·斯科塞斯</li>
+<li>莱昂纳多·迪卡普里奥 -&gt; 《华尔街之狼》-&gt; 马丁·斯科塞斯</li>
+</ul>
+<p>通过统计，发现马丁·斯科塞斯与莱昂纳多·迪卡普里奥合作了两次以上，因此将其返回。</p>
+<p><strong>总结：</strong></p>
+<p>通过这个例子可以看出，GraphRAG 利用知识图谱的结构化信息，能够有效地处理需要多跳推理和全局信息的问题，相比传统的 RAG 方法具有明显的优势。它将文本信息转化为图结构，使得 LLM 能够更好地理解和利用这些信息，从而生成更准确、更全面的回答。</p>
+<p>希望这个例子能够帮助你更好地理解 GraphRAG 的实施原理和优势。如果你还有其他问题，欢迎继续提问。</p>
+<h2 id="什么样的场景适合构建知识图谱？"><a href="#什么样的场景适合构建知识图谱？" class="headerlink" title="什么样的场景适合构建知识图谱？"></a>什么样的场景适合构建知识图谱？</h2><p>构建知识图谱并非适用于所有场景。它是一种强大的工具，但也有其特定的适用范围。以下是一些适合构建知识图谱的场景，以及一些不适合的场景：</p>
+<p><strong>适合构建知识图谱的场景：</strong></p>
+<ol>
+<li><p><strong>数据之间存在复杂关联：</strong> 如果数据之间存在大量的关系和连接，并且这些关系对于理解数据至关重要，那么知识图谱就非常适用。例如：</p>
+<ul>
+<li><strong>社交网络：</strong> 人与人之间的朋友关系、关注关系、共同参与的活动等。</li>
+<li><strong>生物医药：</strong> 基因、蛋白质、疾病、药物之间的相互作用和关联。</li>
+<li><strong>金融领域：</strong> 公司、股东、投资、交易等之间的关系。</li>
+</ul>
+</li>
+<li><p><strong>需要进行推理和分析：</strong> 如果需要基于数据进行推理、分析和预测，知识图谱可以提供强大的支持。例如：</p>
+<ul>
+<li><strong>智能问答系统：</strong> 回答需要多步推理的问题，例如“与某人合作过两次以上的导演有哪些？”。</li>
+<li><strong>风险评估：</strong> 分析金融交易中的潜在风险，例如欺诈检测。</li>
+<li><strong>推荐系统：</strong> 基于用户的历史行为和兴趣，推荐相关的产品或服务。</li>
+</ul>
+</li>
+<li><p><strong>数据来源多样且异构：</strong> 如果数据来自不同的来源，并且格式各异，知识图谱可以提供一种统一的表示方式，方便数据的整合和利用。例如：</p>
+<ul>
+<li><strong>企业级数据整合：</strong> 将来自不同部门、不同系统的数据整合到一个统一的知识图谱中。</li>
+<li><strong>跨领域数据融合：</strong> 将来自不同领域的数据融合到一起，例如将医疗数据和社交数据结合起来进行健康管理。</li>
+</ul>
+</li>
+<li><p><strong>需要可视化和探索：</strong> 知识图谱以图形化的方式呈现数据，方便用户进行可视化和探索，发现数据中隐藏的模式和规律。例如：</p>
+<ul>
+<li><strong>情报分析：</strong> 分析犯罪网络、恐怖组织等。</li>
+<li><strong>科研探索：</strong> 探索科学研究中的新发现和新联系。</li>
+</ul>
+</li>
+<li><p><strong>需要支持语义搜索：</strong> 传统的关键词搜索只能找到包含关键词的文档，而知识图谱可以支持基于语义的搜索，找到与用户查询相关的概念和实体。例如：</p>
+<ul>
+<li><strong>电商搜索：</strong> 用户搜索“适合跑步的鞋子”，可以返回各种类型的跑鞋，而不仅仅是包含“跑步”和“鞋子”这两个词的商品。</li>
+</ul>
+</li>
+</ol>
+<p><strong>不适合构建知识图谱的场景：</strong></p>
+<ol>
+<li><p><strong>数据结构简单且关系单一：</strong> 如果数据结构非常简单，并且数据之间只有简单的线性关系，那么使用传统的数据库或表格就足够了，不需要构建知识图谱。</p>
+</li>
+<li><p><strong>数据量小且变化频繁：</strong> 如果数据量非常小，并且变化非常频繁，那么维护知识图谱的成本可能会高于其带来的收益。</p>
+</li>
+<li><p><strong>对推理和分析的需求不高：</strong> 如果应用场景主要关注数据的存储和检索，而不需要进行复杂的推理和分析，那么使用传统的数据库就足够了。</p>
+</li>
+</ol>
+<p><strong>总结：</strong></p>
+<p>以下是一些判断是否适合构建知识图谱的关键因素：</p>
+<ul>
+<li><strong>数据之间的关联程度：</strong> 关联越复杂，越适合使用知识图谱。</li>
+<li><strong>对推理和分析的需求：</strong> 需求越高，越适合使用知识图谱。</li>
+<li><strong>数据来源的多样性和异构性：</strong> 来源越多，越适合使用知识图谱进行整合。</li>
+<li><strong>对可视化和探索的需求：</strong> 需求越高，越适合使用知识图谱。</li>
+</ul>
+</div><script type="text/javascript" src="/js/share.js?v=1.0.0" async></script><a class="article-share-link" data-url="https://kelinkong.github.io/2024/12/20/AI-GraphRAG/" data-id="cm4wgilll003ghoog1otsgg1y" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLklEQVR42u3aS27DMAxF0ex/0860QGDnPjI2KupqFDSqrZMBwY9eL7yOj0V28m/581tLhgwZyzKOy/V3z+d/kSfwnemTZciQsRvjLIKRPbXjknBMziZDhgwZ13vI63ngTn8+GTJkyDgLoOTbWjB9KODKkCFjWUZafHIqL4AfqsVlyJCxIIN33Z//fMt8Q4YMGUsxjnCRlI6UqWkL78upZMiQMZrRHyum1yk6g4cvP4QMGTK2YfBD18JoejmMtPBkyJCxAyMtVvkwgAdi3phDb5chQ8YgBh8G9IeOtzT6SZyWIUPGOEZ6VYIHUDIWTVPG04ArQ4aMcYzaxYs7gngwBiCdPBkyZIxjpGPIDqw2bDj9uwwZMjZg8OZ7mvDxpJC/C002ZMiQMZTRCX/96UQ6IpUhQ8Y+jLQe5Ou+gE6SURkyZMxjkMDKgyMpbtOBJdovQ4aMoQx+eaITCtPBJE9P0QhThgwZQxlpYZmOP0nADQpjGTJkjGbULn6lTTEeOvkw4PSZMmTIGMqoJXPpTn4sPhKQIUPGbgx+SSJtjXWCMuHJkCFjB0aQP4IAzfHxETszWBkyZCzLqF2hCNI13FDjo4i4zydDhozFGel1h/71L54OFruGMmTIGMrojx47pFrKKEOGjD0Z/HDp60mS108oZciQIYMXnGnax5t6qCKXIUOGjPBYKZ6PH2TIkLEno1/Eps+ppZ631+IyZMj4l4zaFQfyiN8mkdefZciQMZTxBu/hhJo++DoYAAAAAElFTkSuQmCC">Share</a><div class="tags"></div><div class="post-nav"><a class="next" href="/2024/12/19/AI-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E4%B8%89%E4%B8%AA%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%EF%BC%9A%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E3%80%81%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E3%80%81%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">AI-神经网络中的三个基本概念：梯度下降、反向传播、损失函数</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="https://kelinkong.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="About"><img class="nofancybox" src="/img/logo.jpg"/></a><p>Kelin is a boring girl, but not always.</p><a class="info-icon" href="https://github.com/kelinkong" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/DataBase/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network-Security/">Network-Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Operating-System/">Operating-System</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/solutions/">solutions</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/CMU15-445/" style="font-size: 15px;">CMU15-445</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/architecture/" style="font-size: 15px;">architecture</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/12/20/AI-GraphRAG/">AI-GraphRAG</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/12/19/AI-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E4%B8%89%E4%B8%AA%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%EF%BC%9A%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E3%80%81%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E3%80%81%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">AI-神经网络中的三个基本概念：梯度下降、反向传播、损失函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/12/17/Java-%E5%BC%82%E6%AD%A5%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8/">Java-异步接口调用</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/22/%E5%89%8D%E7%AB%AF-expo/">前端-expo</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/19/Spring-Cloud-%E6%96%AD%E8%B7%AF%E5%99%A8/">Spring Cloud: 断路器</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/14/Spring-Cloud-OpenFeign/">Spring Cloud: OpenFeign</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/13/Spring-Cloud%EF%BC%9Abase%E5%B7%A5%E7%A8%8B/">Spring Cloud：base工程</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/13/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/">Java学习笔记-配置文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/07/AI-%E4%BD%BF%E7%94%A8langchain-chatchat%E5%92%8Collama%E6%9E%84%E5%BB%BA%E5%A4%A7%E6%A8%A1%E5%9E%8B/">llvm-使用langchain-chatchat和ollama构建大模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/07/AI-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%9C%89%E5%85%B3%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B7%A5%E5%85%B7%E9%93%BE/">AI-大模型有关的一些工具链</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">Kelin's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0"></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.css"><script type="text/javascript" src="/js/love.js?v=1.0.0"></script><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="Copy Successed!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>leetcode题解合集 | Kelin's blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/latest/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/grids-responsive-min.min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script type="text/javascript" src="//lib.baomitu.com/clipboard.js/latest/clipboard.min.js"></script><script type="text/javascript" src="//lib.baomitu.com/toastr.js/latest/toastr.min.js"></script><link rel="stylesheet" href="//lib.baomitu.com/toastr.js/latest/toastr.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">leetcode题解合集</h1><a id="logo" href="/.">Kelin's blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">leetcode题解合集</h1><div class="post-meta">2022-10-15<span> | </span><span class="category"><a href="/categories/Algorithm/">Algorithm</a></span><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 2k</span><span class="post-meta-item-text"> Words</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i><span class="post-count"> 8</span><span class="post-meta-item-text"> Minutes</span></span></span></div><div class="post-content"><h3 id="DFS-回溯"><a href="#DFS-回溯" class="headerlink" title="DFS&#x2F;回溯"></a>DFS&#x2F;回溯</h3><p><strong>以整数拆分为例：</strong><br><img src="/../imgs/image-5.png"></p>
+<p><strong>剪枝条件</strong></p>
+<ul>
+<li>当和为n时，保存结果</li>
+<li>当和大于n时，进行剪枝</li>
+</ul>
+<p>在DFS中，同一排的结点是在同一个函数调用中进行处理，如上图中的第一排，1、2、3、4、这4个结点是在第一次函数调用中进行处理。</p>
+<p><strong>因此使用一个for循环来处理同一排的结点。</strong><br>因为元素可以重复取用，本来for循环的起始位置应该都为1，但是为了避免重复，我们可以假设for循环的起始位置为其父节点的值，这里用变量<code>index</code>表示</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">vector&lt;<span class="type">int</span>&gt; res;</span><br><span class="line"><span class="comment">//n表示要拆分的数 index表示当前函数从哪个数开始拆 sum表示当前的和</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">split</span><span class="params">(<span class="type">int</span> n,<span class="type">int</span> index,<span class="type">int</span> sum)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (sum == n) &#123;<span class="comment">//保存结果</span></span><br><span class="line">        <span class="built_in">myPrint</span>(res);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (sum &gt; n) <span class="keyword">return</span>;<span class="comment">//剪枝</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = index; i &lt; n; ++i) &#123;</span><br><span class="line">        res.<span class="built_in">push_back</span>(i);</span><br><span class="line">        <span class="comment">//元素可以重复使用，下一次还是从i开始拆分，拆到n为止</span></span><br><span class="line">        <span class="built_in">split</span>(n, i, sum + i);</span><br><span class="line">        res.<span class="built_in">pop_back</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/combinations/">77 组合</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/combination-sum-iii/solution/by-sdy-r-mava/">216. 组合总和 III</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/combination-sum-iii/solution/by-sdy-r-mava/">39. 组合总和</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/letter-combinations-of-a-phone-number/solution/c-hui-su-suan-fa-by-sdy-r-6soj/">17. 电话号码的字母组合</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/combination-sum-ii/solution/by-sdy-r-vecj/">40. 组合总和 II</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/subsets-ii/solution/by-sdy-r-nehc/">90. 子集 II</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/permutations-ii/solution/by-sdy-r-fiul/">47. 全排列 II</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/wenningker/article/details/124399435?spm=1001.2014.3001.5502">679. 24点游戏</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/longest-univalue-path/solution/by-sdy-r-0cz4/">687. 最长同值路径</a></p>
+<h3 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h3><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1X741127ZM/?spm_id_from=333.337.search-card.all.click&vd_source=59139a795dc5f3ee3da07683650b7b16">一个超级实用的视频</a><br><strong>状态表示：</strong><br>f 函数代表什么状态？<br>写出状态表示之后我们会有一个f函数的集合，代表递推到f(i)时，有多少种可能的状态。</p>
+<p><strong>动态转移方程</strong><br>把集合中的每一种可能表示出来，对应要求的结果（求最大、最小、求和等）写出动态转移方程。</p>
+<ul>
+<li>状态表示</li>
+<li>状态集，从状态集求出当前状态</li>
+</ul>
+<p><strong>思考当前状态对比前一个状态会有什么变化：</strong></p>
+<ul>
+<li>从前一步加1？</li>
+<li>等于前一步？</li>
+</ul>
+<p><strong>如下图所示</strong><br><img src="/../imgs/image-7.png"></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wenningker/article/details/124410311?spm=1001.2014.3001.5502">路径和有关的题目</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/solution/by-sdy-r-6p9s/">714. 买卖股票的最佳时机含手续费</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/word-break/solution/by-sdy-r-cj3h/">139. 单词拆分</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/integer-break/solution/by-sdy-r-q33e/">343. 整数拆分</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/house-robber-iii/solution/by-sdy-r-9rnk/">337. 打家劫舍 III</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/longest-increasing-subsequence/solution/by-sdy-r-hrxf/">300. 最长递增子序列</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/distinct-subsequences-ii/solution/by-sdy-r-atvj/">940. 不同的子序列 II</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/number-of-ways-to-reach-a-position-after-exactly-k-steps/solution/by-sdy-r-dytx/">2400. 恰好移动 k 步到达某一位置的方法数目</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-length-of-pair-chain/solution/by-sdy-r-g02s/">646. 最长数对链</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/triangle/solution/by-sdy-r-fuap/">120. 三角形最小路径和</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sum-of-subarray-minimums/solution/by-sdy-r-563t/">907. 子数组的最小值之和</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/wildcard-matching/solution/by-sdy-r-pm4u/">44. 通配符匹配</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/edit-distance/solution/by-sdy-r-boss/">72. 编辑距离</a></p>
+<h3 id="贪心"><a href="#贪心" class="headerlink" title="贪心"></a>贪心</h3><p><strong>每次选取局部最优解，得到最终的最优解。</strong><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/divide-intervals-into-minimum-number-of-groups/solution/by-sdy-r-umuh/">2406. 将区间分为最少组数</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/queue-reconstruction-by-height/solution/by-sdy-r-3ec9/">406. 根据身高重建队列</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-number-of-arrows-to-burst-balloons/solution/by-sdy-r-17wh/">452. 用最少数量的箭引爆气球</a></p>
+<h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><h4 id="优先队列"><a href="#优先队列" class="headerlink" title="优先队列"></a>优先队列</h4><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//升序队列 小顶堆</span></span><br><span class="line">priority_queue &lt;<span class="type">int</span>,vector&lt;<span class="type">int</span>&gt;,greater&lt;<span class="type">int</span>&gt;&gt; q;</span><br><span class="line"><span class="comment">//降序队列  大顶堆 默认情况</span></span><br><span class="line">priority_queue &lt;<span class="type">int</span>,vector&lt;<span class="type">int</span>&gt;,less&lt;<span class="type">int</span>&gt;&gt; q;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/divide-intervals-into-minimum-number-of-groups/solution/by-sdy-r-umuh/">2406. 将区间分为最少组数</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sliding-window-maximum/solution/by-sdy-r-tu81/">239. 滑动窗口最大值</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/meeting-rooms-iii/solution/by-sdy-r-xle0/">2402. 会议室 III</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wenningker/article/details/124468136?spm=1001.2014.3001.5501">23. 合并k个有序链表</a></p>
+<h4 id="数组-链表-哈希"><a href="#数组-链表-哈希" class="headerlink" title="数组&#x2F;链表&#x2F;哈希"></a>数组&#x2F;链表&#x2F;哈希</h4><p><strong>数组：</strong> 查找效率高，插入和删除效率低<br><strong>链表：</strong> 插入删除效率高，查找效率低</p>
+<p><strong>哈希：</strong> </p>
+<ul>
+<li>思想：通过哈希函数得到的键值，使其能够高效查找</li>
+<li>当键值重复时，处理哈希冲突</li>
+<li>在C++中unordered_set 和unordered_map的底层实现时哈希表</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/4sum-ii/solution/by-sdy-r-jlw2/">454. 四数相加 II</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/optimal-partition-of-string/solution/by-sdy-r-uq9h/">2405. 子字符串的最优划分</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/most-popular-video-creator/solution/by-sdy-r-tknt/">6221. 最流行的视频创作者</a></p>
+<h4 id="栈-队列"><a href="#栈-队列" class="headerlink" title="栈&#x2F;队列"></a>栈&#x2F;队列</h4><p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sum-of-subarray-minimums/solution/by-sdy-r-563t/">907. 子数组的最小值之和</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/parsing-a-boolean-expression/solution/c-by-sdy-r-nxof/">1106. 解析布尔表达式</a></p>
+<h5 id="单调栈"><a href="#单调栈" class="headerlink" title="单调栈"></a>单调栈</h5><p>通常是一维数组，要寻找任一个元素的右边或者左边第一个比自己大或者小的元素的位置，此时我们就要想到可以用单调栈了。<br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/daily-temperatures/solution/by-sdy-r-7za8/">739. 每日温度</a><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/next-greater-element-ii/solution/by-sdy-r-t3b7/">503. 下一个更大元素 II</a></p>
+<h4 id="前缀树"><a href="#前缀树" class="headerlink" title="前缀树"></a>前缀树</h4><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wenningker/article/details/126799292?spm=1001.2014.3001.5502">前缀树</a></p>
+<h4 id="并查集"><a href="#并查集" class="headerlink" title="并查集"></a>并查集</h4><p><strong>并查集由两个部分构成：</strong></p>
+<ul>
+<li><code>find()</code>函数，发现x的根</li>
+<li><code>Union()</code>函数，合并</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 初始化，最初每个元素的根都是自己</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">init</span><span class="params">(vector&lt;<span class="type">int</span>&gt; &amp;parent, <span class="type">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>;i &lt; n; ++i)&#123;</span><br><span class="line">        parent.<span class="built_in">push_back</span>(i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//发现x的根</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">myfind</span><span class="params">(vector&lt;<span class="type">int</span>&gt; &amp;parent, <span class="type">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(parent[x] != x) &#123;</span><br><span class="line">        parent[x] = <span class="built_in">myfind</span>(parent,parent[x]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> parent[x];</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//将y的根给x的根，将x和y合并为一堆</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">myunion</span><span class="params">(vector&lt;<span class="type">int</span>&gt; &amp;parent,<span class="type">int</span> x,<span class="type">int</span> y)</span> </span>&#123;</span><br><span class="line">    parent[<span class="built_in">myfind</span>(parent,x)] = <span class="built_in">myfind</span>(parent,y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wenningker/article/details/124127763?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522166597671316800186587518%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fblog.%2522%257D&request_id=166597671316800186587518&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~blog~first_rank_ecpm_v1~rank_v31_ecpm-2-124127763-null-null.nonecase&utm_term=%E5%B9%B6%E6%9F%A5%E9%9B%86&spm=1018.2226.3001.4450">并查集</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/possible-bipartition/">886. 可能的二分法</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/shortest-bridge/solution/by-sdy-r-ao55/">934. 最短的桥</a> BFS+DFS</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/redundant-connection/solutions/2401010/c-bing-cha-ji-tuo-bu-pai-xu-by-sdy-r-48sg/">684. 冗余连接</a> 并查集+拓扑排序</p>
+<h4 id="线段树"><a href="#线段树" class="headerlink" title="线段树"></a>线段树</h4><h3 id="双指针-滑动窗口"><a href="#双指针-滑动窗口" class="headerlink" title="双指针&#x2F;滑动窗口"></a>双指针&#x2F;滑动窗口</h3><p><strong>主要是考虑左指针往右走的条件。</strong><br><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-size-subarray-sum/solution/by-sdy-r-yayj/">209. 长度最小的子数组</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-window-substring/solution/by-sdy-r-zwx8/">76. 最小覆盖子串</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wenningker/article/details/124530777?spm=1001.2014.3001.5502">90. 水果成蓝</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sliding-window-maximum/solution/by-sdy-r-tu81/">239. 滑动窗口最大值</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/longest-nice-subarray/solution/by-sdy-r-glyh/">2401. 最长优雅子数组</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/partition-array-into-disjoint-intervals/solution/by-sdy-r-sm3x/">915. 分割数组</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/sort-colors/solution/by-sdy-r-tg7s/">75. 颜色分类</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/remove-nth-node-from-end-of-list/solution/kuai-man-zhi-zhen-yi-bian-sao-miao-by-sd-pwps/">19. 删除链表的倒数第 N 个结点</a></p>
+<h3 id="树"><a href="#树" class="headerlink" title="树"></a>树</h3><p>对于二叉树来书，考虑遍历方式：</p>
+<ul>
+<li>前序遍历：先处理父节点，再处理孩子节点</li>
+<li>中序遍历：先处理左孩子，再处理父节点，最后处理右孩子</li>
+<li>后序遍历：先处理孩子结点，再处理父节点</li>
+</ul>
+<p><strong>大部分题目都是使用的后序遍历来求解：因为处理父节点时往往需要用到子节点的结果</strong></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/construct-binary-tree-from-inorder-and-postorder-traversal/solution/by-sdy-r-307g/">106. 从中序与后序遍历序列构造二叉树</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/validate-binary-search-tree/solution/by-sdy-r-6m2z/">98. 验证二叉搜索树</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/solution/by-sdy-r-n5e3/">236. 二叉树的最近公共祖先</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/insert-into-a-binary-search-tree/solution/by-sdy-r-vovn/">701. 二叉搜索树中的插入操作</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/maximum-binary-tree-ii/solution/by-sdy-r-96ic/">998. 最大二叉树 II</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/convert-bst-to-greater-tree/solution/by-sdy-r-x7yd/">538. 把二叉搜索树转换为累加树</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/closest-nodes-queries-in-a-binary-search-tree/solution/c-by-sdy-r-osdi/">6242. 二叉搜索树最近节点查询</a><br>序列化二叉搜索树</p>
+<h3 id="位运算"><a href="#位运算" class="headerlink" title="位运算"></a>位运算</h3><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>结果</th>
+<th>特性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>~</td>
+<td>取反，0变为1，1变为0</td>
+<td></td>
+</tr>
+<tr>
+<td>a&amp;b</td>
+<td>且，ab同时为1时才取1</td>
+<td>a &amp; b &lt;&#x3D; min(a,b)，交换律、结合律，越取越小</td>
+</tr>
+<tr>
+<td>a 或 b</td>
+<td>a和b其中有一个为1，最终结果就是1</td>
+<td>越取越大</td>
+</tr>
+<tr>
+<td>a ^ b</td>
+<td>a和b相同时为1，不同为0</td>
+<td></td>
+</tr>
+<tr>
+<td>&lt;&lt; 和 &gt;&gt;</td>
+<td>左移一位，相当于*2，右移一位，相当于&#x2F;2</td>
+<td></td>
+</tr>
+</tbody></table>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/longest-subarray-with-maximum-bitwise-and/solution/by-sdy-r-6vt8/">2419. 按位与最大的最长子数组</a></p>
+<h3 id="模拟"><a href="#模拟" class="headerlink" title="模拟"></a>模拟</h3><p><strong>根据题意模拟，主要是代码细节要注意。</strong></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/spiral-matrix-ii/solution/by-sdy-r-g20f/">59. 螺旋矩阵 II</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/EXvqDp/solution/by-sdy-r-wlw0/">LCP 63. 弹珠游戏</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/build-an-array-with-stack-operations/solution/by-sdy-r-yemm/">1441. 用栈操作构建数组</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/k-th-symbol-in-grammar/solution/by-sdy-r-alxj/">779. 第K个语法符号</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-addition-to-make-integer-beautiful/solution/by-sdy-r-a32l/">6222. 美丽整数的最小增量</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/coordinate-with-maximum-network-quality/solution/by-sdy-r-lrwi/">1620. 网络信号最好的坐标</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/global-and-local-inversions/solution/c-by-sdy-r-8gqu/">775. 全局倒置与局部倒置</a></p>
+<h3 id="数学"><a href="#数学" class="headerlink" title="数学"></a>数学</h3><p>主要多考虑组合数学</p>
+<p><strong>从起点到终点的所有路径：给定一个$n$和一个$k，n$代表要走的步数，$k$代表终点，从0出发，每次可以选择往左走或者往右走，走到$k$，有多少种路径？</strong></p>
+<ol>
+<li>假设$a$等于往右走的步数，往左走的步数为$k-a$,走到$n$时的步数为$a-(k-a)&#x3D;a$，$a&#x3D;(k+n)&#x2F;2$</li>
+<li>当且仅当$(k+n)$为偶数时有解</li>
+<li>等价于从$k$步里面选$a$步往右走，所以结果是$C^{(k+n)&#x2F;2}_k$</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/number-of-ways-to-reach-a-position-after-exactly-k-steps/solution/by-sdy-r-dytx/">2400. 恰好移动 k 步到达某一位置的方法数目</a></p>
+<p><strong>C++如何计算组合数？</strong></p>
+<p>从<code>n</code>个里面选<code>m</code>个，当前这个选，就变为从<code>n-1</code>个里面选<code>m-1</code>个，当前不选，就变成从<code>n-1</code>个里面选<code>m</code>个。</p>
+<p>根据公式:：$C_n^m&#x3D;C^m_{n-1}+C_{n-1}^{m-1}$</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">long</span> <span class="type">long</span> res[<span class="number">67</span>][<span class="number">67</span>]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line"><span class="function"><span class="type">long</span> <span class="type">long</span> <span class="title">C</span><span class="params">(<span class="type">long</span> <span class="type">long</span> n,<span class="type">long</span> <span class="type">long</span> m)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(m==<span class="number">0</span> || m==n) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">if</span>(res[n][m] != <span class="number">0</span>)<span class="keyword">return</span> res[n][m];<span class="comment">//保存状态</span></span><br><span class="line">    <span class="keyword">return</span> res[n][m] = <span class="built_in">C</span>(n<span class="number">-1</span>,m)+ <span class="built_in">C</span>(n<span class="number">-1</span>,m<span class="number">-1</span>);<span class="comment">//赋值给res[n][m]并返回</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%ld&quot;</span>,<span class="built_in">C</span>(<span class="number">6</span>,<span class="number">3</span>));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>排序不等式：</strong><br>$a_1 \leq a_2 \leq … \leq a_n$<br>$b_1 \leq b_2 \leq … \leq b_n$</p>
+<p>最大值&#x3D; $a_1b_1+a_2b_2+…+a_nb_n$<br>最小值&#x3D; $a_1b_n+a_2b_{n-1}+…+a_nb_1$</p>
+<p><strong>求解最大公约数和最小公倍数</strong></p>
+<ul>
+<li>最大公约数：数组中所有数都能整除的最大数</li>
+<li>最小公倍数：数组中所有数的最小倍数</li>
+</ul>
+<p>$a和b的最小公倍数&#x3D;a*b&#x2F;(a和b的最大公约数)$<br>求解最大公约数使用<code>gcd(a,b)</code>函数	</p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/numbers-at-most-n-given-digit-set/solution/-by-sdy-r-z1sc/">902. 最大为 N 的数字组合</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/number-of-subarrays-with-lcm-equal-to-k/">6234. 最小公倍数为 K 的子数组数目</a></p>
+<p><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/number-of-subarrays-with-gcd-equal-to-k/">2447. 最大公因数等于 K 的子数组数目</a></p>
+</div><script type="text/javascript" src="/js/share.js?v=1.0.0" async></script><a class="article-share-link" data-url="https://kelinkong.github.io/2022/10/15/leetoce%E9%A2%98%E8%A7%A3%E5%90%88%E9%9B%86/" data-id="cm4wgig91002shoog387y2xv1" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACuklEQVR42u3awWrkQAwE0Pz/T2dhT1nCzFRJ3ZMsPJ9MsD39HHCLkj4+4uPz7/H1/Ovx/e/f73r0nNn54QMPDw9vtPRHx/NrNq/j0fXP15avGQ8PD+82L1ni87tmgPyaZJPAw8PD+2284ac5XnqyPeDh4eH9j7w8gHh+5b6kxsPDw/tZXhJGtKXwDD+7/kDWgoeHh9dVvHUD7GfPr/f38PDw8EZd9f1W0ZbReSQRrRMPDw/vAq9t888K2fb5s4GGKGvBw8PDW/MSfd4G24wdtKFtnbLg4eHhHeLlRfDZH9vwkiEGPDw8vHu8GaYNWGfNrVlr7WHWgoeHh3eIl9y26TG1S2wHqpLiHg8PD+8Gr81922W1n/78+Xh4eHjv591rXM3GpPZDBnh4eHjv4SUN+zwImH36Z1vFi1eDh4eHd43XxgR53JAXxLOA+MW/BA8PD+8tvKSMzreTPEWeUYs5XDw8PLxrvPzj3g5Infp7EX/g4eHhXeAlxXQ7hDoLeTeRcTEsi4eHh7fm5cNSbeC7GQ7YjA78c46Hh4d3gTeLCWbhb8s4tuPh4eHhHeXNNoa2tT+LPHJeNHSFh4eHd4hXtOHzUadFOb7/xSJrwcPDwxvx8nAh+ey2Tal9QysqqfHw8PAu8M5+uJO9aDZqkDfq8PDw8O7x2hGrPJydhQ555DEcusLDw8Nb89oyOvkct42rFlyU+3h4eHgXeO2IwCYyyLPkWfle7HJ4eHh4C95neeT3borvPCJ58TQ8PDy8C7zNtrFpibWjALPwFw8PD+8eL/nE5+NQszAifxF1IIKHh4d3jZeHCHm5nMe1m05dtDHg4eHh/TLejDGLietXg4eHh/ejvNmiZw22fMN4sZ3g4eHhXePlYUQ+htUOUeUvKP9FPDw8vBu8tgGWB7Vts2ozgnCsv4eHh4f3jPcHVGzkKWHwCUUAAAAASUVORK5CYII=">Share</a><div class="tags"></div><div class="post-nav"><a class="pre" href="/2023/08/15/hexo_Cannot_GET/">hexo Cannot GET/</a><a class="next" href="/2022/09/15/%E3%80%90c++%E3%80%91%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%B1%A0/">C++实现一个简单的线程池</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="https://kelinkong.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="About"><img class="nofancybox" src="/img/logo.jpg"/></a><p>Kelin is a boring girl, but not always.</p><a class="info-icon" href="https://github.com/kelinkong" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/DataBase/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network-Security/">Network-Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Operating-System/">Operating-System</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/solutions/">solutions</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/CMU15-445/" style="font-size: 15px;">CMU15-445</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/architecture/" style="font-size: 15px;">architecture</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2024/12/20/AI-GraphRAG/">AI-GraphRAG</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/12/19/AI-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E4%B8%89%E4%B8%AA%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%EF%BC%9A%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E3%80%81%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E3%80%81%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0/">AI-神经网络中的三个基本概念：梯度下降、反向传播、损失函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/12/17/Java-%E5%BC%82%E6%AD%A5%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8/">Java-异步接口调用</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/22/%E5%89%8D%E7%AB%AF-expo/">前端-expo</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/19/Spring-Cloud-%E6%96%AD%E8%B7%AF%E5%99%A8/">Spring Cloud: 断路器</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/14/Spring-Cloud-OpenFeign/">Spring Cloud: OpenFeign</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/13/Spring-Cloud%EF%BC%9Abase%E5%B7%A5%E7%A8%8B/">Spring Cloud：base工程</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/13/Java%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/">Java学习笔记-配置文件</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/07/AI-%E4%BD%BF%E7%94%A8langchain-chatchat%E5%92%8Collama%E6%9E%84%E5%BB%BA%E5%A4%A7%E6%A8%A1%E5%9E%8B/">llvm-使用langchain-chatchat和ollama构建大模型</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/11/07/AI-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%9C%89%E5%85%B3%E7%9A%84%E4%B8%80%E4%BA%9B%E5%B7%A5%E5%85%B7%E9%93%BE/">AI-大模型有关的一些工具链</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2024 <a href="/." rel="nofollow">Kelin's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0"></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.css"><script type="text/javascript" src="/js/love.js?v=1.0.0"></script><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="Copy Successed!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
