@@ -1,7 +1,7 @@
 ---
-title: llvm-RAG学习
+title: AI-RAG学习
 date: 2024-10-12 11:18:19
-categories: [LLVM]
+categories: [AI]
 ---
 
 ## 什么是RAG

@@ -1,7 +1,7 @@
 ---
 title: 提示工程
 date: 2024-09-23 10:24:55
-categories: [LLVM]
+categories: [AI]
 ---
 ## 简介
 ### 模型设置

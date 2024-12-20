@@ -1,8 +1,7 @@
 ---
 title: C++代码调试
 date: 2023-10-10 08:15:48
-categories: [CPP]
-tags: [CPP]
+categories: [C++]
 ---
 
 ## GCC 工作流程

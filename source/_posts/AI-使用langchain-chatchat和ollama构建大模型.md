@@ -1,7 +1,7 @@
 ---
 title: llvm-使用langchain-chatchat和ollama构建大模型
 date: 2024-11-07 19:14:13
-cagegories: [LLVM]
+cagegories: [AI]
 ---
 
 ## 工具

@@ -1,7 +1,7 @@
 ---
 title: hexo Cannot GET/
 date: 2023-08-15 07:33:02
-categories: Solutions
+categories: [solutions]
 tags: [hexo]
 ---
 

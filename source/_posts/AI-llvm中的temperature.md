@@ -1,7 +1,7 @@
 ---
-title: llvm中的temperature
+title: AI-llvm中的temperature
 date: 2024-09-23 15:32:39
-categories: [LLVM]
+categories: [AI]
 mathjax: true
 ---
 

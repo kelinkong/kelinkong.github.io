@@ -1,7 +1,7 @@
 ---
 title: CMU15-445 Query_Execution
 date: 2023-08-17 07:50:33
-categories: DataBase
+categories: [DataBase]
 tags: [CMU15-445]
 ---
 

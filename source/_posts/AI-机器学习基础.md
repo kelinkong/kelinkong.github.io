@@ -1,7 +1,7 @@
 ---
-title: 机器学习基础
+title: AI-机器学习基础
 date: 2024-10-29 18:55:08
-cagegories: [LLVM]
+cagegories: [AI]
 mathjax: true
 ---
 

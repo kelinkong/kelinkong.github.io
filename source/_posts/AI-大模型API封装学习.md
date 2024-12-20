@@ -1,7 +1,7 @@
 ---
-title: 大模型API封装学习
+title: AI-大模型API封装学习
 date: 2024-10-10 18:28:42
-categories: [LLVM]
+categories: [AI]
 ---
 
 ## 实现背景

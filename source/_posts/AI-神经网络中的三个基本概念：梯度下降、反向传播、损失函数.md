@@ -1,7 +1,8 @@
 ---
-title: llvm-神经网络中的三个基本概念：梯度下降、反向传播、损失函数
+title: AI-神经网络中的三个基本概念：梯度下降、反向传播、损失函数
 date: 2024-12-19 10:05:45
-categories:[llvm]
+categories: [AI]
+mathjax: true 
 ---
 <!--Copyright © Microsoft Corporation. All rights reserved.
   适用于[License](https://github.com/Microsoft/ai-edu/blob/master/LICENSE.md)版权许可-->
@@ -71,9 +72,9 @@ categories:[llvm]
 
 第一次试枪后，拉回靶子一看，弹着点偏左了，于是在第二次试枪时，小明就会有意识地向右侧偏几毫米，再看靶子上的弹着点，如此反复几次，小明就会掌握这支步枪的脾气了。图2-2显示了小明的5次试枪过程。
 
-![](../imgs/image-72.png)
+![图2-2 打靶的弹着点记录](../imgs/image-72.png)
 
-图2-2 打靶的弹着点记录
+
 
 在有监督的学习中，需要衡量神经网络输出和所预期的输出之间的差异大小。这种误差函数需要能够反映出当前网络输出和实际结果之间一种量化之后的不一致程度，也就是说函数值越大，反映出模型预测的结果越不准确。
 
@@ -85,8 +86,8 @@ categories:[llvm]
 - 每次调整角度的数值和方向，叫做梯度。比如向右侧调整1毫米，或者向左下方调整2毫米。如图中的绿色矢量线。
 
 上图是每次单发点射，所以每次训练样本的个数是1。在实际的神经网络训练中，通常需要多个样本，做批量训练，以避免单个样本本身采样时带来的误差。在本例中，多个样本可以描述为连发射击，假设一次可以连打3发子弹，每次的离散程度都类似，如图2-3所示。
-![](../imgs/image-73.png)
-图2-3 连发弹着点记录
+![图2-3 连发弹着点记录](../imgs/image-73.png)
+
 
 -  如果每次3发子弹连发，这3发子弹的弹着点和靶心之间的差距之和再除以3，叫做损失，可以用损失函数来表示。
 
@@ -173,17 +174,15 @@ $$y = 2b + 1 \tag{3}$$
 
 计算图如图2-4。
 
-![](../imgs/image-74.png)
+![图2-4 简单线性计算的计算图](../imgs/image-74.png)
 
-图2-4 简单线性计算的计算图
 
 注意这里 $x,y,z$ 不是变量，只是中间计算结果；$w,b$ 才是变量。因为在后面要学习的神经网络中，要最终求解的目标是 $w$ 和 $b$ 的值，所以在这里先预热一下。
 
 当 $w = 3, b = 4$ 时，会得到图2-5的结果。
 
-![](../imgs/image-75.png)
+![图2-5 计算结果](../imgs/image-75.png)
 
-图2-5 计算结果
 
 最终的 $z$ 值，受到了前面很多因素的影响：变量 $w$，变量 $b$，计算式 $x$，计算式 $y$。
 
@@ -740,3 +739,42 @@ $$
 表2-5 不同学习率对迭代情况的影响
 
 ![](../imgs/image-83.png)
+
+## 代码示例
+```python
+class NeuralNet(object):
+    """
+    Neural Network class
+    """
+    def __init__(self, eta):
+        self.eta = eta
+        self.w = 0
+        self.b = 0
+
+    # 前向计算
+    def __forward(self, x):
+        z = self.w * x + self.b
+        return z
+
+    # 反向传播
+    def __backward(self, x, y, z):
+        dz = z - y  # dz 表示预测值 z 和真实值 y 之间的误差
+        db = dz # 因为偏置项 b 对于每个输入样本 x 都是相同的，所以误差 dz 直接反映了偏置项 b 的更新量。因此，db = dz 表示偏置项 b 的梯度（即偏导数）等于误差 dz。
+        dw = x * dz # 损失函数对w求梯度（偏导数），损失函数为均方误差，所以损失函数对w求导，即dw = x * dz
+        return dw, db
+
+    # 梯度更新
+    def __update(self, dw, db):
+        self.w = self.w - self.eta * dw
+        self.b = self.b - self.eta * db
+
+    def train(self, dataReader):
+        for i in range(dataReader.num_train_data):
+            x, y = dataReader.get_train_data(i)  # 获取第i个训练样本
+            z = self.__forward(x)  # 前向计算得到z
+            dw, db = self.__backward(x, y, z) # 反向传播得到dw和db
+            self.__update(dw, db) # 更新参数w和b
+
+    def inference(self, x):
+        return self.__forward(x)
+```

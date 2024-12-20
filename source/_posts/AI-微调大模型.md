@@ -1,7 +1,7 @@
 ---
-title: llvm-微调大模型
+title: AI-微调大模型
 date: 2024-11-01 14:35:34
-cagegories: [LLVM]
+cagegories: [AI]
 ---
 
 ## 微调大模型

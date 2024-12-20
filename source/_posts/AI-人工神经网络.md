@@ -1,7 +1,7 @@
 ---
-title: llvm学习-人工神经网络
+title: AI-人工神经网络
 date: 2024-10-18 08:47:24
-categories: [LLVM]
+categories: [AI]
 mathjax: true 
 ---
 

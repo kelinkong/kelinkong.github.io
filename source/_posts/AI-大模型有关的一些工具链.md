@@ -1,7 +1,7 @@
 ---
-title: 大模型有关的一些工具链
+title: AI-大模型有关的一些工具链
 date: 2024-11-07 10:36:51
-categories: [LLVM]
+categories: [AI]
 ---
 
 ## 大模型的汇总仓库

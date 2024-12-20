@@ -1,7 +1,7 @@
 ---
-title: LLVM中的编码器和解码器
+title: AI-编码器和解码器
 date: 2024-09-23 14:22:51
-categories: [LLVM]
+categories: [AI]
 ---
 
 ## 为什么需要编码和解码？
