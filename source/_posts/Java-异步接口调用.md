@@ -380,3 +380,64 @@ public class InterfaceAController {
          "result": "Processed task1, Processed task2"
      }
      ```
+
+## 示例二
+
+Java并发编程：
+
+```java
+import java.util.List;
+import java.util.concurrent.*;
+import java.util.ArrayList;
+
+public class YourService {
+
+    private final ExecutorService executorService;
+
+    // 创建固定大小为 5 的线程池
+    public YourService() {
+        this.executorService = Executors.newFixedThreadPool(5);  // 设置最大并发数为 5
+    }
+
+    public void processConcurrently(List<String> prompts, User user, List<QuestionGenerationContext> questionsContext, Vo vo) {
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+
+        for (int i = 0; i < prompts.size(); ++i) {
+            final int index = i;
+            // 使用 CompletableFuture 结合线程池来并发执行任务
+            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+                // 调用 send 方法
+                LinkedHashMap<String, String> response = send(prompts.get(index), user);
+
+                // 格式化结果
+                List<QuestionGeneration> questions = QuestionGenerationUtil.formartText(response, questionsContext.get(index));
+
+                // 线程安全地加入 vo
+                synchronized (vo) {
+                    vo.addQuestions(questions);
+                }
+            }, executorService);
+            futures.add(future);
+        }
+
+        // 等待所有任务完成
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        // 关闭线程池
+        executorService.shutdown();
+    }
+
+    public LinkedHashMap<String, String> send(String prompt, User user) {
+        // 模拟 send 请求
+        return new LinkedHashMap<>();
+    }
+
+    // 关闭线程池
+    public void shutdown() {
+        executorService.shutdown();
+    }
+}
+```
+
+一个长期运行的接口，如果调用关闭线程池，那么接下来就会拒绝服务。解决方法：
+1. 全局线程池，避免每一个接口都创建一个线程池。
+2. 在接口调用时去创建一个线程池，然后调用完接口后关闭（不推荐）。
