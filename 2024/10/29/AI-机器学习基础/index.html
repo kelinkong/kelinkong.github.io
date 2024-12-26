@@ -48,13 +48,13 @@
 <p>$$<br>p(y|x^i;W) &#x3D; \frac{1}{\sqrt{2\pi\sigma^2}} \exp(-\frac{(y^i - W^T \cdot x^i)^2}{2\sigma^2})<br>$$</p>
 <p>$x^i;W$组合之后的概率密度函数，就是我们的模型。我们希望$x^i;W$组合之后与$y$越接近越好。所以希望最大化这个概率密度函数。</p>
 <h3 id="似然函数"><a href="#似然函数" class="headerlink" title="似然函数"></a>似然函数</h3><p>似然函数为什么要使用连乘？因为前面说过，误差是独立的，所以我们可以将每个样本的概率密度函数连乘起来。</p>
-<p>$$<br>L(W) &#x3D; \prod_{i&#x3D;1}^{m} p(y^i|x^i;W)&#x3D; \prod_{i&#x3D;1}^{m} \frac{1}{\sqrt{2\pi\sigma^2}} \exp(-\frac{(y^i - W^T \cdot x^i)^2}{2\sigma^2})<br>$$</p>
+<p>$$<br>L(W) &#x3D; \prod_{i&#x3D;1}^{m} p(y|x^i;W)&#x3D; \prod_{i&#x3D;1}^{m} \frac{1}{\sqrt{2\pi\sigma^2}} \exp(-\frac{(y^i - W^T \cdot x^i)^2}{2\sigma^2})<br>$$</p>
 <p>对似然函数取对数，可以将连乘转换为连加：</p>
-<p>$$<br>\log L(W) &#x3D; \sum_{i&#x3D;1}^{m} \log p(y^i|x^i;W)&#x3D; \sum_{i&#x3D;1}^{m} \log \frac{1}{\sqrt{2\pi\sigma^2}} \exp(-\frac{(y^i - W^T \cdot x^i)^2}{2\sigma^2})<br>$$</p>
+<p>$$<br>\log L(W) &#x3D; \sum_{i&#x3D;1}^{m} \log p(y|x^i;W)&#x3D; \sum_{i&#x3D;1}^{m} \log \frac{1}{\sqrt{2\pi\sigma^2}} \exp(-\frac{(y^i - W^T \cdot x^i)^2}{2\sigma^2})<br>$$</p>
 <p>展开化简：</p>
-<p>$$<br>\log L(W) &#x3D; \frac{m}{2} \log(2\pi\sigma^2) - \frac{1}{2\sigma^2} \sum_{i&#x3D;1}^{m} (y^i - W^T \cdot x^i)^2<br>$$</p>
+<p>$$<br>\log L(W) &#x3D; \frac{m}{2} \log(2\pi\sigma^2) - \frac{1}{2\sigma^2} \sum_{i&#x3D;1}^{m} (y - W^T \cdot x^i)^2<br>$$</p>
 <p>我们最终的目标是最大化似然函数，也就是最小化误差。前一项是常数，所以希望后一项越小越好。即：</p>
-<p>$$<br>\min_W \frac{1}{2} \sum_{i&#x3D;1}^{m} (y^i - W^T \cdot x^i)^2<br>$$</p>
+<p>$$<br>\min_W \frac{1}{2} \sum_{i&#x3D;1}^{m} (y - W^T \cdot x^i)^2<br>$$</p>
 <h2 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h2><p><strong>什么是损失函数？</strong></p>
 <p>损失函数也叫目标函数，是用来衡量模型预测值与真实值之间的差距的函数。</p>
 <p>上面那个例子，我们的目标是找到一个合适的 $w_1$ 和 $w_2$，使得我们的模型能够很好地预测工资。损失函数可以定义为：</p>
