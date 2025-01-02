@@ -66,35 +66,35 @@ $$
 将误差代入预测值：
 
 $$
-p(y^i|x^i;W) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp(-\frac{(y^i - W^T \cdot x^i)^2}{2\sigma^2})
+p(y|x^i;W) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp(-\frac{(y^i - W^T \cdot x^i)^2}{2\sigma^2})
 $$
 
-$x^i;W$组合之后的概率密度函数，就是我们的模型。我们希望$x^i;W$组合之后与$y^i$越接近越好。所以希望最大化这个概率密度函数。
+$x^i;W$组合之后的概率密度函数，就是我们的模型。我们希望$x^i;W$组合之后与$y$越接近越好。所以希望最大化这个概率密度函数。
 
 ### 似然函数
 
 似然函数为什么要使用连乘？因为前面说过，误差是独立的，所以我们可以将每个样本的概率密度函数连乘起来。
 
 $$
-L(W) = \prod_{i=1}^{m} p(y^i|x^i;W)= \prod_{i=1}^{m} \frac{1}{\sqrt{2\pi\sigma^2}} \exp(-\frac{(y^i - W^T \cdot x^i)^2}{2\sigma^2})
+L(W) = \prod_{i=1}^{m} p(y|x^i;W)= \prod_{i=1}^{m} \frac{1}{\sqrt{2\pi\sigma^2}} \exp(-\frac{(y^i - W^T \cdot x^i)^2}{2\sigma^2})
 $$
 
 对似然函数取对数，可以将连乘转换为连加：
 
 $$
-\log L(W) = \sum_{i=1}^{m} \log p(y^i|x^i;W)= \sum_{i=1}^{m} \log \frac{1}{\sqrt{2\pi\sigma^2}} \exp(-\frac{(y^i - W^T \cdot x^i)^2}{2\sigma^2})
+\log L(W) = \sum_{i=1}^{m} \log p(y|x^i;W)= \sum_{i=1}^{m} \log \frac{1}{\sqrt{2\pi\sigma^2}} \exp(-\frac{(y^i - W^T \cdot x^i)^2}{2\sigma^2})
 $$
 
 展开化简：
 
 $$
-\log L(W) = \frac{m}{2} \log(2\pi\sigma^2) - \frac{1}{2\sigma^2} \sum_{i=1}^{m} (y^i - W^T \cdot x^i)^2
+\log L(W) = \frac{m}{2} \log(2\pi\sigma^2) - \frac{1}{2\sigma^2} \sum_{i=1}^{m} (y - W^T \cdot x^i)^2
 $$
 
 我们最终的目标是最大化似然函数，也就是最小化误差。前一项是常数，所以希望后一项越小越好。即：
 
 $$
-\min_W \frac{1}{2} \sum_{i=1}^{m} (y^i - W^T \cdot x^i)^2
+\min_W \frac{1}{2} \sum_{i=1}^{m} (y - W^T \cdot x^i)^2
 $$
 
 ## 损失函数
@@ -257,3 +257,5 @@ def compute_cost(self):
     cost = (1 / (2 * num_examples)) * np.dot(error.T, error)
     return cost
 ```
+
+参考代码：[线性回归的从零开始实现](https://zh-v2.d2l.ai/chapter_linear-networks/linear-regression-scratch.html)
