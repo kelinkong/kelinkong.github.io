@@ -392,3 +392,60 @@ class MockUserTest {
     }
 }
 ```
+
+## 期望抛出异常
+```java
+@Test(expected = RuntimeException.class)
+public void publicMethodException() {
+    String name = "test";
+    Mockito.doThrow(new RuntimeException()).when(mockService).serviceMethod(anyString());
+    assertThrows(RuntimeException.class, () -> mockUser.publicMethod(name));
+}
+```
+
+doThrow() 与 thenThrow() 区别（用于 stubbing 有返回值方法）
+- doThrow()：用于 void 方法的 stubbing。
+- thenThrow()：用于有返回值的方法的 stubbing。
+
+```java
+// void 方法
+doThrow(new RuntimeException()).when(mockObject).voidMethod();
+// 有返回值的方法
+when(mockObject.method()).thenThrow(new RuntimeException());
+```
+
+
+如果 **源代码中有 `try-catch` 块**，而在测试方法上使用了：
+
+```java
+@Test(expected = Exceptions.class)
+```
+
+那你**根本无法覆盖 `catch` 中的内容**，原因是：
+
+**JUnit 的 `@Test(expected = ...)` 会中断执行流程**
+
+当测试中抛出指定异常时，JUnit 会立即判定测试通过，不再执行后续逻辑：
+
+* 如果源代码中 **没有 catch**，这个方式可以验证是否真的抛出了异常。
+* 但如果源代码中 **已经 catch 掉异常**，异常就不会冒泡到测试层，`@Test(expected = ...)` 就**无效**。
+* 即使异常冒泡成功了，**`catch` 块内容也不会执行到**，所以覆盖率里 catch 是“未执行”。
+
+---
+
+### ✅ 要覆盖 catch 中的代码，正确做法是：
+
+**不使用 `@Test(expected = ...)`，而是让测试代码走完整流程，触发并验证 catch 块被执行**。
+
+```java
+@Test
+public void testRemoveUser_withException() {
+    // mock 抛出异常
+    when(userService.deleteUserById(1L)).thenThrow(new Exceptions("boom"));
+
+    // 调用实际方法，触发 try-catch
+    controller.removeUser(1L);
+
+    // 可以用日志检查、状态标志、verify 等方式验证 catch 是否执行
+}
+```
