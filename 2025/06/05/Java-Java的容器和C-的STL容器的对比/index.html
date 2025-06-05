@@ -1,0 +1,305 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>Java-Java的容器和C++的STL容器的对比 | Kelin's blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/latest/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/grids-responsive-min.min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script type="text/javascript" src="//lib.baomitu.com/clipboard.js/latest/clipboard.min.js"></script><script type="text/javascript" src="//lib.baomitu.com/toastr.js/latest/toastr.min.js"></script><link rel="stylesheet" href="//lib.baomitu.com/toastr.js/latest/toastr.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Java-Java的容器和C++的STL容器的对比</h1><a id="logo" href="/.">Kelin's blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Java-Java的容器和C++的STL容器的对比</h1><div class="post-meta">2025-06-05<span> | </span><span class="category"><a href="/categories/Java/">Java</a></span><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 1.3k</span><span class="post-meta-item-text"> Words</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i><span class="post-count"> 5</span><span class="post-meta-item-text"> Minutes</span></span></span></div><div class="post-content"><h2 id="Java容器与C-STL容器深度对比"><a href="#Java容器与C-STL容器深度对比" class="headerlink" title="Java容器与C++ STL容器深度对比"></a>Java容器与C++ STL容器深度对比</h2><h3 id="类型系统差异"><a href="#类型系统差异" class="headerlink" title="类型系统差异"></a>类型系统差异</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>C++ STL</th>
+<th>Java 集合框架</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>泛型实现</td>
+<td>编译时模板（类型安全）</td>
+<td>类型擦除（运行时类型信息丢失）</td>
+</tr>
+<tr>
+<td>基础类型处理</td>
+<td>原生支持（<code>vector&lt;int&gt;</code>）</td>
+<td>必须使用包装类（<code>ArrayList&lt;Integer&gt;</code>）</td>
+</tr>
+<tr>
+<td>类型检查</td>
+<td>编译期检查</td>
+<td>编译期部分检查 + 运行期检查</td>
+</tr>
+</tbody></table>
+<p>示例对比：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// C++ 模板特化</span></span><br><span class="line">vector&lt;<span class="type">int</span>&gt; nums&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;  <span class="comment">// 直接存储int</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Java 类型擦除</span></span><br><span class="line">List&lt;Integer&gt; nums = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(); <span class="comment">// 自动装箱int-&gt;Integer</span></span><br><span class="line">nums.add(<span class="string">&quot;text&quot;</span>); <span class="comment">// 编译通过，运行时报ClassCastException</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="核心容器对比"><a href="#核心容器对比" class="headerlink" title="核心容器对比"></a>核心容器对比</h2><p>线性容器</p>
+<table>
+<thead>
+<tr>
+<th>容器类型</th>
+<th>C++ STL</th>
+<th>Java集合框架</th>
+<th>关键差异</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>动态数组</td>
+<td>vector</td>
+<td>ArrayList</td>
+<td>Java扩容50%，C++扩容2倍</td>
+</tr>
+<tr>
+<td>双端队列</td>
+<td>deque</td>
+<td>ArrayDeque</td>
+<td>Java不支持随机访问</td>
+</tr>
+<tr>
+<td>链表</td>
+<td>list</td>
+<td>LinkedList</td>
+<td>Java实现了Deque接口</td>
+</tr>
+<tr>
+<td>线程安全数组</td>
+<td>-</td>
+<td>CopyOnWriteArrayList</td>
+<td>Java特有</td>
+</tr>
+</tbody></table>
+<p>性能对比：<br>• 随机访问：<code>vector</code> ≈ <code>ArrayList</code> &gt; <code>LinkedList</code></p>
+<p>• 头部插入：<code>LinkedList</code> &gt; <code>ArrayList</code></p>
+<p>• 迭代器遍历：C++迭代器性能更高（无边界检查）</p>
+<p>关联容器</p>
+<table>
+<thead>
+<tr>
+<th>容器类型</th>
+<th>C++ STL</th>
+<th>Java集合框架</th>
+<th>实现差异</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>红黑树Map</td>
+<td>map</td>
+<td>TreeMap</td>
+<td>Java基于NavigableMap接口</td>
+</tr>
+<tr>
+<td>哈希Map</td>
+<td>unordered_map</td>
+<td>HashMap</td>
+<td>Java解决冲突&#x3D;链表+红黑树</td>
+</tr>
+<tr>
+<td>集合</td>
+<td>set</td>
+<td>HashSet&#x2F;TreeSet</td>
+<td>Java基于Map实现</td>
+</tr>
+</tbody></table>
+<p>哈希碰撞处理：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// C++ unordered_map (链地址法)</span></span><br><span class="line">bucket <span class="number">0</span>: [键<span class="number">1</span>] → [键<span class="number">2</span>] → null</span><br><span class="line">bucket <span class="number">1</span>: [键<span class="number">3</span>] → null</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Java HashMap (链表转红黑树)</span></span><br><span class="line">bucket <span class="number">0</span>: [键<span class="number">1</span>] → [键<span class="number">2</span>]（当长度&gt;<span class="number">8</span>转红黑树）</span><br></pre></td></tr></table></figure>
+
+<h3 id="内存管理差异"><a href="#内存管理差异" class="headerlink" title="内存管理差异"></a>内存管理差异</h3><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>C++ STL</th>
+<th>Java集合框架</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>元素存储</td>
+<td>值语义（直接存储对象）</td>
+<td>引用语义（存储对象引用）</td>
+</tr>
+<tr>
+<td>内存释放</td>
+<td>析构函数立即释放</td>
+<td>GC延迟回收</td>
+</tr>
+<tr>
+<td>对象所有权</td>
+<td>容器拥有元素所有权</td>
+<td>容器持有引用，不管理对象生命周期</td>
+</tr>
+<tr>
+<td>内存布局</td>
+<td>连续内存(vector)或节点内存</td>
+<td>数组(ArrayList)或节点(LinkedList)</td>
+</tr>
+</tbody></table>
+<p>内存泄露风险：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Java典型内存泄露场景</span></span><br><span class="line">Map&lt;Key, Value&gt; cache = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">cache.put(key, heavyObject);</span><br><span class="line"><span class="comment">// 即使移除key，heavyObject仍可能被其他引用持有</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="迭代器设计对比"><a href="#迭代器设计对比" class="headerlink" title="迭代器设计对比"></a>迭代器设计对比</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>C++ STL迭代器</th>
+<th>Java迭代器</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>设计模式</td>
+<td>泛型编程思想</td>
+<td>Iterator设计模式</td>
+</tr>
+<tr>
+<td>并发修改检测</td>
+<td>未定义行为</td>
+<td>fail-fast机制抛ConcurrentModificationException</td>
+</tr>
+<tr>
+<td>遍历中删除</td>
+<td><code>it = vec.erase(it)</code></td>
+<td><code>iterator.remove()</code></td>
+</tr>
+<tr>
+<td>双向访问</td>
+<td>支持(bidirectional iterator)</td>
+<td>仅ListIterator支持</td>
+</tr>
+</tbody></table>
+<p>安全删除示例：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// C++安全删除</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> it=vec.<span class="built_in">begin</span>(); it!=vec.<span class="built_in">end</span>(); ) &#123;</span><br><span class="line">  <span class="keyword">if</span>(condition) it = vec.<span class="built_in">erase</span>(it);</span><br><span class="line">  <span class="keyword">else</span> ++it;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Java安全删除</span></span><br><span class="line">Iterator&lt;Integer&gt; it = list.iterator();</span><br><span class="line"><span class="keyword">while</span>(it.hasNext()) &#123;</span><br><span class="line">  <span class="keyword">if</span>(condition) it.remove();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="线程安全实现"><a href="#线程安全实现" class="headerlink" title="线程安全实现"></a>线程安全实现</h3><table>
+<thead>
+<tr>
+<th>安全级别</th>
+<th>C++ STL</th>
+<th>Java集合框架</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>默认情况</td>
+<td>非线程安全</td>
+<td>非线程安全</td>
+</tr>
+<tr>
+<td>同步容器</td>
+<td>无</td>
+<td>Collections.synchronizedXXX()</td>
+</tr>
+<tr>
+<td>并发容器</td>
+<td>TBB库中的concurrent_vector</td>
+<td>ConcurrentHashMap, CopyOnWriteArrayList</td>
+</tr>
+<tr>
+<td>无锁实现</td>
+<td>atomic类型</td>
+<td>AtomicInteger等</td>
+</tr>
+</tbody></table>
+<p>Java并发容器原理：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ConcurrentHashMap分段锁实现</span></span><br><span class="line">Map&lt;String, Object&gt; concurrentMap = <span class="keyword">new</span> <span class="title class_">ConcurrentHashMap</span>&lt;&gt;();</span><br><span class="line"><span class="comment">// 写操作锁定单个segment而不是整个map</span></span><br><span class="line">concurrentMap.compute(key, (k,v) -&gt; v == <span class="literal">null</span> ? newValue : modify(v));</span><br></pre></td></tr></table></figure>
+
+<h3 id="API设计哲学差异"><a href="#API设计哲学差异" class="headerlink" title="API设计哲学差异"></a>API设计哲学差异</h3><table>
+<thead>
+<tr>
+<th>设计特点</th>
+<th>C++ STL</th>
+<th>Java集合框架</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>接口复杂度</td>
+<td>算法与容器分离(<code>sort(vec.begin(), vec.end())</code>)</td>
+<td>容器集成方法(<code>Collections.sort()</code>)</td>
+</tr>
+<tr>
+<td>函数式支持</td>
+<td>C++11 lambda表达式</td>
+<td>Java8 Stream API</td>
+</tr>
+<tr>
+<td>空值处理</td>
+<td>不允许null元素</td>
+<td>允许null元素（需谨慎）</td>
+</tr>
+<tr>
+<td>接口统一性</td>
+<td>不同容器接口差异大</td>
+<td>通过Collection&#x2F;Map接口统一</td>
+</tr>
+</tbody></table>
+<p>Java Stream API示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; filtered = list.stream()</span><br><span class="line">    .filter(s -&gt; s != <span class="literal">null</span>)</span><br><span class="line">    .map(String::toUpperCase)</span><br><span class="line">    .collect(Collectors.toList());</span><br></pre></td></tr></table></figure>
+
+<h3 id="性能关键差异点"><a href="#性能关键差异点" class="headerlink" title="性能关键差异点"></a>性能关键差异点</h3><p>时间复杂度对比</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>vector&#x2F;ArrayList</th>
+<th>list&#x2F;LinkedList</th>
+<th>unordered_map&#x2F;HashMap</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>随机访问</td>
+<td>O(1)</td>
+<td>O(n)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>头部插入</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>-</td>
+</tr>
+<tr>
+<td>查找操作</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>迭代器失效</td>
+<td>频繁(扩容后全失效)</td>
+<td>安全(节点删除)</td>
+<td>Java视图迭代器部分安全</td>
+</tr>
+</tbody></table>
+<p>内存占用分析</p>
+<table>
+<thead>
+<tr>
+<th>容器类型</th>
+<th>C++ 内存特点</th>
+<th>Java 内存特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>动态数组</td>
+<td>紧凑（无额外开销）</td>
+<td>每个元素16字节对象头</td>
+</tr>
+<tr>
+<td>链表节点</td>
+<td>指针8字节</td>
+<td>每个节点24字节（对象头+多个指针）</td>
+</tr>
+<tr>
+<td>哈希表</td>
+<td>桶数组+链表节点</td>
+<td>桶数组+节点（可能转树节点）</td>
+</tr>
+</tbody></table>
+<p>迁移实践建议</p>
+<ol>
+<li><p>容器选择转换表：</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">C++ STL       =&gt; Java集合框架</span><br><span class="line">----------      --------------</span><br><span class="line">vector        =&gt; ArrayList (随机访问多)</span><br><span class="line">deque         =&gt; ArrayDeque (队列场景)</span><br><span class="line">list          =&gt; LinkedList (频繁插入删除)</span><br><span class="line">unordered_map =&gt; HashMap (通用KV)</span><br><span class="line">map           =&gt; TreeMap (需排序)</span><br><span class="line"><span class="built_in">set</span>           =&gt; HashSet/TreeSet</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>避免常见陷阱：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 陷阱1：循环删除</span></span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;list.size(); i++)&#123;</span><br><span class="line">  list.remove(i); <span class="comment">// 会跳过元素</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 正确方式</span></span><br><span class="line">Iterator&lt;Item&gt; it = list.iterator();</span><br><span class="line"><span class="keyword">while</span>(it.hasNext()) it.remove();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 陷阱2：并发修改</span></span><br><span class="line"><span class="keyword">for</span>(Item item : collection) &#123;</span><br><span class="line">  collection.add(newItem); <span class="comment">// 抛ConcurrentModificationException</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>性能优化策略：<br>• 预分配容量：<code>new ArrayList&lt;&gt;(1000)</code></p>
+<p>• 基本类型优化：使用FastUtil库的<code>IntArrayList</code></p>
+<p>• 内存控制：及时clear()并置null帮助GC</p>
+</li>
+</ol>
+<blockquote>
+<p>作为C++转Java开发者，核心转变是从对象所有权管理到引用管理的思维转换。Java容器更像是”对象引用管理系统”，而非真正的对象容器。这种设计带来GC便利性的同时，也增加了内存泄露的风险点。</p>
+</blockquote>
+</div><script type="text/javascript" src="/js/share.js?v=1.0.0" async></script><a class="article-share-link" data-url="https://kelinkong.github.io/2025/06/05/Java-Java%E7%9A%84%E5%AE%B9%E5%99%A8%E5%92%8CC-%E7%9A%84STL%E5%AE%B9%E5%99%A8%E7%9A%84%E5%AF%B9%E6%AF%94/" data-id="cmbisj5ko0000ujogfsnhb3d3" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASYAAAEmCAAAAADqr2IGAAAEm0lEQVR42u3a226rSBAF0Pz/T2ekeRvlmLN3Fda4yeIpsjE0i0jVdfn6io/vf4+fn/z8/Oe3r868vsL1ma+uNvvtbQcmTJgwYfpIpu/LIz/nGnf2YAnu9ZqTVUXPhQkTJkyYDmfKL7cJ/7Prt3fMV5I8OyZMmDBh+j1M7ULbtHmGm28LZpsGTJgwYcL025iSMNxevy0xt2XoTXqMCRMmTJiewbS53KyVOKNvQ35+/dtq4ZgwYcKE6cOY2pD8pL/fON+ECRMmTJg+gOm7PPa4bQNytpLNENIffoUJEyZMmI5lyhuB+cDNrCCbPPCsyDt7tVGFABMmTJgwHcLUDr60j3HXt21hd/avgAkTJkyYnsSUJJ+bNmHekpyF8OSB863DyxViwoQJE6bDmfIAmYfh2faifYxN0blYAyZMmDBhOpwpf+xZgnrXZqIN/5tU+T+/woQJEyZMxzJdLzp/vGRb0C4xf1WbbU2dimPChAkTpqOY2p8ly2rHepJAvh8h2hSvMWHChAnTuUzJVqAN4e2oa14mbrcsbUpcVMQxYcKECdOBTJtBmTzDTh71usg7a22257zcEGDChAkTpgOZNqF9025sy7vvaE9utguYMGHChOkspvbG7bd5mJ+lprOUuB5XwoQJEyZMRzFdLy6/5XXYnr239vpJQTlP1F92fTFhwoQJ01FMbYtxXxLN0VvE2efDojAmTJgwYTqKaTbmMmtnzqDztuh+y4IJEyZMmJ7KNBvfSVqbw25qfK8EbjZi+3KSFxMmTJgwHciU/2B2y+Saybag5ZhtAjBhwoQJ05OY8tQ0L7y2HJt7Ja3N9u/iwIQJEyZMH8yUJKt5kpmP6eSs7Su5K0WP5pswYcKECdPHM907+9NiteNBCe7shUXbDkyYMGHCdCBTXuiclWVnCXYRpAPuWTH35b4JEyZMmDAdxZRfbnP7fR16U/ZNaOrmJSZMmDBhOoqpLXreW07NHyzfRtw1bPSHCgEmTJgwYTqWaTMoMwv/Ce4mnM8+f3kOJkyYMGE6nGkGkYTzhCBPs2cp+uy1YcKECROm5zFt0sUEIm+RtlXqfDvSrgoTJkyYMD2DaTa404bhWah+d4OzGNnBhAkTJkwHMuWLaEP4bExnVqJtX22+XcCECRMmTKcz5SMySbrbLmt/nWF7si37YsKECROmY5nyQHtvu3G2vbj3ZbTlbEyYMGHC9CSmfKDnrjbnJl+/i7vo/WLChAkTpo9nytPIfSF4sxVoadpC8F/SfkyYMGHC9AimtnnZtiTz8Jwkt20xOofDhAkTJkxPYmovunmwenqo3BbsR4WK+2LChAkTpkOYvsujvf0mcZ01U2fN17+M8mDChAkTpmOZ2gCZF2rfMXCTF3bzh8/vhQkTJkyYzmVqh1r2CWc7DNRCtK8z+ufAhAkTJkyHMyWp6Syg5ljtdmTYjBzdERMmTJgw/QamNtGdJajt+M4s9U3uggkTJkyYMLVjNG3teZ8St83UZo+ACRMmTJhOYtoUeZPS6r7UOxsVyjcob6+FY8KECROm/4lpP7iTh+1ZIM+/zVPlr3ccmDBhwoTps5j+AYuOve9Gt9jUAAAAAElFTkSuQmCC">Share</a><div class="tags"></div><div class="post-nav"><a class="next" href="/2025/06/05/%E6%95%B0%E5%AD%97%E4%BA%BA-Java%E9%9F%B3%E8%A7%86%E9%A2%91%E5%A4%84%E7%90%86-%E9%9F%B3%E9%A2%91%E6%8E%A8%E6%B5%81%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">数字人-Java音视频处理-音频推流失败问题排查</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="https://kelinkong.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="About"><img class="nofancybox" src="/img/logo.jpg"/></a><p>Kelin is a boring girl, but not always.</p><a class="info-icon" href="https://github.com/kelinkong" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/DataBase/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Digital-Human/">Digital Human</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network-Security/">Network-Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Operating-System/">Operating-System</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/frontend/">frontend</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/solutions/">solutions</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/CMU15-445/" style="font-size: 15px;">CMU15-445</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/architecture/" style="font-size: 15px;">architecture</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2025/06/05/Java-Java%E7%9A%84%E5%AE%B9%E5%99%A8%E5%92%8CC-%E7%9A%84STL%E5%AE%B9%E5%99%A8%E7%9A%84%E5%AF%B9%E6%AF%94/">Java-Java的容器和C++的STL容器的对比</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/06/05/%E6%95%B0%E5%AD%97%E4%BA%BA-Java%E9%9F%B3%E8%A7%86%E9%A2%91%E5%A4%84%E7%90%86-%E9%9F%B3%E9%A2%91%E6%8E%A8%E6%B5%81%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">数字人-Java音视频处理-音频推流失败问题排查</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/05/21/%E6%95%B0%E5%AD%97%E4%BA%BA-Java%E9%9F%B3%E8%A7%86%E9%A2%91%E5%A4%84%E7%90%86/">数字人-Java音视频处理-推流和拉流</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/04/25/%E6%95%B0%E5%AD%97%E4%BA%BA-%E5%9F%BA%E7%A1%80%E6%89%AB%E7%9B%B2/">数字人-基础扫盲</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/04/18/Java-%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">Java-基础学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/02/13/deepseek-v3%E6%8A%80%E6%9C%AF%E6%8A%A5%E5%91%8A%E5%AD%A6%E4%B9%A0/">deepseek-v3技术报告学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/01/10/DB-%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93Neo4j/">DB-图数据库Neo4j</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/01/09/Java-%E7%BC%96%E8%AF%91%E7%9B%B8%E5%85%B3/">Java-编译相关</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/12/27/AI-%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E7%AC%94%E8%AE%B0/">AI-动手学深度学习-笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/12/24/AI-%E5%9F%BA%E4%BA%8Etransformers%E7%9A%84%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86-NLP-%E5%85%A5%E9%97%A8/">AI-基于transformers的自然语言处理(NLP)入门</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2025 <a href="/." rel="nofollow">Kelin's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0"></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.css"><script type="text/javascript" src="/js/love.js?v=1.0.0"></script><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="Copy Successed!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
