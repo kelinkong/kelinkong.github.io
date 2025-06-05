@@ -186,3 +186,23 @@ Buffer 的基本操作包括：
 - `capacity()`：获取 Buffer 的总容量。
 - `hasRemaining()`：判断 Buffer 中是否还有可读数据。
 
+`flip()` 方法是 Java NIO Buffer 中非常重要的一个操作，用于切换 Buffer 的读写模式。
+
+当向 Buffer 写入数据时（比如 put 操作），Buffer 处于“写模式”，position 指向下一个要写入的位置。
+
+写完数据后，如果想从 Buffer 读取刚才写入的数据，需要先调用 flip()。
+
+`flip()` 会把 position 设为 0，把 limit 设为原来的 position，这样就可以从头开始读取刚才写入的数据。
+
+```java
+ByteBuffer buffer = ByteBuffer.allocate(10);
+buffer.put((byte)1);
+buffer.put((byte)2);
+// 此时 position=2, limit=10
+
+buffer.flip(); // 切换到读模式
+// 现在 position=0, limit=2
+
+byte a = buffer.get(); // 读取第一个字节
+byte b = buffer.get(); // 读取第二个字节
+```
