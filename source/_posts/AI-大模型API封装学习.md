@@ -1,7 +1,7 @@
 ---
-title: AI-大模型API封装学习
+title: Java-大模型API封装学习
 date: 2024-10-10 18:28:42
-categories: [AI]
+categories: [Java]
 ---
 
 ## 实现背景
@@ -308,4 +308,40 @@ public class AnotherComponent {
         });
     }
 }
+```
+
+## 更为简答的实现方式，不需要显式订阅
+
+直接返回`ServerSentEvent<String>`对象，Spring MVC 会自动将这个对象转换为 SSE 响应。
+
+```java
+@RestController
+@RequestMapping("/proxy")
+public class SSEProxyController {
+
+    private final WebClient webClient = WebClient.create();
+
+    @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<> proxySSE() {
+        return webClient.get()
+                .uri("http://localhost:8081/source-sse") // 外部 SSE 服务地址
+                .accept(MediaType.TEXT_EVENT_STREAM)
+                .retrieve()
+                .bodyToFlux(String.class)
+                .map(data -> ServerSentEvent.builder(data).build());
+    }
+}
+```
+
+### 前端如何使用
+```javascript
+const eventSource = new EventSource('/api/openai/generate');
+eventSource.onmessage = function(event) {
+    console.log("Received data: ", event.data);
+    // 在这里处理接收到的文本数据
+};
+eventSource.onerror = function(event) {
+    console.error("Error occurred: ", event);
+    // 在这里处理错误
+};
 ```
