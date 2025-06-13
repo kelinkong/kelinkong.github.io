@@ -14,18 +14,15 @@
 <li>解法：卡尔曼滤波根据过去的状态“预测”位置，又结合当前雷达观测，进行“校正”</li>
 </ul>
 <h3 id="卡尔曼滤波核心概念"><a href="#卡尔曼滤波核心概念" class="headerlink" title="卡尔曼滤波核心概念"></a>卡尔曼滤波核心概念</h3><h3 id="1-系统状态模型"><a href="#1-系统状态模型" class="headerlink" title="1. 系统状态模型"></a>1. <strong>系统状态模型</strong></h3><p>目标的状态用一个向量表示，比如二维空间：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x = [位置_x, 位置_y, 速度_x, 速度_y]^T</span><br></pre></td></tr></table></figure>
-
-<p>系统状态随时间演化：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x_k = F x_&#123;k-1&#125; + w_k</span><br></pre></td></tr></table></figure>
-
+<p>$$<br>x &#x3D; [位置_x, 位置_y, 速度_x, 速度_y]^T<br>$$</p>
+<p>系统状态随时间演化：<br>$$<br>x_k &#x3D; F x_{k-1} + w_k<br>$$</p>
 <p>其中：</p>
 <ul>
 <li><code>F</code> 是状态转移矩阵（如匀速模型）。</li>
 <li><code>w_k</code> 是过程噪声，表示系统的不确定性（如飞机突然转向）</li>
 </ul>
 <h4 id="状态转移矩阵-F"><a href="#状态转移矩阵-F" class="headerlink" title="状态转移矩阵 F"></a>状态转移矩阵 <code>F</code></h4><p>状态转移矩阵（记作 <strong>F</strong>）描述的是：</p>
-<p>**从上一个时刻 $x_{k-1}$**，系统是如何过渡到当前时刻 $x_k$ 的。</p>
+<p><strong>从上一个时刻 $x_{k-1}$，系统是如何过渡到当前时刻 $x_k$ 的。</strong></p>
 <p>也就是说，它描述目标的“运动规律”或“预测模型”。</p>
 <p>公式如下：</p>
 <p>$$<br>x_k &#x3D; F x_{k-1} + B u_k + w_k<br>$$</p>
@@ -41,8 +38,7 @@
 <p>$$<br>x &#x3D; \begin{bmatrix} 位置 \ 速度 \end{bmatrix}<br>$$</p>
 <p>设时间间隔为 $\Delta t$，也就是每隔 1 秒更新一次状态。</p>
 <p><strong>匀速直线运动公式：</strong></p>
-<p>$$<br>\text{新位置} &#x3D; \text{旧位置} + \text{速度} \cdot \Delta t<br>\text{新速度} &#x3D; \text{旧速度}（速度不变）<br>$$</p>
-<h1 id="x-k-begin-bmatrix-x-dot-x-end-bmatrix-k"><a href="#x-k-begin-bmatrix-x-dot-x-end-bmatrix-k" class="headerlink" title="$$x_k &#x3D;\begin{bmatrix}x \\dot{x}\end{bmatrix}_k"></a>$$<br>x_k &#x3D;<br>\begin{bmatrix}<br>x \<br>\dot{x}<br>\end{bmatrix}_k</h1><p>F<br>\begin{bmatrix}<br>x \<br>\dot{x}<br>\end{bmatrix}_{k-1}<br>$$</p>
+<h1 id="text-新位置-text-旧位置-text-速度-cdot-Delta-t-text-新速度-text-旧速度-（速度不变）-假设状态向量为：-x-k-begin-bmatrix-x-dot-x-end-bmatrix-k"><a href="#text-新位置-text-旧位置-text-速度-cdot-Delta-t-text-新速度-text-旧速度-（速度不变）-假设状态向量为：-x-k-begin-bmatrix-x-dot-x-end-bmatrix-k" class="headerlink" title="$$\text{新位置} &#x3D; \text{旧位置} + \text{速度} \cdot \Delta t\text{新速度} &#x3D; \text{旧速度}（速度不变）$$假设状态向量为：$$x_k &#x3D;\begin{bmatrix}x \\dot{x}\end{bmatrix}_k"></a>$$<br>\text{新位置} &#x3D; \text{旧位置} + \text{速度} \cdot \Delta t\text{新速度} &#x3D; \text{旧速度}（速度不变）<br>$$<br>假设状态向量为：<br>$$<br>x_k &#x3D;<br>\begin{bmatrix}<br>x \<br>\dot{x}<br>\end{bmatrix}_k</h1><p>F<br>\begin{bmatrix}<br>x \<br>\dot{x}<br>\end{bmatrix}_{k-1}<br>$$</p>
 <p>那么状态转移矩阵 F 是：</p>
 <p>$$<br>F &#x3D;<br>\begin{bmatrix}<br>1 &amp; \Delta t \<br>0 &amp; 1 \<br>\end{bmatrix}<br>$$</p>
 <p>解释：</p>
@@ -58,9 +54,7 @@
 <p>$$<br>x_{k-1} &#x3D;<br>\begin{bmatrix}<br>10 \<br>2 \<br>\end{bmatrix},<br>\quad \Delta t &#x3D; 1<br>$$</p>
 <h1 id="F-begin-bmatrix-1-1-0-1-end-bmatrix-Rightarrowx-k-F-x-k-1-begin-bmatrix-1-1-0-1-end-bmatrix-begin-bmatrix-10-2-end-bmatrix"><a href="#F-begin-bmatrix-1-1-0-1-end-bmatrix-Rightarrowx-k-F-x-k-1-begin-bmatrix-1-1-0-1-end-bmatrix-begin-bmatrix-10-2-end-bmatrix" class="headerlink" title="$$F &#x3D;\begin{bmatrix}1 &amp; 1 \0 &amp; 1 \\end{bmatrix}\Rightarrowx_k &#x3D; F x_{k-1} &#x3D;\begin{bmatrix}1 &amp; 1 \0 &amp; 1 \\end{bmatrix}\begin{bmatrix}10 \2 \\end{bmatrix}"></a>$$<br>F &#x3D;<br>\begin{bmatrix}<br>1 &amp; 1 \<br>0 &amp; 1 \<br>\end{bmatrix}<br>\Rightarrow<br>x_k &#x3D; F x_{k-1} &#x3D;<br>\begin{bmatrix}<br>1 &amp; 1 \<br>0 &amp; 1 \<br>\end{bmatrix}<br>\begin{bmatrix}<br>10 \<br>2 \<br>\end{bmatrix}</h1><p>\begin{bmatrix}<br>12 \<br>2 \<br>\end{bmatrix}<br>$$</p>
 <p>→ <strong>预测下一时刻的位置是 12，速度仍然是 2</strong></p>
-<h3 id="2-观测模型"><a href="#2-观测模型" class="headerlink" title="2. 观测模型"></a>2. <strong>观测模型</strong></h3><p>我们能观测到的是测量值：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">z_k = H x_k + v_k</span><br></pre></td></tr></table></figure>
-
+<h3 id="2-观测模型"><a href="#2-观测模型" class="headerlink" title="2. 观测模型"></a>2. <strong>观测模型</strong></h3><p>我们能观测到的是测量值：<br>$$<br>z_k &#x3D; H x_k + v_k<br>$$</p>
 <p>其中：</p>
 <ul>
 <li><code>H</code> 是观测矩阵（把状态映射为观测）</li>
@@ -194,8 +188,7 @@
 </blockquote>
 </li>
 </ul>
-<p>🔄 当观测值（比如 GPS）有偏差时，滤波器不会被轻易“拉偏”——它会主要信任自己的预测。</p>
-<hr>
+<p>当观测值（比如 GPS）有偏差时，滤波器不会被轻易“拉偏”——它会主要信任自己的预测。</p>
 <p><strong>如果 <code>Q</code> 设大，会发生什么？</strong></p>
 <p>你在说：“我不太信自己预测得准，可能运动发生了突变（比如拐弯、刹车）”</p>
 <p>此时卡尔曼滤波会：</p>
