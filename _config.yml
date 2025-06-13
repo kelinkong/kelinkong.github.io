@@ -55,6 +55,7 @@ prismjs:
   preprocess: true
   line_number: true
   tab_replace: ''
+mathjax: true  
 
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
@@ -115,3 +116,11 @@ deploy:
 #   content_limit: 140
 #   content_limit_delim: ' '
 #   order_by: -date
+
+markdown:
+  render:
+    html: true
+    breaks: false
+    linkify: true
+  plugins:
+    - markdown-it-mathjax3
