@@ -1,100 +1,126 @@
-<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>DB-图数据库Neo4j | Kelin's blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/latest/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/grids-responsive-min.min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script type="text/javascript" src="//lib.baomitu.com/clipboard.js/latest/clipboard.min.js"></script><script type="text/javascript" src="//lib.baomitu.com/toastr.js/latest/toastr.min.js"></script><link rel="stylesheet" href="//lib.baomitu.com/toastr.js/latest/toastr.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">DB-图数据库Neo4j</h1><a id="logo" href="/.">Kelin's blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">DB-图数据库Neo4j</h1><div class="post-meta">2025-01-10<span> | </span><span class="category"><a href="/categories/DataBase/">DataBase</a></span><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 2.6k</span><span class="post-meta-item-text"> Words</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i><span class="post-count"> 9</span><span class="post-meta-item-text"> Minutes</span></span></span></div><div class="post-content"><h2 id="Neo4j-图数据库简介"><a href="#Neo4j-图数据库简介" class="headerlink" title="Neo4j 图数据库简介"></a>Neo4j 图数据库简介</h2><p><strong>Neo4j</strong> 是一种基于 <strong>图模型</strong> 的开源图数据库，专为存储和查询高度连接的数据而设计。与传统关系型数据库不同，Neo4j 的底层原理专注于实体（节点）和它们之间的关系（边）的直接存储和管理，具有高效处理复杂连接查询的能力。</p>
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>DB-图数据库Neo4j | Kelin's blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/latest/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/grids-responsive-min.min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script type="text/javascript" src="//lib.baomitu.com/clipboard.js/latest/clipboard.min.js"></script><script type="text/javascript" src="//lib.baomitu.com/toastr.js/latest/toastr.min.js"></script><link rel="stylesheet" href="//lib.baomitu.com/toastr.js/latest/toastr.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">DB-图数据库Neo4j</h1><a id="logo" href="/.">Kelin's blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">DB-图数据库Neo4j</h1><div class="post-meta">2025-01-10<span> | </span><span class="category"><a href="/categories/DataBase/">DataBase</a></span><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 2.6k</span><span class="post-meta-item-text"> Words</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i><span class="post-count"> 9</span><span class="post-meta-item-text"> Minutes</span></span></span></div><div class="post-content"><h2 id="Neo4j-图数据库简介">Neo4j 图数据库简介</h2>
+<p><strong>Neo4j</strong> 是一种基于 <strong>图模型</strong> 的开源图数据库，专为存储和查询高度连接的数据而设计。与传统关系型数据库不同，Neo4j 的底层原理专注于实体（节点）和它们之间的关系（边）的直接存储和管理，具有高效处理复杂连接查询的能力。</p>
 <p>以下是 Neo4j 的简介和底层原理：</p>
-<h3 id="一、Neo4j-简介"><a href="#一、Neo4j-简介" class="headerlink" title="一、Neo4j 简介"></a>一、Neo4j 简介</h3><h4 id="1-主要特点"><a href="#1-主要特点" class="headerlink" title="1. 主要特点"></a>1. <strong>主要特点</strong></h4><ul>
-<li><p><strong>图模型</strong>：</p>
+<h3 id="一、Neo4j-简介">一、Neo4j 简介</h3>
+<h4 id="1-主要特点">1. <strong>主要特点</strong></h4>
+<ul>
+<li>
+<p><strong>图模型</strong>：</p>
 <ul>
 <li>数据存储为节点（Nodes）、关系（Relationships）和属性（Properties）。</li>
 <li>节点表示实体，关系表示实体之间的连接，属性用来描述节点和关系的详细信息。</li>
 </ul>
 </li>
-<li><p><strong>查询语言：Cypher</strong>：</p>
+<li>
+<p><strong>查询语言：Cypher</strong>：</p>
 <ul>
 <li>专为图数据设计的一种声明性查询语言，类似 SQL，但更直观，适合复杂的图查询。</li>
 </ul>
 </li>
-<li><p><strong>高效的图遍历</strong>：</p>
+<li>
+<p><strong>高效的图遍历</strong>：</p>
 <ul>
 <li>直接存储关系，使得在大量数据中查询连接关系（如路径、网络）非常高效。</li>
 </ul>
 </li>
-<li><p><strong>弹性和可扩展性</strong>：</p>
+<li>
+<p><strong>弹性和可扩展性</strong>：</p>
 <ul>
 <li>支持单机和分布式部署，适合从小型应用到企业级应用的需求。</li>
 </ul>
 </li>
 </ul>
-<h4 id="2-应用场景"><a href="#2-应用场景" class="headerlink" title="2. 应用场景"></a>2. <strong>应用场景</strong></h4><ul>
+<h4 id="2-应用场景">2. <strong>应用场景</strong></h4>
+<ul>
 <li><strong>推荐系统</strong>：基于社交关系或行为数据推荐内容。</li>
 <li><strong>社交网络分析</strong>：分析用户间的交互和关系。</li>
 <li><strong>知识图谱</strong>：存储和查询结构化知识。</li>
 <li><strong>欺诈检测</strong>：通过关系模式检测可疑行为。</li>
 <li><strong>供应链管理</strong>：优化复杂的物流和供应网络。</li>
 </ul>
-<h3 id="二、底层原理"><a href="#二、底层原理" class="headerlink" title="二、底层原理"></a>二、底层原理</h3><h4 id="1-存储模型"><a href="#1-存储模型" class="headerlink" title="1. 存储模型"></a>1. <strong>存储模型</strong></h4><p>Neo4j 使用 <strong>原生图存储模型</strong>，直接存储节点和关系，避免了传统数据库中通过表关联的开销。</p>
+<h3 id="二、底层原理">二、底层原理</h3>
+<h4 id="1-存储模型">1. <strong>存储模型</strong></h4>
+<p>Neo4j 使用 <strong>原生图存储模型</strong>，直接存储节点和关系，避免了传统数据库中通过表关联的开销。</p>
 <ul>
-<li><p><strong>节点（Nodes）</strong>：</p>
+<li>
+<p><strong>节点（Nodes）</strong>：</p>
 <ul>
 <li>存储实体数据，每个节点有唯一的 ID 和属性（键值对）。</li>
-<li>例如：<code>User: &#123;name: &#39;Alice&#39;, age: 25&#125;</code>。</li>
+<li>例如：<code>User: &#123;name: 'Alice', age: 25&#125;</code>。</li>
 </ul>
 </li>
-<li><p><strong>关系（Relationships）</strong>：</p>
+<li>
+<p><strong>关系（Relationships）</strong>：</p>
 <ul>
 <li>直接存储连接节点的关系，包括关系类型和属性。</li>
 <li>例如：<code>(Alice)-[:FRIENDS]-&gt;(Bob)</code> 表示 Alice 和 Bob 是朋友。</li>
 </ul>
 </li>
-<li><p><strong>属性（Properties）</strong>：</p>
+<li>
+<p><strong>属性（Properties）</strong>：</p>
 <ul>
 <li>节点和关系可以包含多个属性，用于描述实体或连接的详细信息。</li>
 </ul>
 </li>
 </ul>
-<h4 id="2-索引与查找"><a href="#2-索引与查找" class="headerlink" title="2. 索引与查找"></a>2. <strong>索引与查找</strong></h4><ul>
-<li><p><strong>索引</strong>：</p>
+<h4 id="2-索引与查找">2. <strong>索引与查找</strong></h4>
+<ul>
+<li>
+<p><strong>索引</strong>：</p>
 <ul>
 <li>Neo4j 支持基于节点或关系属性的索引，用于快速定位图中的某些节点或关系。</li>
 <li>索引底层通常采用 B+ 树或类似数据结构。</li>
 </ul>
 </li>
-<li><p><strong>图遍历</strong>：</p>
+<li>
+<p><strong>图遍历</strong>：</p>
 <ul>
 <li>Neo4j 的核心是基于深度优先（DFS）或广度优先（BFS）的图遍历算法。</li>
 <li>与传统数据库的表扫描不同，Neo4j 通过直接访问存储的关系指针来实现高效遍历。</li>
 </ul>
 </li>
 </ul>
-<h4 id="3-事务与一致性"><a href="#3-事务与一致性" class="headerlink" title="3. 事务与一致性"></a>3. <strong>事务与一致性</strong></h4><ul>
-<li><p><strong>ACID 事务</strong>：</p>
+<h4 id="3-事务与一致性">3. <strong>事务与一致性</strong></h4>
+<ul>
+<li>
+<p><strong>ACID 事务</strong>：</p>
 <ul>
 <li>Neo4j 支持事务处理，确保数据的一致性。</li>
 <li>每次操作（如添加节点或关系）都被记录在事务日志中，可支持回滚。</li>
 </ul>
 </li>
-<li><p><strong>锁管理</strong>：</p>
+<li>
+<p><strong>锁管理</strong>：</p>
 <ul>
 <li>使用细粒度的锁（如节点锁和关系锁），提高并发性能。</li>
 </ul>
 </li>
 </ul>
-<h4 id="4-查询与优化"><a href="#4-查询与优化" class="headerlink" title="4. 查询与优化"></a>4. <strong>查询与优化</strong></h4><ul>
-<li><p><strong>Cypher 查询语言</strong>：</p>
+<h4 id="4-查询与优化">4. <strong>查询与优化</strong></h4>
+<ul>
+<li>
+<p><strong>Cypher 查询语言</strong>：</p>
 <ul>
 <li>Cypher 提供了简洁的语法，支持复杂的模式匹配和路径查询。</li>
-<li>例如：查询所有好友的好友：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MATCH (user:Person)-[:FRIENDS]-&gt;(:Person)-[:FRIENDS]-&gt;(friend_of_friend)</span><br><span class="line">WHERE user.name = &#x27;Alice&#x27;</span><br><span class="line">RETURN friend_of_friend</span><br></pre></td></tr></table></figure></li>
+<li>例如：查询所有好友的好友：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MATCH (user:Person)-[:FRIENDS]-&gt;(:Person)-[:FRIENDS]-&gt;(friend_of_friend)</span><br><span class="line">WHERE user.name = &#x27;Alice&#x27;</span><br><span class="line">RETURN friend_of_friend</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
-<li><p><strong>查询优化器</strong>：</p>
+<li>
+<p><strong>查询优化器</strong>：</p>
 <ul>
 <li>Cypher 查询在执行前会由优化器解析和优化，生成高效的执行计划。</li>
 <li>例如，使用索引优先查找节点，再进行图遍历。</li>
 </ul>
 </li>
 </ul>
-<h4 id="5-存储与磁盘布局"><a href="#5-存储与磁盘布局" class="headerlink" title="5. 存储与磁盘布局"></a>5. <strong>存储与磁盘布局</strong></h4><ul>
-<li><p><strong>存储文件</strong>：</p>
+<h4 id="5-存储与磁盘布局">5. <strong>存储与磁盘布局</strong></h4>
 <ul>
-<li>节点和关系被存储为分离的文件：<ul>
+<li>
+<p><strong>存储文件</strong>：</p>
+<ul>
+<li>节点和关系被存储为分离的文件：
+<ul>
 <li>节点存储文件：包含节点 ID 和属性。</li>
 <li>关系存储文件：包含关系 ID、起点和终点节点的 ID 以及属性。</li>
 </ul>
@@ -102,49 +128,60 @@
 <li>通过这种分离，Neo4j 能快速定位和加载节点及其相关关系。</li>
 </ul>
 </li>
-<li><p><strong>内存映射</strong>：</p>
+<li>
+<p><strong>内存映射</strong>：</p>
 <ul>
 <li>使用内存映射文件（Memory-Mapped Files）技术将磁盘数据加载到内存，提高查询性能。</li>
 </ul>
 </li>
 </ul>
-<h4 id="6-分布式与扩展"><a href="#6-分布式与扩展" class="headerlink" title="6. 分布式与扩展"></a>6. <strong>分布式与扩展</strong></h4><ul>
-<li><strong>分片（Sharding）</strong>：<ul>
+<h4 id="6-分布式与扩展">6. <strong>分布式与扩展</strong></h4>
+<ul>
+<li><strong>分片（Sharding）</strong>：
+<ul>
 <li>将图数据分片存储在不同的节点中，支持大规模图的存储。</li>
 </ul>
 </li>
-<li><strong>复制（Replication）</strong>：<ul>
+<li><strong>复制（Replication）</strong>：
+<ul>
 <li>支持主从复制，确保高可用性。</li>
 </ul>
 </li>
-<li><strong>Raft 协议</strong>：<ul>
+<li><strong>Raft 协议</strong>：
+<ul>
 <li>Neo4j 4.x 及以上版本中，使用 Raft 协议管理分布式事务和数据一致性。</li>
 </ul>
 </li>
 </ul>
-<h3 id="三、Neo4j-的优势"><a href="#三、Neo4j-的优势" class="headerlink" title="三、Neo4j 的优势"></a>三、Neo4j 的优势</h3><ol>
-<li><p><strong>关系查询效率高</strong>：</p>
+<h3 id="三、Neo4j-的优势">三、Neo4j 的优势</h3>
+<ol>
+<li>
+<p><strong>关系查询效率高</strong>：</p>
 <ul>
 <li>图存储和遍历使得关系密集型查询（如路径分析、模式匹配）效率远超关系型数据库。</li>
 </ul>
 </li>
-<li><p><strong>直观的查询语言</strong>：</p>
+<li>
+<p><strong>直观的查询语言</strong>：</p>
 <ul>
 <li>Cypher 简洁易用，适合复杂的图模式匹配。</li>
 </ul>
 </li>
-<li><p><strong>灵活的模式</strong>：</p>
+<li>
+<p><strong>灵活的模式</strong>：</p>
 <ul>
 <li>图数据库无需固定模式（Schema-Free），支持动态更新。</li>
 </ul>
 </li>
-<li><p><strong>可扩展性</strong>：</p>
+<li>
+<p><strong>可扩展性</strong>：</p>
 <ul>
 <li>适合从单机到分布式的各种部署需求。</li>
 </ul>
 </li>
 </ol>
-<h3 id="四、与传统关系型数据库的对比"><a href="#四、与传统关系型数据库的对比" class="headerlink" title="四、与传统关系型数据库的对比"></a>四、与传统关系型数据库的对比</h3><table>
+<h3 id="四、与传统关系型数据库的对比">四、与传统关系型数据库的对比</h3>
+<table>
 <thead>
 <tr>
 <th><strong>特性</strong></th>
@@ -152,7 +189,8 @@
 <th><strong>关系型数据库</strong></th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><strong>数据结构</strong></td>
 <td>节点、关系、属性</td>
 <td>表、行、列</td>
@@ -182,81 +220,110 @@
 <td>复杂连接查询（如社交网络分析）</td>
 <td>面向事务处理的结构化数据管理</td>
 </tr>
-</tbody></table>
-<h3 id="五、总结"><a href="#五、总结" class="headerlink" title="五、总结"></a>五、总结</h3><p>Neo4j 是一种高效的图数据库，专注于存储和查询复杂连接数据，其底层基于原生图存储和高效的图遍历算法。无论是社交网络、推荐系统，还是知识图谱，Neo4j 都能提供直观的建模方法和高性能的查询能力，非常适合处理关系密集型数据。</p>
-<h2 id="与GraphRAG结合"><a href="#与GraphRAG结合" class="headerlink" title="与GraphRAG结合"></a>与GraphRAG结合</h2><p><strong>Neo4j</strong> 和 <strong>微软的 Graph RAG</strong>（Retrieval-Augmented Generation with Graphs）结合在一起，主要是通过将 Neo4j 提供的知识图谱功能与 RAG 的检索与生成流程集成，利用图数据库的高效关系查询能力增强 RAG 的性能。以下是它们结合的核心原理和流程：</p>
-<h3 id="1-结合的动机"><a href="#1-结合的动机" class="headerlink" title="1. 结合的动机"></a>1. <strong>结合的动机</strong></h3><p>微软的 <strong>Graph RAG</strong> 是一种结合知识图谱的 RAG 方法，旨在通过知识图谱优化检索和生成的质量。Neo4j 提供了强大的图存储和查询能力，是 Graph RAG 的理想后端数据库。</p>
+</tbody>
+</table>
+<h3 id="五、总结">五、总结</h3>
+<p>Neo4j 是一种高效的图数据库，专注于存储和查询复杂连接数据，其底层基于原生图存储和高效的图遍历算法。无论是社交网络、推荐系统，还是知识图谱，Neo4j 都能提供直观的建模方法和高性能的查询能力，非常适合处理关系密集型数据。</p>
+<h2 id="与GraphRAG结合">与GraphRAG结合</h2>
+<p><strong>Neo4j</strong> 和 <strong>微软的 Graph RAG</strong>（Retrieval-Augmented Generation with Graphs）结合在一起，主要是通过将 Neo4j 提供的知识图谱功能与 RAG 的检索与生成流程集成，利用图数据库的高效关系查询能力增强 RAG 的性能。以下是它们结合的核心原理和流程：</p>
+<h3 id="1-结合的动机">1. <strong>结合的动机</strong></h3>
+<p>微软的 <strong>Graph RAG</strong> 是一种结合知识图谱的 RAG 方法，旨在通过知识图谱优化检索和生成的质量。Neo4j 提供了强大的图存储和查询能力，是 Graph RAG 的理想后端数据库。</p>
 <p>结合的优势包括：</p>
 <ul>
 <li><strong>增强检索性能</strong>：Neo4j 能高效存储和查询复杂关系，支持从知识图谱中快速检索相关信息。</li>
 <li><strong>支持复杂推理</strong>：通过知识图谱进行推理（如多跳推理），提升生成结果的准确性。</li>
 <li><strong>实时更新和动态扩展</strong>：Neo4j 支持动态更新知识图谱，确保生成模型使用的是最新数据。</li>
 </ul>
-<h3 id="2-结合的工作流程"><a href="#2-结合的工作流程" class="headerlink" title="2. 结合的工作流程"></a>2. <strong>结合的工作流程</strong></h3><p>Neo4j 和 Graph RAG 的集成主要包括以下步骤：</p>
-<h4 id="1-构建知识图谱"><a href="#1-构建知识图谱" class="headerlink" title="(1) 构建知识图谱"></a><strong>(1) 构建知识图谱</strong></h4><ul>
-<li><p><strong>知识图谱的来源</strong>：</p>
+<h3 id="2-结合的工作流程">2. <strong>结合的工作流程</strong></h3>
+<p>Neo4j 和 Graph RAG 的集成主要包括以下步骤：</p>
+<h4 id="1-构建知识图谱"><strong>(1) 构建知识图谱</strong></h4>
+<ul>
+<li>
+<p><strong>知识图谱的来源</strong>：</p>
 <ul>
 <li>通过数据预处理（如实体和关系抽取），从原始数据（如文档或数据库）中生成知识图谱。</li>
 <li>这些知识被存储在 Neo4j 中，节点代表实体，边代表关系，属性包含附加信息。</li>
 </ul>
 </li>
-<li><p><strong>存储到 Neo4j</strong>：</p>
+<li>
+<p><strong>存储到 Neo4j</strong>：</p>
 <ul>
-<li>使用 Cypher 查询语言或 Neo4j 提供的 API 将节点和关系存储到数据库中。例如：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE (a:Person &#123;name: &#x27;Alice&#x27;&#125;)-[:KNOWS]-&gt;(b:Person &#123;name: &#x27;Bob&#x27;&#125;)</span><br></pre></td></tr></table></figure></li>
+<li>使用 Cypher 查询语言或 Neo4j 提供的 API 将节点和关系存储到数据库中。例如：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE (a:Person &#123;name: &#x27;Alice&#x27;&#125;)-[:KNOWS]-&gt;(b:Person &#123;name: &#x27;Bob&#x27;&#125;)</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
 </ul>
-<h4 id="2-图谱增强的检索"><a href="#2-图谱增强的检索" class="headerlink" title="(2) 图谱增强的检索"></a><strong>(2) 图谱增强的检索</strong></h4><ul>
+<h4 id="2-图谱增强的检索"><strong>(2) 图谱增强的检索</strong></h4>
+<ul>
 <li>在 Graph RAG 中，检索步骤会调用 Neo4j 来从知识图谱中查找相关信息。</li>
-<li><strong>查询类型</strong>：<ul>
-<li><strong>简单检索</strong>：基于实体或关系的直接匹配。例如，查找与特定实体相关的所有关系：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MATCH (p:Person &#123;name: &#x27;Alice&#x27;&#125;)-[r]-&gt;(other)</span><br><span class="line">RETURN r, other</span><br></pre></td></tr></table></figure></li>
-<li><strong>多跳推理</strong>：查找多步关系链。例如，获取 Alice 的朋友的朋友：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MATCH (p:Person &#123;name: &#x27;Alice&#x27;&#125;)-[:KNOWS*2]-&gt;(friend_of_friend)</span><br><span class="line">RETURN friend_of_friend</span><br></pre></td></tr></table></figure></li>
+<li><strong>查询类型</strong>：
+<ul>
+<li><strong>简单检索</strong>：基于实体或关系的直接匹配。例如，查找与特定实体相关的所有关系：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MATCH (p:Person &#123;name: &#x27;Alice&#x27;&#125;)-[r]-&gt;(other)</span><br><span class="line">RETURN r, other</span><br></pre></td></tr></table></figure>
+</li>
+<li><strong>多跳推理</strong>：查找多步关系链。例如，获取 Alice 的朋友的朋友：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MATCH (p:Person &#123;name: &#x27;Alice&#x27;&#125;)-[:KNOWS*2]-&gt;(friend_of_friend)</span><br><span class="line">RETURN friend_of_friend</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
 </ul>
-<h4 id="3-生成阶段"><a href="#3-生成阶段" class="headerlink" title="(3) 生成阶段"></a><strong>(3) 生成阶段</strong></h4><ul>
+<h4 id="3-生成阶段"><strong>(3) 生成阶段</strong></h4>
+<ul>
 <li>检索结果被格式化后传递给语言模型（LLM），作为生成上下文的一部分。</li>
 <li>在生成阶段，Neo4j 的结构化信息可以作为事实验证的依据，增强生成的可靠性和相关性。</li>
 </ul>
-<h4 id="4-实时更新"><a href="#4-实时更新" class="headerlink" title="(4) 实时更新"></a><strong>(4) 实时更新</strong></h4><ul>
+<h4 id="4-实时更新"><strong>(4) 实时更新</strong></h4>
+<ul>
 <li>Graph RAG 可以通过 Neo4j 动态更新知识图谱。例如，在新的数据被引入时，可以通过批量或实时更新将新知识存储到图谱中。</li>
 </ul>
-<h3 id="3-技术集成方式"><a href="#3-技术集成方式" class="headerlink" title="3. 技术集成方式"></a>3. <strong>技术集成方式</strong></h3><p>Neo4j 和 Graph RAG 的结合通过 API 或 SDK 实现，以下是常见的集成方法：</p>
-<h4 id="1-Neo4j-驱动"><a href="#1-Neo4j-驱动" class="headerlink" title="(1) Neo4j 驱动"></a><strong>(1) Neo4j 驱动</strong></h4><ul>
+<h3 id="3-技术集成方式">3. <strong>技术集成方式</strong></h3>
+<p>Neo4j 和 Graph RAG 的结合通过 API 或 SDK 实现，以下是常见的集成方法：</p>
+<h4 id="1-Neo4j-驱动"><strong>(1) Neo4j 驱动</strong></h4>
+<ul>
 <li>使用 Neo4j 官方驱动（Python、Java、Node.js 等）与 Graph RAG 的后端交互。</li>
-<li><strong>Python 示例</strong>：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> neo4j <span class="keyword">import</span> GraphDatabase</span><br><span class="line"></span><br><span class="line"><span class="comment"># 连接到 Neo4j 数据库</span></span><br><span class="line">driver = GraphDatabase.driver(<span class="string">&quot;bolt://localhost:7687&quot;</span>, auth=(<span class="string">&quot;neo4j&quot;</span>, <span class="string">&quot;password&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行查询</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fetch_related_entities</span>(<span class="params">tx, entity_name</span>):</span><br><span class="line">    query = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    MATCH (e:Entity &#123;name: $name&#125;)-[:RELATED_TO]-&gt;(related)</span></span><br><span class="line"><span class="string">    RETURN related</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    result = tx.run(query, name=entity_name)</span><br><span class="line">    <span class="keyword">return</span> [record[<span class="string">&quot;related&quot;</span>] <span class="keyword">for</span> record <span class="keyword">in</span> result]</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> driver.session() <span class="keyword">as</span> session:</span><br><span class="line">    related_entities = session.read_transaction(fetch_related_entities, <span class="string">&quot;Alice&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(related_entities)</span><br></pre></td></tr></table></figure></li>
+<li><strong>Python 示例</strong>：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> neo4j <span class="keyword">import</span> GraphDatabase</span><br><span class="line"></span><br><span class="line"><span class="comment"># 连接到 Neo4j 数据库</span></span><br><span class="line">driver = GraphDatabase.driver(<span class="string">&quot;bolt://localhost:7687&quot;</span>, auth=(<span class="string">&quot;neo4j&quot;</span>, <span class="string">&quot;password&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行查询</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">fetch_related_entities</span>(<span class="params">tx, entity_name</span>):</span><br><span class="line">    query = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    MATCH (e:Entity &#123;name: $name&#125;)-[:RELATED_TO]-&gt;(related)</span></span><br><span class="line"><span class="string">    RETURN related</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    result = tx.run(query, name=entity_name)</span><br><span class="line">    <span class="keyword">return</span> [record[<span class="string">&quot;related&quot;</span>] <span class="keyword">for</span> record <span class="keyword">in</span> result]</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> driver.session() <span class="keyword">as</span> session:</span><br><span class="line">    related_entities = session.read_transaction(fetch_related_entities, <span class="string">&quot;Alice&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(related_entities)</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
-<h4 id="2-REST-API"><a href="#2-REST-API" class="headerlink" title="(2) REST API"></a><strong>(2) REST API</strong></h4><ul>
+<h4 id="2-REST-API"><strong>(2) REST API</strong></h4>
+<ul>
 <li>如果 Neo4j 部署为服务，可以通过其 REST API 从 Graph RAG 后端发起 HTTP 请求获取数据。</li>
-<li>示例请求：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST http://localhost:7474/db/data/transaction/commit \</span><br><span class="line">     -H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">     -d <span class="string">&#x27;&#123;</span></span><br><span class="line"><span class="string">       &quot;statements&quot;: [</span></span><br><span class="line"><span class="string">         &#123;</span></span><br><span class="line"><span class="string">           &quot;statement&quot;: &quot;MATCH (n:Person &#123;name: &#x27;</span>Alice<span class="string">&#x27;&#125;) RETURN n&quot;</span></span><br><span class="line"><span class="string">         &#125;</span></span><br><span class="line"><span class="string">       ]</span></span><br><span class="line"><span class="string">     &#125;&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li>示例请求：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">curl -X POST http://localhost:7474/db/data/transaction/commit \</span><br><span class="line">     -H <span class="string">&quot;Content-Type: application/json&quot;</span> \</span><br><span class="line">     -d <span class="string">&#x27;&#123;</span></span><br><span class="line"><span class="string">       &quot;statements&quot;: [</span></span><br><span class="line"><span class="string">         &#123;</span></span><br><span class="line"><span class="string">           &quot;statement&quot;: &quot;MATCH (n:Person &#123;name: &#x27;</span>Alice<span class="string">&#x27;&#125;) RETURN n&quot;</span></span><br><span class="line"><span class="string">         &#125;</span></span><br><span class="line"><span class="string">       ]</span></span><br><span class="line"><span class="string">     &#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+</li>
 </ul>
-<h4 id="3-Neo4j-LangChain"><a href="#3-Neo4j-LangChain" class="headerlink" title="(3) Neo4j + LangChain"></a><strong>(3) Neo4j + LangChain</strong></h4><ul>
+<h4 id="3-Neo4j-LangChain"><strong>(3) Neo4j + LangChain</strong></h4>
+<ul>
 <li>LangChain 提供了与 Neo4j 集成的模块，允许直接在生成模型的工作流中调用 Neo4j 的图查询能力。</li>
-<li>示例：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.graphs <span class="keyword">import</span> Neo4jGraph</span><br><span class="line"></span><br><span class="line"><span class="comment"># 连接到 Neo4j</span></span><br><span class="line">graph = Neo4jGraph(url=<span class="string">&quot;bolt://localhost:7687&quot;</span>, username=<span class="string">&quot;neo4j&quot;</span>, password=<span class="string">&quot;password&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询图数据库</span></span><br><span class="line">query = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">MATCH (a:Person &#123;name: &#x27;Alice&#x27;&#125;)-[:KNOWS]-&gt;(b)</span></span><br><span class="line"><span class="string">RETURN b.name</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">result = graph.query(query)</span><br><span class="line"><span class="built_in">print</span>(result)</span><br></pre></td></tr></table></figure></li>
+<li>示例：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langchain.graphs <span class="keyword">import</span> Neo4jGraph</span><br><span class="line"></span><br><span class="line"><span class="comment"># 连接到 Neo4j</span></span><br><span class="line">graph = Neo4jGraph(url=<span class="string">&quot;bolt://localhost:7687&quot;</span>, username=<span class="string">&quot;neo4j&quot;</span>, password=<span class="string">&quot;password&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询图数据库</span></span><br><span class="line">query = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">MATCH (a:Person &#123;name: &#x27;Alice&#x27;&#125;)-[:KNOWS]-&gt;(b)</span></span><br><span class="line"><span class="string">RETURN b.name</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">result = graph.query(query)</span><br><span class="line"><span class="built_in">print</span>(result)</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
-<h3 id="4-结合的优势"><a href="#4-结合的优势" class="headerlink" title="4. 结合的优势"></a>4. <strong>结合的优势</strong></h3><ol>
-<li><strong>图结构优化检索</strong>：<ul>
+<h3 id="4-结合的优势">4. <strong>结合的优势</strong></h3>
+<ol>
+<li><strong>图结构优化检索</strong>：
+<ul>
 <li>Neo4j 提供高效的图遍历算法，显著提高 RAG 系统的检索效率。</li>
 </ul>
 </li>
-<li><strong>支持多跳推理</strong>：<ul>
+<li><strong>支持多跳推理</strong>：
+<ul>
 <li>Graph RAG 可以通过 Neo4j 实现复杂的关系推理，例如多跳关系或路径查询。</li>
 </ul>
 </li>
-<li><strong>增强生成质量</strong>：<ul>
+<li><strong>增强生成质量</strong>：
+<ul>
 <li>图数据库的结构化数据能够为 LLM 提供精准的上下文，减少生成内容中的幻觉现象。</li>
 </ul>
 </li>
-<li><strong>动态知识更新</strong>：<ul>
+<li><strong>动态知识更新</strong>：
+<ul>
 <li>Neo4j 支持实时或批量更新图数据，确保 RAG 系统使用最新知识。</li>
 </ul>
 </li>
 </ol>
-<h3 id="5-应用场景"><a href="#5-应用场景" class="headerlink" title="5. 应用场景"></a>5. <strong>应用场景</strong></h3><ul>
+<h3 id="5-应用场景">5. <strong>应用场景</strong></h3>
+<ul>
 <li><strong>知识图谱问答（Knowledge Graph QA）</strong>：基于图谱的精确问答。</li>
 <li><strong>推荐系统</strong>：结合用户兴趣图谱推荐内容。</li>
 <li><strong>事实验证（Fact Verification）</strong>：验证生成内容是否符合知识图谱的事实。</li>
 <li><strong>多跳问答（Multi-Hop QA）</strong>：通过图谱实现复杂推理任务。</li>
 </ul>
-<h3 id="6-总结"><a href="#6-总结" class="headerlink" title="6. 总结"></a>6. <strong>总结</strong></h3><p>Neo4j 和微软的 Graph RAG 结合，通过 Neo4j 提供的高效图存储与查询能力，以及 Graph RAG 的检索增强生成架构，能够大幅提升生成质量和检索效率。这种结合适用于知识密集型任务，如知识图谱问答、复杂推理和实时数据更新场景。</p>
-</div><script type="text/javascript" src="/js/share.js?v=1.0.0" async></script><a class="article-share-link" data-url="https://kelinkong.github.io/2025/01/10/DB-%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93Neo4j/" data-id="cm5q4pjwt00007nog45cy1qlq" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACuElEQVR42u3aQW4jMQwEQP//0wmwpwCBnW5SWvtQczKMyVg1B4lp8vGIr69/1+/PP795dv2+J3lO8v2xCw8PD2+09Hxxs3teLzH5vl0PHh4e3m1eexhstuwZMl8PHh4e3ufwkpI32crz15Q8GQ8PD+/zeckP568mPxLw8PDwPo2XBA2zwrcNL5Iy+krWgoeHh9flqMMG2Ls+/6f+Hh4eHl7ZVc8333ZEIB9B2KwWDw8P7wZvFte+Xly7ubfPqV8lHh4e3gXerBbdBARtk+wYDA8PD+8QL29Q5UuZDVe1AW70i3h4eHhHeW2DKh+Takv2WXQ7zFrw8PDw1rx8eLQtxNtRg1ns+/RpeHh4eBd4ecyaLDFvaN07coqpBzw8PLwRrx0RmB0es1bZLArBw8PDey9vs7m3kesqh352Dx4eHt41Xr7cffTQhg7tS3yateDh4eEd4m3ihllbaxY9tG0zPDw8vHu814/YBw0b2OzVFOceHh4e3oKXX234OwPsfz3KWvDw8PAWvD8q7kOx7IaXPCeKcfHw8PAO8fZBQFJqz0a12mzh6bmHh4eHd5S3GRXd3LlpmEW/joeHh3eZtw8C8hA2eXJ75ET/MeDh4eGtebOtfLag2WjCgZXg4eHhHeW9Dl6TYYJN2LoPPurJCDw8PLw1b/WvflLOllt5W8rXM7l4eHh4a14bK8zaV2c/54cZHh4e3g1esn0ne2z+nDaeeJRX8Vd4eHh4I95XeeU/kMcTNwpuPDw8vHu8zXnStvmTIGNTmg9heHh4eCPeZtwqqdPbFtfmwKgLazw8PLwFbxZG5PfM2mltEf/H6BUeHh7eW3l5Edy21tqxhisHAx4eHt4hXhJGtMXxrBVXPBMPDw/vGq8dwMoL4s3xkA91Dbt8eHh4eCPerAE2i2gTWFK4H+7y4eHh4aW8b24nX/TPjItaAAAAAElFTkSuQmCC">Share</a><div class="tags"></div><div class="post-nav"><a class="pre" href="/2025/02/13/deepseek-v3%E6%8A%80%E6%9C%AF%E6%8A%A5%E5%91%8A%E5%AD%A6%E4%B9%A0/">deepseek-v3技术报告学习</a><a class="next" href="/2025/01/09/Java-%E7%BC%96%E8%AF%91%E7%9B%B8%E5%85%B3/">Java-编译相关</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="https://kelinkong.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="About"><img class="nofancybox" src="/img/logo.jpg"/></a><p>Kelin is a boring girl, but not always.</p><a class="info-icon" href="https://github.com/kelinkong" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/DataBase/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Digital-Human/">Digital Human</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network-Security/">Network-Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Operating-System/">Operating-System</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Radar-Principle/">Radar Principle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/frontend/">frontend</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/solutions/">solutions</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/CMU15-445/" style="font-size: 15px;">CMU15-445</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/architecture/" style="font-size: 15px;">architecture</a> <a href="/tags/%E9%9B%B7%E8%BE%BE%E5%8E%9F%E7%90%86/" style="font-size: 15px;">雷达原理</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2025/06/13/%E9%9B%B7%E8%BE%BE%E5%8E%9F%E7%90%86-%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">雷达原理-卡尔曼滤波器基础学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/06/05/Java-Java%E7%9A%84%E5%AE%B9%E5%99%A8%E5%92%8CC-%E7%9A%84STL%E5%AE%B9%E5%99%A8%E7%9A%84%E5%AF%B9%E6%AF%94/">Java-Java的容器和C++的STL容器的对比</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/06/05/%E6%95%B0%E5%AD%97%E4%BA%BA-Java%E9%9F%B3%E8%A7%86%E9%A2%91%E5%A4%84%E7%90%86-%E9%9F%B3%E9%A2%91%E6%8E%A8%E6%B5%81%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">数字人-Java音视频处理-音频推流失败问题排查</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/05/21/%E6%95%B0%E5%AD%97%E4%BA%BA-Java%E9%9F%B3%E8%A7%86%E9%A2%91%E5%A4%84%E7%90%86/">数字人-Java音视频处理-推流和拉流</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/04/25/%E6%95%B0%E5%AD%97%E4%BA%BA-%E5%9F%BA%E7%A1%80%E6%89%AB%E7%9B%B2/">数字人-基础扫盲</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/04/18/Java-%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">Java-基础学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/02/13/deepseek-v3%E6%8A%80%E6%9C%AF%E6%8A%A5%E5%91%8A%E5%AD%A6%E4%B9%A0/">deepseek-v3技术报告学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/01/10/DB-%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93Neo4j/">DB-图数据库Neo4j</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/01/09/Java-%E7%BC%96%E8%AF%91%E7%9B%B8%E5%85%B3/">Java-编译相关</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/12/27/AI-%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E7%AC%94%E8%AE%B0/">AI-动手学深度学习-笔记</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2025 <a href="/." rel="nofollow">Kelin's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0"></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.css"><script type="text/javascript" src="/js/love.js?v=1.0.0"></script><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="Copy Successed!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
+<h3 id="6-总结">6. <strong>总结</strong></h3>
+<p>Neo4j 和微软的 Graph RAG 结合，通过 Neo4j 提供的高效图存储与查询能力，以及 Graph RAG 的检索增强生成架构，能够大幅提升生成质量和检索效率。这种结合适用于知识密集型任务，如知识图谱问答、复杂推理和实时数据更新场景。</p>
+</div><script type="text/javascript" src="/js/share.js?v=1.0.0" async></script><a class="article-share-link" data-url="https://kelinkong.github.io/2025/01/10/DB-%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93Neo4j/" data-id="cmbuhqyys000vz4ogfyil5owp" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACuElEQVR42u3aQW4jMQwEQP//0wmwpwCBnW5SWvtQczKMyVg1B4lp8vGIr69/1+/PP795dv2+J3lO8v2xCw8PD2+09Hxxs3teLzH5vl0PHh4e3m1eexhstuwZMl8PHh4e3ufwkpI32crz15Q8GQ8PD+/zeckP568mPxLw8PDwPo2XBA2zwrcNL5Iy+krWgoeHh9flqMMG2Ls+/6f+Hh4eHl7ZVc8333ZEIB9B2KwWDw8P7wZvFte+Xly7ubfPqV8lHh4e3gXerBbdBARtk+wYDA8PD+8QL29Q5UuZDVe1AW70i3h4eHhHeW2DKh+Takv2WXQ7zFrw8PDw1rx8eLQtxNtRg1ns+/RpeHh4eBd4ecyaLDFvaN07coqpBzw8PLwRrx0RmB0es1bZLArBw8PDey9vs7m3kesqh352Dx4eHt41Xr7cffTQhg7tS3yateDh4eEd4m3ihllbaxY9tG0zPDw8vHu814/YBw0b2OzVFOceHh4e3oKXX234OwPsfz3KWvDw8PAWvD8q7kOx7IaXPCeKcfHw8PAO8fZBQFJqz0a12mzh6bmHh4eHd5S3GRXd3LlpmEW/joeHh3eZtw8C8hA2eXJ75ET/MeDh4eGtebOtfLag2WjCgZXg4eHhHeW9Dl6TYYJN2LoPPurJCDw8PLw1b/WvflLOllt5W8rXM7l4eHh4a14bK8zaV2c/54cZHh4e3g1esn0ne2z+nDaeeJRX8Vd4eHh4I95XeeU/kMcTNwpuPDw8vHu8zXnStvmTIGNTmg9heHh4eCPeZtwqqdPbFtfmwKgLazw8PLwFbxZG5PfM2mltEf/H6BUeHh7eW3l5Edy21tqxhisHAx4eHt4hXhJGtMXxrBVXPBMPDw/vGq8dwMoL4s3xkA91Dbt8eHh4eCPerAE2i2gTWFK4H+7y4eHh4aW8b24nX/TPjItaAAAAAElFTkSuQmCC">Share</a><div class="tags"></div><div class="post-nav"><a class="pre" href="/2025/02/13/deepseek-v3%E6%8A%80%E6%9C%AF%E6%8A%A5%E5%91%8A%E5%AD%A6%E4%B9%A0/">deepseek-v3技术报告学习</a><a class="next" href="/2025/01/09/Java-%E7%BC%96%E8%AF%91%E7%9B%B8%E5%85%B3/">Java-编译相关</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="https://kelinkong.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="About"><img class="nofancybox" src="/img/logo.jpg"/></a><p>Kelin is a boring girl, but not always.</p><a class="info-icon" href="https://github.com/kelinkong" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/DataBase/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Digital-Human/">Digital Human</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network-Security/">Network-Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Operating-System/">Operating-System</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Radar-Principle/">Radar Principle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/frontend/">frontend</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/solutions/">solutions</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/architecture/" style="font-size: 15px;">architecture</a> <a href="/tags/CMU15-445/" style="font-size: 15px;">CMU15-445</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/%E9%9B%B7%E8%BE%BE%E5%8E%9F%E7%90%86/" style="font-size: 15px;">雷达原理</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2025/06/13/%E9%9B%B7%E8%BE%BE%E5%8E%9F%E7%90%86-%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E5%99%A8%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">雷达原理-卡尔曼滤波器基础学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/06/05/Java-Java%E7%9A%84%E5%AE%B9%E5%99%A8%E5%92%8CC-%E7%9A%84STL%E5%AE%B9%E5%99%A8%E7%9A%84%E5%AF%B9%E6%AF%94/">Java-Java的容器和C++的STL容器的对比</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/06/05/%E6%95%B0%E5%AD%97%E4%BA%BA-Java%E9%9F%B3%E8%A7%86%E9%A2%91%E5%A4%84%E7%90%86-%E9%9F%B3%E9%A2%91%E6%8E%A8%E6%B5%81%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">数字人-Java音视频处理-音频推流失败问题排查</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/05/21/%E6%95%B0%E5%AD%97%E4%BA%BA-Java%E9%9F%B3%E8%A7%86%E9%A2%91%E5%A4%84%E7%90%86/">数字人-Java音视频处理-推流和拉流</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/04/25/%E6%95%B0%E5%AD%97%E4%BA%BA-%E5%9F%BA%E7%A1%80%E6%89%AB%E7%9B%B2/">数字人-基础扫盲</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/04/18/Java-%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">Java-基础学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/02/13/deepseek-v3%E6%8A%80%E6%9C%AF%E6%8A%A5%E5%91%8A%E5%AD%A6%E4%B9%A0/">deepseek-v3技术报告学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/01/10/DB-%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93Neo4j/">DB-图数据库Neo4j</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/01/09/Java-%E7%BC%96%E8%AF%91%E7%9B%B8%E5%85%B3/">Java-编译相关</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/12/27/AI-%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E7%AC%94%E8%AE%B0/">AI-动手学深度学习-笔记</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2025 <a href="/." rel="nofollow">Kelin's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0"></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.css"><script type="text/javascript" src="/js/love.js?v=1.0.0"></script><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="Copy Successed!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
