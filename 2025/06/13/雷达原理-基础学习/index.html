@@ -1,0 +1,312 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>雷达原理-卡尔曼滤波器基础学习 | Kelin's blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/latest/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/grids-responsive-min.min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script type="text/javascript" src="//lib.baomitu.com/clipboard.js/latest/clipboard.min.js"></script><script type="text/javascript" src="//lib.baomitu.com/toastr.js/latest/toastr.min.js"></script><link rel="stylesheet" href="//lib.baomitu.com/toastr.js/latest/toastr.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">雷达原理-卡尔曼滤波器基础学习</h1><a id="logo" href="/.">Kelin's blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">雷达原理-卡尔曼滤波器基础学习</h1><div class="post-meta">2025-06-13<span> | </span><span class="category"><a href="/categories/Radar-Principle/">Radar Principle</a></span><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 2.7k</span><span class="post-meta-item-text"> Words</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i><span class="post-count"> 9</span><span class="post-meta-item-text"> Minutes</span></span></span></div><div class="post-content"><h2 id="如何理解卡尔曼滤波器？"><a href="#如何理解卡尔曼滤波器？" class="headerlink" title="如何理解卡尔曼滤波器？"></a>如何理解卡尔曼滤波器？</h2><p>卡尔曼滤波（<strong>Kalman Filter，KF</strong>）是一个<strong>用于估计系统状态</strong>的递归算法，适用于<strong>线性系统+高斯噪声</strong>情形。它的核心思想是：</p>
+<blockquote>
+<p><strong>融合“预测”和“观测”，在噪声存在的情况下对动态目标状态进行最优估计。</strong></p>
+</blockquote>
+<p>卡尔曼滤波就是：</p>
+<blockquote>
+<p>“我知道目标昨天的位置和速度（预测），今天我观测到一个不太准的位置（测量），我要综合这两者，用数学方法给出一个更准的现在的位置和速度（估计）。”</p>
+</blockquote>
+<p><strong>为什么会观测到不太准的位置？</strong></p>
+<p>因为现实世界中，测量总会有噪声，比如雷达测量的距离可能受天气、设备精度等影响。</p>
+<h3 id="场景类比：雷达跟踪飞机"><a href="#场景类比：雷达跟踪飞机" class="headerlink" title="场景类比：雷达跟踪飞机"></a>场景类比：雷达跟踪飞机</h3><ul>
+<li>目标：跟踪一架飞机的位置和速度</li>
+<li>问题：雷达测得位置不准（测量有噪声）；目标也不一定匀速飞行（运动有噪声）</li>
+<li>解法：卡尔曼滤波根据过去的状态“预测”位置，又结合当前雷达观测，进行“校正”</li>
+</ul>
+<h3 id="卡尔曼滤波核心概念"><a href="#卡尔曼滤波核心概念" class="headerlink" title="卡尔曼滤波核心概念"></a>卡尔曼滤波核心概念</h3><h3 id="1-系统状态模型"><a href="#1-系统状态模型" class="headerlink" title="1. 系统状态模型"></a>1. <strong>系统状态模型</strong></h3><p>目标的状态用一个向量表示，比如二维空间：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x = [位置_x, 位置_y, 速度_x, 速度_y]^T</span><br></pre></td></tr></table></figure>
+
+<p>系统状态随时间演化：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x_k = F x_&#123;k-1&#125; + w_k</span><br></pre></td></tr></table></figure>
+
+<p>其中：</p>
+<ul>
+<li><code>F</code> 是状态转移矩阵（如匀速模型）。</li>
+<li><code>w_k</code> 是过程噪声，表示系统的不确定性（如飞机突然转向）</li>
+</ul>
+<h4 id="状态转移矩阵-F"><a href="#状态转移矩阵-F" class="headerlink" title="状态转移矩阵 F"></a>状态转移矩阵 <code>F</code></h4><p>状态转移矩阵（记作 <strong>F</strong>）描述的是：</p>
+<p>**从上一个时刻 $x_{k-1}$**，系统是如何过渡到当前时刻 $x_k$ 的。</p>
+<p>也就是说，它描述目标的“运动规律”或“预测模型”。</p>
+<p>公式如下：</p>
+<p>$$<br>x_k &#x3D; F x_{k-1} + B u_k + w_k<br>$$</p>
+<ul>
+<li>$F$：状态转移矩阵（你要问的）</li>
+<li>$x_{k-1}$：上一个时刻的状态</li>
+<li>$x_k$：当前时刻的状态</li>
+<li>$B u_k$：控制项（如果有控制输入）</li>
+<li>$w_k$：过程噪声（建模随机扰动，通常假设是高斯）</li>
+</ul>
+<p><strong>一个经典的例子：一维匀速运动</strong></p>
+<p>我们想跟踪一个物体在一维直线上的运动，它的状态是：</p>
+<p>$$<br>x &#x3D; \begin{bmatrix} 位置 \ 速度 \end{bmatrix}<br>$$</p>
+<p>设时间间隔为 $\Delta t$，也就是每隔 1 秒更新一次状态。</p>
+<p><strong>匀速直线运动公式：</strong></p>
+<p>$$<br>\text{新位置} &#x3D; \text{旧位置} + \text{速度} \cdot \Delta t<br>\text{新速度} &#x3D; \text{旧速度}（速度不变）<br>$$</p>
+<h1 id="x-k-begin-bmatrix-x-dot-x-end-bmatrix-k"><a href="#x-k-begin-bmatrix-x-dot-x-end-bmatrix-k" class="headerlink" title="$$x_k &#x3D;\begin{bmatrix}x \\dot{x}\end{bmatrix}_k"></a>$$<br>x_k &#x3D;<br>\begin{bmatrix}<br>x \<br>\dot{x}<br>\end{bmatrix}_k</h1><p>F<br>\begin{bmatrix}<br>x \<br>\dot{x}<br>\end{bmatrix}_{k-1}<br>$$</p>
+<p>那么状态转移矩阵 F 是：</p>
+<p>$$<br>F &#x3D;<br>\begin{bmatrix}<br>1 &amp; \Delta t \<br>0 &amp; 1 \<br>\end{bmatrix}<br>$$</p>
+<p>解释：</p>
+<ul>
+<li>位置 &#x3D; 位置 + 速度 × 时间</li>
+<li>速度保持不变</li>
+</ul>
+<p>假设：</p>
+<ul>
+<li>上一时刻：位置 10 米，速度 2 米&#x2F;秒</li>
+<li>时间间隔：1 秒</li>
+</ul>
+<p>$$<br>x_{k-1} &#x3D;<br>\begin{bmatrix}<br>10 \<br>2 \<br>\end{bmatrix},<br>\quad \Delta t &#x3D; 1<br>$$</p>
+<h1 id="F-begin-bmatrix-1-1-0-1-end-bmatrix-Rightarrowx-k-F-x-k-1-begin-bmatrix-1-1-0-1-end-bmatrix-begin-bmatrix-10-2-end-bmatrix"><a href="#F-begin-bmatrix-1-1-0-1-end-bmatrix-Rightarrowx-k-F-x-k-1-begin-bmatrix-1-1-0-1-end-bmatrix-begin-bmatrix-10-2-end-bmatrix" class="headerlink" title="$$F &#x3D;\begin{bmatrix}1 &amp; 1 \0 &amp; 1 \\end{bmatrix}\Rightarrowx_k &#x3D; F x_{k-1} &#x3D;\begin{bmatrix}1 &amp; 1 \0 &amp; 1 \\end{bmatrix}\begin{bmatrix}10 \2 \\end{bmatrix}"></a>$$<br>F &#x3D;<br>\begin{bmatrix}<br>1 &amp; 1 \<br>0 &amp; 1 \<br>\end{bmatrix}<br>\Rightarrow<br>x_k &#x3D; F x_{k-1} &#x3D;<br>\begin{bmatrix}<br>1 &amp; 1 \<br>0 &amp; 1 \<br>\end{bmatrix}<br>\begin{bmatrix}<br>10 \<br>2 \<br>\end{bmatrix}</h1><p>\begin{bmatrix}<br>12 \<br>2 \<br>\end{bmatrix}<br>$$</p>
+<p>→ <strong>预测下一时刻的位置是 12，速度仍然是 2</strong></p>
+<h3 id="2-观测模型"><a href="#2-观测模型" class="headerlink" title="2. 观测模型"></a>2. <strong>观测模型</strong></h3><p>我们能观测到的是测量值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">z_k = H x_k + v_k</span><br></pre></td></tr></table></figure>
+
+<p>其中：</p>
+<ul>
+<li><code>H</code> 是观测矩阵（把状态映射为观测）</li>
+<li><code>v_k</code> 是测量噪声（例如雷达不准）</li>
+</ul>
+<h3 id="KF-的几个关键点"><a href="#KF-的几个关键点" class="headerlink" title="KF 的几个关键点"></a>KF 的几个关键点</h3><table>
+<thead>
+<tr>
+<th>术语</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>状态向量 <code>x</code></td>
+<td>要估计的真实值，如位置、速度</td>
+</tr>
+<tr>
+<td>状态转移矩阵 <code>F</code></td>
+<td>描述状态如何从前一时刻演化</td>
+</tr>
+<tr>
+<td>观测矩阵 <code>H</code></td>
+<td>描述如何从状态映射出观测值， 展现能观测到的值</td>
+</tr>
+<tr>
+<td>协方差矩阵 <code>P</code></td>
+<td>表示估计值的不确定性</td>
+</tr>
+<tr>
+<td>卡尔曼增益 <code>K</code></td>
+<td>预测值和观测值之间的加权比例</td>
+</tr>
+</tbody></table>
+<h2 id="协方差矩阵"><a href="#协方差矩阵" class="headerlink" title="协方差矩阵"></a>协方差矩阵</h2><p>最常见的 <strong>3 个关键协方差矩阵</strong>：</p>
+<h3 id="1-状态估计协方差矩阵-P（最核心）"><a href="#1-状态估计协方差矩阵-P（最核心）" class="headerlink" title="1. 状态估计协方差矩阵 P（最核心）"></a>1. 状态估计协方差矩阵 <code>P</code>（最核心）</h3><ul>
+<li><p><strong>含义</strong>：表示我们对当前状态估计（如位置、速度）的<strong>不确定性</strong>。（值越大，意味着对预测结果越没有信心）</p>
+</li>
+<li><p><strong>维度</strong>：与状态向量 <code>x</code> 同维度，如位置+速度就是 2×2。</p>
+</li>
+<li><p><strong>行为</strong>：</p>
+<ul>
+<li>初始值很大，表示我们一开始“很不确定”。</li>
+<li>随着测量不断修正，<code>P</code> 会逐步变小，表示我们“越来越确信”。</li>
+<li>是滤波器自己对估计结果的信心，不断更新（越小表示越相信自己的估计）</li>
+</ul>
+</li>
+<li><p><strong>初始值设定</strong>：</p>
+<ul>
+<li><p>如果你一开始<strong>对状态估计不确定</strong>（如初始速度不知道），设成较大：</p>
+<p>$$<br>P_0 &#x3D;<br>\begin{bmatrix}<br>1000 &amp; 0 \<br>0 &amp; 1000<br>\end{bmatrix}<br>$$</p>
+</li>
+<li><p>如果你知道初始位置很准但速度不确定，可以设置为：</p>
+<p>$$<br>P_0 &#x3D;<br>\begin{bmatrix}<br>1 &amp; 0 \<br>0 &amp; 1000<br>\end{bmatrix}<br>$$</p>
+</li>
+</ul>
+</li>
+<li><p><strong>是否调整？</strong></p>
+<ul>
+<li><code>P</code> 是自动更新的，不需要你手动优化。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-过程噪声协方差矩阵-Q"><a href="#2-过程噪声协方差矩阵-Q" class="headerlink" title="2. 过程噪声协方差矩阵 Q"></a>2. 过程噪声协方差矩阵 <code>Q</code></h3><ul>
+<li><p><strong>含义</strong>：表示系统模型中由于不可控因素（如摩擦、风、加速度变化）带来的随机扰动。</p>
+</li>
+<li><p><strong>行为</strong>：</p>
+<ul>
+<li>加在预测阶段，使得 <code>P</code> 不会无限减小。</li>
+<li>控制预测时的“扩散程度”。</li>
+</ul>
+</li>
+<li><p>如果设置 <code>Q = 0</code>，KF 就会过于自信，忽略真实世界的“抖动”或“误差”。</p>
+</li>
+<li><p><strong>怎么理解？</strong></p>
+<ul>
+<li><p>表示你的系统模型（如匀速运动）有多大的不确定性，比如：</p>
+<ul>
+<li>风的扰动</li>
+<li>摩擦不同步</li>
+<li>目标突然加速等</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>初始值设定方式</strong>：</p>
+<ul>
+<li>如果你相信系统运动模型比较准 → 设 <code>Q</code> 小一些（如 <code>Q = 0.01</code>）</li>
+<li>如果目标运动变化很不稳定 → 设 <code>Q</code> 大一些（如 <code>Q = 1</code> 或更高）</li>
+</ul>
+</li>
+<li><p><strong>优化建议</strong>：</p>
+<ul>
+<li>先手动尝试不同的值，看误差大小。</li>
+<li>可以通过历史轨迹拟合&#x2F;估计（如用系统残差反推）获得更优的 Q。</li>
+<li>高级方法：用 EM 算法自动估计 <code>Q</code>。</li>
+</ul>
+</li>
+</ul>
+<p><strong>如何理解运动模型准不准？</strong></p>
+<p>卡尔曼滤波的“系统运动模型”是你假设的目标运动方式，比如：</p>
+<ul>
+<li><p>匀速直线运动：</p>
+<p>$$<br>x_k &#x3D; x_{k-1} + v \cdot \Delta t<br>$$</p>
+</li>
+<li><p>匀加速运动：</p>
+<p>$$<br>x_k &#x3D; x_{k-1} + v_{k-1} \cdot \Delta t + \frac{1}{2} a \cdot \Delta t^2<br>$$</p>
+</li>
+</ul>
+<p>如果真实目标确实这么动（如在轨道上匀速滑行），就可以说系统运动模型很准！</p>
+<p>为什么模型准时 <code>Q</code> 应该小？</p>
+<p><code>Q</code> 是<strong>过程噪声协方差矩阵</strong>，表示系统运动过程的<strong>不可控扰动</strong>，比如：</p>
+<ul>
+<li>忽然加速、减速</li>
+<li>突然转弯</li>
+<li>风、坡道、轮胎打滑等干扰</li>
+</ul>
+<p>如果你“<strong>相信模型非常准</strong>”，意味着你觉得这些突发情况不常发生，因此：</p>
+<blockquote>
+<p><strong>你希望滤波器更信任模型的预测</strong>，不去太敏感地响应突然变化<br>→ 所以要设置 <code>Q</code> 较小！</p>
+</blockquote>
+<p>假设你在跟踪一个小火车：</p>
+<ul>
+<li><p>它沿着轨道匀速前进，外界扰动几乎没有 → <strong>模型非常可靠</strong></p>
+</li>
+<li><p>每秒你预测位置更新为：</p>
+<p>$$<br>x_k &#x3D; x_{k-1} + v \cdot \Delta t<br>$$</p>
+</li>
+<li><p>如果设置 <code>Q = 0.01</code>，表示：</p>
+<blockquote>
+<p>“我认为预测误差很小，所以我非常信任这个预测位置。”</p>
+</blockquote>
+</li>
+</ul>
+<p>🔄 当观测值（比如 GPS）有偏差时，滤波器不会被轻易“拉偏”——它会主要信任自己的预测。</p>
+<hr>
+<p><strong>如果 <code>Q</code> 设大，会发生什么？</strong></p>
+<p>你在说：“我不太信自己预测得准，可能运动发生了突变（比如拐弯、刹车）”</p>
+<p>此时卡尔曼滤波会：</p>
+<ul>
+<li>增强对观测值的依赖（即传感器说啥就信啥）</li>
+<li><strong>减少对模型预测的信任</strong></li>
+</ul>
+<p>这在目标运动很复杂、频繁变化时（如：行人、动物、赛车）是合理的。</p>
+<blockquote>
+<p><strong><code>Q</code> 越小，表示你越信任预测模型</strong>，越认为目标的运动方式是可以预期的；<br><strong><code>Q</code> 越大，表示你觉得模型靠不住，要更多依赖实际观测值。</strong></p>
+</blockquote>
+<h3 id="3-观测噪声协方差矩阵-R"><a href="#3-观测噪声协方差矩阵-R" class="headerlink" title="3. 观测噪声协方差矩阵 R"></a>3. 观测噪声协方差矩阵 <code>R</code></h3><ul>
+<li><p><strong>含义</strong>：表示观测值本身的测量误差。是滤波器对观测值误差的估计，即传感器精度的数学表达。</p>
+</li>
+<li><p><strong>行为</strong>：</p>
+<ul>
+<li>决定我们“信任预测多一点”还是“信任传感器多一点”。</li>
+<li>越大 → 表示观测很不可靠，KF 更信预测。</li>
+<li>越小 → 表示观测更精准，KF 更信传感器。</li>
+</ul>
+</li>
+<li><p><strong>初始值设定方式</strong>：</p>
+<ul>
+<li><p>看你用的传感器精度。比如：</p>
+<ul>
+<li>GPS ±5米 → <code>R ≈ 25</code></li>
+<li>激光雷达 ±0.1米 → <code>R ≈ 0.01</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>优化建议</strong>：</p>
+<ul>
+<li>初期可用经验值设定。</li>
+<li>可以从大量历史测量数据中计算真实的测量误差方差。</li>
+<li>多传感器融合时，可单独估计每种传感器的 <code>R</code>。</li>
+</ul>
+</li>
+</ul>
+<h3 id="总结对比表"><a href="#总结对比表" class="headerlink" title="总结对比表"></a>总结对比表</h3><table>
+<thead>
+<tr>
+<th>矩阵</th>
+<th>全称</th>
+<th>含义</th>
+<th>作用阶段</th>
+<th>通常大小</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>P</code></td>
+<td>状态估计协方差</td>
+<td>我对状态估计的信心（不确定性）</td>
+<td>预测 + 更新</td>
+<td>动态变化</td>
+</tr>
+<tr>
+<td><code>Q</code></td>
+<td>过程噪声协方差</td>
+<td>模型预测的不确定性（系统噪声）</td>
+<td>预测</td>
+<td>通常较小</td>
+</tr>
+<tr>
+<td><code>R</code></td>
+<td>观测噪声协方差</td>
+<td>传感器测量的不确定性</td>
+<td>更新</td>
+<td>固定或缓变</td>
+</tr>
+</tbody></table>
+<ul>
+<li><code>P</code> 是滤波器自己<strong>对估计结果的信心</strong>，不断更新（越小表示越相信自己的估计）；</li>
+<li><code>Q</code> 是滤波器<strong>对模型预测误差的估计</strong>，表示系统内部未知的“突变”或干扰；</li>
+<li><code>R</code> 是滤波器<strong>对观测值误差的估计</strong>，即传感器精度的数学表达。</li>
+</ul>
+<h2 id="简单梳理"><a href="#简单梳理" class="headerlink" title="简单梳理"></a>简单梳理</h2><p>设：</p>
+<ul>
+<li>$x_k$：当前时刻的状态</li>
+<li>$\hat{x}_k^-$：<strong>预测的状态</strong></li>
+<li>$\hat{x}_k$：<strong>更新后的状态</strong></li>
+<li>$z_k$：测量值</li>
+<li>$F$：状态转移矩阵</li>
+<li>$H$：观测矩阵</li>
+<li>$K_k$：卡尔曼增益</li>
+</ul>
+<h3 id="第一步：预测（Predict）"><a href="#第一步：预测（Predict）" class="headerlink" title="第一步：预测（Predict）"></a>第一步：<strong>预测（Predict）</strong></h3><p>我们根据上一时刻的状态和模型预测当前状态：</p>
+<h4 id="状态预测："><a href="#状态预测：" class="headerlink" title="状态预测："></a>状态预测：</h4><p>$$<br>\hat{x}<em>k^- &#x3D; F \cdot \hat{x}</em>{k-1} （通过状态矩阵F去预测）<br>$$</p>
+<h4 id="协方差预测（用到-P-和-Q）："><a href="#协方差预测（用到-P-和-Q）：" class="headerlink" title="协方差预测（用到 P 和 Q）："></a>协方差预测（用到 <code>P</code> 和 <code>Q</code>）：</h4><p>$$<br>P_k^- &#x3D; F \cdot P_{k-1} \cdot F^T + Q<br>$$</p>
+<blockquote>
+<ul>
+<li><code>P</code> 是我们对上一步状态的不确定性</li>
+<li><code>Q</code> 是我们对模型预测的“额外担忧”</li>
+<li>两者一起影响当前这步预测的不确定性（<code>P_k^-</code>）</li>
+</ul>
+</blockquote>
+<h3 id="第二步：更新（Update）"><a href="#第二步：更新（Update）" class="headerlink" title="第二步：更新（Update）"></a>第二步：<strong>更新（Update）</strong></h3><p>我们用当前传感器观测值 $z_k$ 来修正预测。</p>
+<h4 id="计算卡尔曼增益（用到-P-k-和-R）："><a href="#计算卡尔曼增益（用到-P-k-和-R）：" class="headerlink" title="计算卡尔曼增益（用到 P_k^- 和 R）："></a>计算卡尔曼增益（用到 <code>P_k^-</code> 和 <code>R</code>）：</h4><p>$$<br>K_k &#x3D; P_k^- \cdot H^T \cdot (H \cdot P_k^- \cdot H^T + R)^{-1}<br>$$</p>
+<blockquote>
+<ul>
+<li>如果 <code>R</code> 很小 → 测量非常可靠 → 卡尔曼增益大 → 更信观测值</li>
+<li>如果 <code>P_k^-</code> 很小 → 预测非常可靠 → 卡尔曼增益小 → 更信预测值</li>
+</ul>
+</blockquote>
+<h4 id="状态更新："><a href="#状态更新：" class="headerlink" title="状态更新："></a>状态更新：</h4><p>$$<br>\hat{x}_k &#x3D; \hat{x}_k^- + K_k \cdot (z_k - H \cdot \hat{x}_k^-)<br>$$</p>
+<p>用卡尔曼增益 <code>K_k</code> 来融合预测值和观测值，达到平衡。</p>
+<h4 id="协方差更新（更新-P）："><a href="#协方差更新（更新-P）：" class="headerlink" title="协方差更新（更新 P）："></a>协方差更新（更新 <code>P</code>）：</h4><p>$$<br>P_k &#x3D; (I - K_k \cdot H) \cdot P_k^-<br>$$</p>
+<blockquote>
+<p>表示我们对当前状态的不确定性在更新之后如何变化（通常会变小）。</p>
+</blockquote>
+</div><script type="text/javascript" src="/js/share.js?v=1.0.0" async></script><a class="article-share-link" data-url="https://kelinkong.github.io/2025/06/13/%E9%9B%B7%E8%BE%BE%E5%8E%9F%E7%90%86-%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/" data-id="cmbu9b0fh0000k3og8jkh82ug" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQ4AAAEOCAAAAABd2qZ5AAAD5ElEQVR42u3aS24bMRAFQN3/0gqQVQJ7pNevOYKDFFeCMOaQpUW7P49HvJ6/19fPX5/5c339/mrPqydff06+edyxcODAgQNHcNWrlRwrv3ZC8Ppv91hXd8SBAwcOHGc5psH1dRjbB+Po6BXcm3PiwIEDB44PciRBrguu0/CZJ4Q4cODAgeMnc+QFxCS4diGzOw8OHDhw4Pg8R1Ic3AMlgbNL1fLzH6uV4sCBAweONNINgta/8vlD8x04cODA8d9zPNdr06xKin35Dvvb4cCBAweOPUey6SaJ2hQZ8yGG5I2DM+DAgQMHjgXHZqMkvHVFw/yc3SDF5Xlw4MCBA8eaY/r6bqBhGqRPNaWmKR8OHDhw4NhzdOEtOe5muC0pFE7fEu2MAwcOHDjWHNNW0B3jEV3il6RqZXsMBw4cOHAc4siD2TQ9SxpU+dFPgb4JtDhw4MCBo+LoUqA8Tdo/OU0Cu/1x4MCBA8cdHKeC3HTQbRPC89ZU9CQOHDhw4DjEccdgdBcO8/RvE+Av98SBAwcOHLdxbAp2SXNoOiTR7TamxIEDBw4chzg2m+6D7ma4LU8dox8VBw4cOHCsOfILJ1ibwmJy4fyZPOSPc1YcOHDgwBFwjOWCi3WBeXqezf5vQiwOHDhw4Kg4koCUP9Olf92VpkngYFQOBw4cOHDczJGXDpPiXddG6kqQ40FAHDhw4MCx5kjyl7yR0xXsuvJfHoDLQiEOHDhw4FhzdCsfmOtevAqWXa0UBw4cOHAc4piW2KYBuLvetA12bMQBBw4cOHAsOLpR6c14XB78pq2jKcE3O+PAgQMHjgVHN6yQHD0Jn9OW0hT6WKsJBw4cOHAMOTZHyfm6llL3ljydG/zHgQMHDhw4Yo5NuM3LiPkzm8QvJ47qizhw4MCB42jOMm3qTD93Laj9wAQOHDhw4LiPY1ounF5mOjAxLQhOk8DxyXHgwIEDR8WxaSAlB00u2Q03TEuWZcUUBw4cOHAMOfZjB3vEQVpVpWTd6AMOHDhw4JhydCW/PLnaJF2bxlLZ7sKBAwcOHIc4ukLhviHUjcol30+D7l+BFgcOHDhwLDimW08bQo/F6oAOvAUHDhw4cCze8hyuLhhPA21y4c1Q+OX5ceDAgQPHmqMLSF0xMS8gdpfsipVlkMaBAwcOHHE1LL9qPrI2HVabhvkEdDBmgQMHDhw4DnF0LzuVzm127va/fB4HDhw4cHycY1p0mw5GdAlhPpax6nfhwIEDB46jHMk3Zy+Q/wzHzoMDBw4cOA5x5IW8z6Rk3U9yIOjiwIEDB46j+Us30DAdLDh1rGlwPXYSHDhw4MDx/Ul+AQIUPK8x/JgtAAAAAElFTkSuQmCC">Share</a><div class="tags"><ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9B%B7%E8%BE%BE%E5%8E%9F%E7%90%86/" rel="tag">雷达原理</a></li></ul></div><div class="post-nav"><a class="next" href="/2025/06/05/Java-Java%E7%9A%84%E5%AE%B9%E5%99%A8%E5%92%8CC-%E7%9A%84STL%E5%AE%B9%E5%99%A8%E7%9A%84%E5%AF%B9%E6%AF%94/">Java-Java的容器和C++的STL容器的对比</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="https://kelinkong.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="About"><img class="nofancybox" src="/img/logo.jpg"/></a><p>Kelin is a boring girl, but not always.</p><a class="info-icon" href="https://github.com/kelinkong" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/DataBase/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Digital-Human/">Digital Human</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network-Security/">Network-Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Operating-System/">Operating-System</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Radar-Principle/">Radar Principle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/frontend/">frontend</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/solutions/">solutions</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/CMU15-445/" style="font-size: 15px;">CMU15-445</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/architecture/" style="font-size: 15px;">architecture</a> <a href="/tags/%E9%9B%B7%E8%BE%BE%E5%8E%9F%E7%90%86/" style="font-size: 15px;">雷达原理</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2025/06/13/%E9%9B%B7%E8%BE%BE%E5%8E%9F%E7%90%86-%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">雷达原理-卡尔曼滤波器基础学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/06/05/Java-Java%E7%9A%84%E5%AE%B9%E5%99%A8%E5%92%8CC-%E7%9A%84STL%E5%AE%B9%E5%99%A8%E7%9A%84%E5%AF%B9%E6%AF%94/">Java-Java的容器和C++的STL容器的对比</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/06/05/%E6%95%B0%E5%AD%97%E4%BA%BA-Java%E9%9F%B3%E8%A7%86%E9%A2%91%E5%A4%84%E7%90%86-%E9%9F%B3%E9%A2%91%E6%8E%A8%E6%B5%81%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">数字人-Java音视频处理-音频推流失败问题排查</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/05/21/%E6%95%B0%E5%AD%97%E4%BA%BA-Java%E9%9F%B3%E8%A7%86%E9%A2%91%E5%A4%84%E7%90%86/">数字人-Java音视频处理-推流和拉流</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/04/25/%E6%95%B0%E5%AD%97%E4%BA%BA-%E5%9F%BA%E7%A1%80%E6%89%AB%E7%9B%B2/">数字人-基础扫盲</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/04/18/Java-%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">Java-基础学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/02/13/deepseek-v3%E6%8A%80%E6%9C%AF%E6%8A%A5%E5%91%8A%E5%AD%A6%E4%B9%A0/">deepseek-v3技术报告学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/01/10/DB-%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93Neo4j/">DB-图数据库Neo4j</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/01/09/Java-%E7%BC%96%E8%AF%91%E7%9B%B8%E5%85%B3/">Java-编译相关</a></li><li class="post-list-item"><a class="post-list-link" href="/2024/12/27/AI-%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0-%E7%AC%94%E8%AE%B0/">AI-动手学深度学习-笔记</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2025 <a href="/." rel="nofollow">Kelin's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0"></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.css"><script type="text/javascript" src="/js/love.js?v=1.0.0"></script><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="Copy Successed!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/x-mathjax-config">MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+</script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async></script><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
