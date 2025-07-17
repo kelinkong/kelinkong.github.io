@@ -1,4 +1,73 @@
-<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>Java-编译相关 | Kelin's blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/latest/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/grids-responsive-min.min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script type="text/javascript" src="//lib.baomitu.com/clipboard.js/latest/clipboard.min.js"></script><script type="text/javascript" src="//lib.baomitu.com/toastr.js/latest/toastr.min.js"></script><link rel="stylesheet" href="//lib.baomitu.com/toastr.js/latest/toastr.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Java-编译相关</h1><a id="logo" href="/.">Kelin's blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Java-编译相关</h1><div class="post-meta">2025-01-09<span> | </span><span class="category"><a href="/categories/Java/">Java</a></span><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 1.9k</span><span class="post-meta-item-text"> Words</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i><span class="post-count"> 6</span><span class="post-meta-item-text"> Minutes</span></span></span></div><div class="post-content"><h2 id="Java的即时编译器">Java的即时编译器</h2>
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>Java-编译相关 | Kelin's blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/latest/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/grids-responsive-min.min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script type="text/javascript" src="//lib.baomitu.com/clipboard.js/latest/clipboard.min.js"></script><script type="text/javascript" src="//lib.baomitu.com/toastr.js/latest/toastr.min.js"></script><link rel="stylesheet" href="//lib.baomitu.com/toastr.js/latest/toastr.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Java-编译相关</h1><a id="logo" href="/.">Kelin's blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Java-编译相关</h1><div class="post-meta">2025-01-09<span> | </span><span class="category"><a href="/categories/Java/">Java</a></span><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 2.5k</span><span class="post-meta-item-text"> Words</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i><span class="post-count"> 8</span><span class="post-meta-item-text"> Minutes</span></span></span></div><div class="post-content"><h2 id="Jvm">Jvm</h2>
+<h3 id="1-一次编写，处处运行（Write-Once-Run-Anywhere）">1. <strong>一次编写，处处运行（Write Once, Run Anywhere）</strong></h3>
+<ul>
+<li>Java 程序被编译成 <strong>字节码（<code>.class</code>）</strong>，不是平台相关的机器码。</li>
+<li>字节码由 <strong>JVM 解释或编译执行</strong>，只要目标机器有 JVM，就能运行。</li>
+<li>不需要为每个操作系统单独编译！</li>
+</ul>
+<p>举例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">你写了一个 HelloWorld.java</span><br><span class="line">→ 编译得到 HelloWorld.class</span><br><span class="line">→ Windows 装 JVM → 可以跑</span><br><span class="line">→ Linux 装 JVM → 也可以跑</span><br><span class="line">→ Mac 装 JVM → 继续跑</span><br></pre></td></tr></table></figure>
+<h3 id="2-更强的安全性和隔离性">2. <strong>更强的安全性和隔离性</strong></h3>
+<ul>
+<li>Java 程序运行在 <strong>JVM 沙箱中</strong>，不会直接访问底层内存（不像 C++ 有指针）。</li>
+<li>JVM 会做<strong>字节码校验、安全检查</strong>，减少恶意代码运行风险。</li>
+</ul>
+<h3 id="3-跨平台的标准化生态">3. <strong>跨平台的标准化生态</strong></h3>
+<ul>
+<li>JVM 提供统一的接口和行为定义，开发者不必关心 OS 差异。</li>
+<li>Java 的生态（如 Spring、Hadoop、Spark）可以无缝运行在多种平台上。</li>
+</ul>
+<h3 id="4-JIT（即时编译）-GC（自动内存管理）">4. <strong>JIT（即时编译）+ GC（自动内存管理）</strong></h3>
+<ul>
+<li>JVM 运行时会监控热点代码，使用 JIT 将字节码编译为机器码，优化性能。</li>
+<li>自动垃圾回收（GC）减轻了开发者的负担，减少内存泄漏风险。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Java JVM</th>
+<th>C++ 编译器（g++/clang）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>编译方式</td>
+<td>源码 → 字节码（跨平台中间码）</td>
+<td>源码 → 机器码（平台绑定）</td>
+</tr>
+<tr>
+<td>平台相关性</td>
+<td>字节码不平台相关，但 JVM 是</td>
+<td>编译结果是平台相关</td>
+</tr>
+<tr>
+<td>编译时 vs 运行时</td>
+<td>编译时平台无关，运行时需 JVM</td>
+<td>编译时决定平台，运行时直接执行</td>
+</tr>
+</tbody>
+</table>
+<p>JVM 与 C++ 编译器最大不同是：</p>
+<blockquote>
+<p>JVM 将“平台相关性”推迟到运行时（由 JVM 屏蔽平台差异），而 C++ 是在编译时就决定目标平台。</p>
+</blockquote>
+<p>所以只需要：</p>
+<ul>
+<li>一次写 Java 程序 + 编译成 <code>.class</code></li>
+<li>每个平台装对应的 JVM，就能<strong>不重编译地运行</strong></li>
+</ul>
+<p>但 C++：</p>
+<ul>
+<li>写完程序，如果要在不同平台运行，就要用不同的编译器重新编译成不同平台的机器码。</li>
+</ul>
+<p><strong>那 JVM 不就是额外多装一个运行环境？很麻烦？</strong></p>
+<p>是的，这是它的“成本”。但：</p>
+<ul>
+<li>Java 项目往往是“部署一次、跑在任意云环境或服务器上”</li>
+<li>JVM 可以预装在环境中，运行效率也越来越高（GraalVM、ZGC、JIT等）</li>
+</ul>
+<h2 id="Java的即时编译器">Java的即时编译器</h2>
 <p>Java 的即时编译器 (JIT) 是 Java 虚拟机 (JVM) 中的重要组成部分，它在程序运行时将 Java 字节码 (Bytecode) 转换为本地机器代码，从而提高程序运行效率。以下是关于 JIT 的详细科普：</p>
 <h3 id="1-JIT-编译器的作用">1. <strong>JIT 编译器的作用</strong></h3>
 <ul>

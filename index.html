@@ -92,12 +92,15 @@ Neo4j 是一种基于 图模型 的开源图数据库，专为存储和查询高
 
 图模型：
 
-数据存储为节点（N...</div><p class="readmore"><a href="/2025/01/10/DB-%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93Neo4j/">Read More</a></p></div><div class="post"><h1 class="post-title"><a href="/2025/01/09/Java-%E7%BC%96%E8%AF%91%E7%9B%B8%E5%85%B3/">Java-编译相关</a></h1><div class="post-meta">2025-01-09</div><div class="post-content">Java的即时编译器
-Java 的即时编译器 (JIT) 是 Java 虚拟机 (JVM) 中的重要组成部分，它在程序运行时将 Java 字节码 (Bytecode) 转换为本地机器代码，从而提高程序运行效率。以下是关于 JIT 的详细科普：
-1. JIT 编译器的作用
+数据存储为节点（N...</div><p class="readmore"><a href="/2025/01/10/DB-%E5%9B%BE%E6%95%B0%E6%8D%AE%E5%BA%93Neo4j/">Read More</a></p></div><div class="post"><h1 class="post-title"><a href="/2025/01/09/Java-%E7%BC%96%E8%AF%91%E7%9B%B8%E5%85%B3/">Java-编译相关</a></h1><div class="post-meta">2025-01-09</div><div class="post-content">Jvm
+1. 一次编写，处处运行（Write Once, Run Anywhere）
 
-Java 程序先被编译为字节码，这是一种中间代码，独立于底层硬件和操作系统。
-JVM ...</div><p class="readmore"><a href="/2025/01/09/Java-%E7%BC%96%E8%AF%91%E7%9B%B8%E5%85%B3/">Read More</a></p></div><nav class="page-navigator"><span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/">Next</a></nav><script type="text/javascript">window.MathJax = {
+Java 程序被编译成 字节码（.class），不是平台相关的机器码。
+字节码由 JVM 解释或编译执行，只要目标机器有 JVM，就能运行。
+不需要为每个操作系统单独编译！
+
+举例：
+12345你写了一个 HelloWorld.java→ 编译得到 HelloWorld....</div><p class="readmore"><a href="/2025/01/09/Java-%E7%BC%96%E8%AF%91%E7%9B%B8%E5%85%B3/">Read More</a></p></div><nav class="page-navigator"><span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/">Next</a></nav><script type="text/javascript">window.MathJax = {
   tex: {
     inlineMath: [['$', '$'], ['\\(', '\\)']],
     displayMath: [['$$', '$$'], ['\\[', '\\]']]
