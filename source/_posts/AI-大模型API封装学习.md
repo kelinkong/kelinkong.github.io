@@ -345,3 +345,106 @@ eventSource.onerror = function(event) {
     // 在这里处理错误
 };
 ```
+### SseEmitter对象
+`SseEmitter` 是 Spring 提供的一个类，用于处理 `Server-Sent Events (SSE)`，一种服务器端推送技术。通过 `SseEmitter`，服务器可以持续向客户端发送事件，而客户端只需要建立一次连接即可接收多个事件。
+
+![](../imgs/image-92.png)
+
+在 Java 里，`SseEmitter`（Spring MVC 提供的 SSE 对象）之所以能**流式返回**，本质上是利用了 **HTTP 长连接** + **分块传输（Chunked Transfer Encoding）** 来实现的。
+
+我给你拆开解释一下原理：
+
+---
+
+#### 1. SSE 是什么
+
+* SSE（Server-Sent Events）就是浏览器向服务器发起一个 **HTTP 请求**，
+* 服务器不立刻关闭连接，而是不断 **分批发送数据** 给浏览器。
+* 客户端（通常是浏览器 `EventSource`）会不断接收这些数据并触发事件。
+
+**SSE 是单向的**（服务器 → 客户端），不像 WebSocket 那样双向通信。
+
+---
+
+#### 2. `SseEmitter` 的实现原理
+
+Spring 通过 `SseEmitter` 让你轻松用 Java 写 SSE 服务。
+
+关键点：
+
+* **底层用的是 Servlet 异步处理**（`AsyncContext`）
+* **HTTP 头**里会返回：
+
+  ```http
+  Content-Type: text/event-stream
+  Cache-Control: no-cache
+  Transfer-Encoding: chunked
+  ```
+* `Transfer-Encoding: chunked` 让服务器可以分段写数据到 TCP 流，而不用等到一次性写完。
+* 每次你调用：
+
+  ```java
+  emitter.send(SseEmitter.event().data("hello"));
+  ```
+
+  Spring 会：
+
+  1. 把 `"data: hello\n\n"` 格式的数据写入响应流（`OutputStream` 或 `Writer`）
+  2. **不关闭**响应流
+  3. 立即 `flush()`，让客户端立刻收到这一段数据
+* 连接保持打开状态，直到：
+
+  * 你调用 `emitter.complete()`（手动结束）
+  * 或超时/异常
+
+---
+
+#### 3. 流式的关键：不关闭 & 立即 flush
+
+传统的 HTTP 响应是：
+
+1. 服务器生成完整内容
+2. 一次性写入响应流
+3. 关闭连接
+
+SSE 则是：
+
+1. 打开连接（HTTP 长连接）
+2. 写一部分数据（`flush` 立即发出）
+3. 等待一段时间，再写下一部分数据
+4. 重复，直到结束
+
+---
+
+#### 4. 一个例子
+
+```java
+@GetMapping("/stream")
+public SseEmitter stream() {
+    SseEmitter emitter = new SseEmitter(0L); // 0 表示不过期
+
+    new Thread(() -> {
+        try {
+            for (int i = 0; i < 5; i++) {
+                emitter.send(SseEmitter.event()
+                        .name("message")
+                        .data("第 " + (i+1) + " 条数据"));
+                Thread.sleep(1000); // 模拟延迟
+            }
+            emitter.complete();
+        } catch (Exception e) {
+            emitter.completeWithError(e);
+        }
+    }).start();
+
+    return emitter;
+}
+```
+
+**客户端**：
+
+```javascript
+const es = new EventSource("/stream");
+es.onmessage = (event) => console.log("收到:", event.data);
+```
+
