@@ -89,7 +89,7 @@ public class MockUser {
 
 **注意**：`@Mock`和`@Spy`注解的区别：
 - `@Mock`注解创建的对象是一个真正的Mock对象，它会覆盖被Mock的方法。
-- `@Spy`注解创建的对象是一个真实的对象，它会保留被Mock的方法的原始实现。
+- **`@Spy`注解创建的对象是一个真实的对象，`@Spy`对象会保留原始实现，但会覆盖被Mock的方法。当希望mock被测试类中的部份方法时，可以使用`@Spy`注解。**
 
 ### Mock方法
 1. 使用`Mockito.when`方法模拟方法调用。
@@ -140,6 +140,7 @@ void privateMethod() throws NoSuchMethodException, InvocationTargetException, Il
     String name = "test";
     // 通过反射调用私有方法
     Method method = mockUser.getClass().getDeclaredMethod("privateMethod", String.class);
+    // 允许访问私有方法
     method.setAccessible(true);
     String result = (String) method.invoke(mockUser, name);
     assertEquals("test private", result);
@@ -166,6 +167,43 @@ void staticMethod() {
     assertEquals("test static", result);
 }
 ```
+
+### mock静态方法
+```java
+try(MockedStatic<MockUser> mockUserStatic = Mockito.mockStatic(MockUser.class)){
+    mockUserStatic.when(() -> MockUser.staticMethod(anyString())).thenReturn("test");
+    String result = MockUser.staticMethod("test");
+    assertEquals("test", result);
+}
+```
+
+### mock构造函数
+```java
+try(MockedConstruction<MockService> service = Mockito.mockConstruction(MockService.class, (mock, context) -> {
+        Mockito.when(mock.serviceMethod(anyString())).thenReturn("test");
+    });
+    MockedConstruction<MockTmp> tmp = Mockito.mockConstruction(MockTmp.class, (mock, context) -> {
+        Mockito.when(mock.tmpMethod(anyString())).thenReturn("test");
+    })
+    ){
+    MockService mockService = new MockService();
+    String result1 = mockService.serviceMethod("test");
+    assertEquals("test", result1);  
+    // 测试serviceMethod    
+    });
+```
+
+**mock构造函数的时候，写在try小括号中和中括号中有什么区别？**
+
+1. try ( ... ) { ... } 小括号里的内容
+	•	小括号里的内容必须是 实现了 AutoCloseable 接口 的对象（比如 MockedConstruction、InputStream、Connection 等）。
+	•	try 语句结束时（大括号执行完毕），这些对象会被 自动关闭（调用 close() 方法）。
+	•	在 Mockito 里，MockedConstruction 实现了 AutoCloseable，所以放在小括号里，会在 try 块结束时自动销毁构造函数 mock。
+
+2. try { ... } 大括号里的内容
+	•	大括号里就是普通的代码块，不会自动关闭资源。
+	•	如果你在大括号里写 MockedConstruction 的创建，它不会被自动关闭，你需要 手动调用 close()。
+	•	否则构造函数 mock 可能会“泄漏”，影响到后续测试。
 
 ### 测试公有方法
 被调用的所有方法都mock掉，只测试公有方法。这样可以保证测试的是公有方法的逻辑，而不是依赖的其他方法。
@@ -229,170 +267,6 @@ void publicMethod() {
 
 目前还没有找到方法去`mock`类内私有方法（基于不能修改源代码、也不能使用powerMockito）。（如果有大佬看到，求教，邮箱1763605980@qq.com）
 
-#### 异常处理
-```java
-@Test
-public void publicMethodException() {
-    String name = "test";
-    Mockito.doThrow(new RuntimeException()).when(mockService).serviceMethod(anyString());
-    assertThrows(RuntimeException.class, () -> mockUser.publicMethod(name));
-}
-```
-## 完整代码
-`MockService`类：
-```java
-@Service
-public class MockService {
-    public String serviceMethod(String name) {
-        System.out.println("serviceMethod");
-        name = name + " service";
-        return name;
-    }
-}
-```
-`MockTmp`类：
-```java
-package com.example.demo.mockito;
-
-public class MockTmp {
-    private final MockService mockService;
-
-    public MockTmp(MockService mockService){
-        this.mockService = mockService;
-    };
-
-    public String tmpMethod(String name) {
-        return name + " tmp";
-    }
-}
-```
-`MockUser`类：
-```java
-package com.example.demo.mockito;
-
-public class MockUser {
-    private final MockService mockService;
-
-    public MockUser(MockService mockService){
-        this.mockService = mockService;
-    };
-
-    private String privateMethod(String name) {
-        System.out.println("Private Method Called");
-        name = name + " private";
-        return name;
-    }
-
-    public static String staticMethod(String name) {
-        System.out.println("Static Method Called");
-        name = name + " static";
-        return name;
-    }
-
-    public String publicMethod(String name) {
-        try{
-            // 调用其他服务  name + " service"
-            String name1 = mockService.serviceMethod(name);
-            // 调用类内私有方法  name + " private"
-            String name2 = privateMethod(name);
-            // 调用静态方法 name + " static"
-            String name3 = staticMethod(name);
-            // 不带参的构造函数 name + " service"
-            MockService mockService2 = new MockService();
-            String name4 = mockService2.serviceMethod(name);
-            // 带参的构造函数 name + " tmp"
-            MockTmp mocktmp = new MockTmp(mockService2);
-            String name5 = mocktmp.tmpMethod(name);
-
-            return name1 + " " + name2 + " "  + name3 + " "  + name4 + " "  + name5;
-        } catch (RuntimeException e){
-            throw new RuntimeException("Exception");
-        }
-    }
-}
-```
-`MockUserTest`类：
-```java
-package com.example.demo.mockito;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.*;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
-
-class MockUserTest {
-
-    @Mock
-    private MockService mockService;
-
-    @Spy
-    @InjectMocks
-    private MockUser mockUser;
-
-    @BeforeEach
-    public void setUp(){
-        MockitoAnnotations.openMocks(this);
-    }
-
-    @Test
-    void privateMethod() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        String name = "test";
-        Method method = mockUser.getClass().getDeclaredMethod("privateMethod", String.class);
-        method.setAccessible(true);
-        String result = (String) method.invoke(mockUser, name);
-        assertEquals("test private", result);
-    }
-
-    @Test
-    void staticMethod() {
-        String name = "test";
-        String result = MockUser.staticMethod(name);
-        assertEquals("test static", result);
-    }
-
-    @Test
-    void publicMethod() {
-        String name = "test";
-        // 想要最后的结果都是 "test"
-        Mockito.when(mockService.serviceMethod(anyString())).thenReturn("test");
-
-        /* 静态方法不能直接在stubbing中调用 */
-        //Mockito.when(MockUser.staticMethod(anyString())).thenReturn("test");
-
-        // 同一个类内的私有方法无法mock
-        //Mockito.when(mockUser.privateMethod(anyString())).thenReturn("test");
-
-        // mock新对象和静态方法
-        try(MockedStatic<MockUser> mockUserStatic = Mockito.mockStatic(MockUser.class);
-            MockedConstruction<MockService> service = Mockito.mockConstruction(MockService.class, (mock, context) -> {
-                Mockito.when(mock.serviceMethod(anyString())).thenReturn("test");
-            });
-            MockedConstruction<MockTmp> tmp = Mockito.mockConstruction(MockTmp.class, (mock, context) -> {
-                Mockito.when(mock.tmpMethod(anyString())).thenReturn("test");
-            })
-            ){
-
-            mockUserStatic.when(() -> MockUser.staticMethod(anyString())).thenReturn("test");
-
-            String result = mockUser.publicMethod(name);
-            assertEquals("test test private test test test", result);
-        }
-    }
-
-    @Test
-    public void publicMethodException() {
-        String name = "test";
-        Mockito.doThrow(new RuntimeException()).when(mockService).serviceMethod(anyString());
-        assertThrows(RuntimeException.class, () -> mockUser.publicMethod(name));
-    }
-}
-```
-
 ## 期望抛出异常
 ```java
 @Test(expected = RuntimeException.class)
@@ -447,5 +321,15 @@ public void testRemoveUser_withException() {
     controller.removeUser(1L);
 
     // 可以用日志检查、状态标志、verify 等方式验证 catch 是否执行
+}
+```
+
+## 注入@Value注解的值
+使用反射
+```java
+@Before
+public void setUp() {
+    MockitoAnnotations.openMocks(this);
+    ReflectionTestUtils.setField(yourClassInstance, "yourFieldName", "yourValue");
 }
 ```
