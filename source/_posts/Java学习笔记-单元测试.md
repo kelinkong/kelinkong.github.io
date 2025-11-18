@@ -333,3 +333,29 @@ public void setUp() {
     ReflectionTestUtils.setField(yourClassInstance, "yourFieldName", "yourValue");
 }
 ```
+### 使用反射
+
+反射可以设置类的成员变量。
+
+#### 普通类的成员变量
+```java
+Field field = MyClass.class.getDeclaredField("fieldName");
+field.setAccessible(true);
+field.set(yourClassInstance, "yourValue");
+```
+
+#### 静态成员变量
+```java
+// 1️⃣ 获取类的私有静态实例
+Field instanceField = MyClass.class.getDeclaredField("instance");
+instanceField.setAccessible(true);
+Object instance = instanceField.get(null); // 静态字段，obj 参数传 null
+
+// 2️⃣ 获取实例的私有成员变量
+Field field = MyClass.class.getDeclaredField("field");
+field.setAccessible(true);
+field.set(instance, "mocked");
+
+// 3️⃣ 调用静态方法验证
+System.out.println(MyClass.getFieldValue()); // 输出 "mocked"
+```

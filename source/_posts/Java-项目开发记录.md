@@ -82,6 +82,55 @@ if (!violations.isEmpty()) {
 }
 ```
 
+#### 在action中，使用@Valid注解，自动校验请求参数
+```java
+@PostMapping("/users")
+public ResponseEntity<Void> createUser(@Valid @RequestBody UserRequestVO userRequestVO) {}
+```
+
+### 对枚举值进行校验
+示例枚举类：
+```java
+public enum AudioType {
+    NORMAL(0, "普通音频"),
+    TRIAL(1, "试听音频"),
+    VIP(2, "会员音频");
+
+    private final int code;
+    private final String desc;
+}
+```
+创建一个枚举值校验器：
+```java
+@Target({ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = EnumValidator.class)
+public @interface EnumValid {
+    String message() default "枚举值不合法";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
+
+    Class<? extends Enum<?>> enumClass();
+}
+
+public class EnumValidator implements ConstraintValidator<EnumValid, Object> {
+    private Class<? extends Enum<?>> enumClass;
+
+    @Override
+    public void initialize(EnumValid annotation) {
+        this.enumClass = annotation.enumClass();
+    }
+
+    @Override
+    public boolean isValid(Object value, ConstraintValidatorContext context) {
+        if (value == null) return true; // 允许空
+        for (Enum<?> e : enumClass.getEnumConstants()) {
+            if (e.name().equals(value.toString())) return true;
+        }
+        return false;
+    }
+}
+```
 
 ### IDEA配置
 
@@ -102,6 +151,9 @@ public void someMethod() throws BizException {
     // 业务逻辑
 }
 ```
+
+#### 全局异常处理
+
 
 ### 代码规范
 

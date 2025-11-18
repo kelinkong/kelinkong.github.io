@@ -22,12 +22,12 @@ block content
         a.ds-thread-count(href=url_for(post.path) + '#SOHUCS')
           span.cy_cmt_count(id='sourceId::' + post.date.valueOf() style='margin: 0 3px 0 1px;') 0
           span= ' ' + __('Comment')
-      if post.description
-        .post-content
-          != post.description
-      else if post.excerpt
+      if post.excerpt
         .post-content
           != post.excerpt
+      else if post.description
+        .post-content
+          != post.description
       else if post.content
         - const content = strip_html(post.content)
         - let expert = content.substring(0,theme.post_content_length)

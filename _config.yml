@@ -118,9 +118,13 @@ deploy:
 #   order_by: -date
 
 markdown:
+  plugins:
+    - markdown-it-mark
+    - markdown-it-sup
+    - markdown-it-sub
   render:
     html: true
-    breaks: false
+    xhtmlOut: false
+    breaks: true
     linkify: true
-  plugins:
-    - markdown-it-mathjax3
+    typographer: true
