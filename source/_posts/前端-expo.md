@@ -1,7 +1,7 @@
 ---
 title: 前端-expo
 date: 2024-11-22 11:38:47
-categories: [frontend]
+categories: [Frontend]
 ---
 
 ## expo是什么？
