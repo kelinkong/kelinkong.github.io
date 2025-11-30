@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>网络安全-学习笔记 | Kelin's blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/latest/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/grids-responsive-min.min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script type="text/javascript" src="//lib.baomitu.com/clipboard.js/latest/clipboard.min.js"></script><script type="text/javascript" src="//lib.baomitu.com/toastr.js/latest/toastr.min.js"></script><link rel="stylesheet" href="//lib.baomitu.com/toastr.js/latest/toastr.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">网络安全-学习笔记</h1><a id="logo" href="/.">Kelin's blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">网络安全-学习笔记</h1><div class="post-meta">2025-11-28<span> | </span><span class="category"><a href="/categories/Network-Security/">Network-Security</a></span><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 1.6k</span><span class="post-meta-item-text"> Words</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i><span class="post-count"> 5</span><span class="post-meta-item-text"> Minutes</span></span></span></div><div class="post-content"><h2 id="什么是SIEM工具？">什么是SIEM工具？</h2>
+<p>SIEM（Security Information and Event Management，安全信息和事件管理）工具是一种用于实时监控、分析和管理安全事件的软件系统。它通过收集和分析来自各种来源的日志数据，帮助组织识别潜在的安全威胁和漏洞，从而提高整体的安全态势。</p>
+<h3 id="常见的SIEM工具">常见的SIEM工具</h3>
+<ol>
+<li>Splunk：Splunk是一种流行的SIEM工具，提供强大的数据收集、分析和可视化功能。它支持多种数据源，并提供丰富的安全分析功能。</li>
+<li>IBM QRadar：QRadar是IBM提供的SIEM解决方案，具有强大的威胁检测和响应能力。它能够自动化安全事件的分析和响应，提高安全运营效率。</li>
+<li>ArcSight：ArcSight是Micro Focus提供的SIEM工具，具有强大的日志管理和事件关联功能。它支持大规模数据处理，适用于大型企业环境。</li>
+<li>LogRhythm：LogRhythm是一种集成的SIEM平台，提供全面的安全信息和事件管理功能。它支持实时威胁检测和响应，帮助组织快速应对安全事件。</li>
+<li>AlienVault OSSIM：AlienVault OSSIM是一种开源的SIEM工具，提供基本的安全信息和事件管理功能。它适用于中小型企业，具有易于使用和部署的特点。</li>
+</ol>
+<h3 id="寻找可疑ip">寻找可疑ip</h3>
+<p>在SIEM工具中，寻找可疑IP地址通常涉及以下步骤：</p>
+<ol>
+<li>数据收集：首先，确保SIEM工具已经配置为收集来自各种数据源的日志数据，包括防火墙、入侵检测系统（IDS）、服务器日志等。</li>
+<li>日志分析：使用SIEM工具的日志分析功能，筛选出与IP地址相关的日志条目。可以根据时间范围、事件类型等条件进行过滤。</li>
+<li>威胁情报集成：将威胁情报源集成到SIEM工具中，以便识别已知的恶意IP地址。许多SIEM工具支持与外部威胁情报平台的集成。</li>
+<li>异常检测：利用SIEM工具的异常检测功能，识别与正常行为模式不符的IP地址。例如，频繁的登录失败、异常的流量模式等。</li>
+<li>报告和告警：配置SIEM工具生成关于可疑IP地址的报告和告警，以便安全团队能够及时响应潜在的威胁。</li>
+<li>调查和响应：一旦识别出可疑IP地址，安全团队应进一步调查其活动，并采取适当的响应措施，如阻止该IP地址的访问或进行深入的取证分析。</li>
+</ol>
+<p>把恶意ip地址添加到阻止列表中，可以有效地防止来自这些地址的潜在攻击，保护组织的网络安全。</p>
+<h2 id="防火墙阻止可疑-IP-的机制">防火墙阻止可疑 IP 的机制</h2>
+<p>防火墙主要通过两种核心技术来阻止可疑 IP：<strong>静态规则过滤</strong>和<strong>动态策略/情报集成</strong>。</p>
+<h3 id="1-静态规则过滤（ACLs-Blacklisting）">1. 静态规则过滤（ACLs / Blacklisting）</h3>
+<p>这是最基本、最直接的方法。</p>
+<ul>
+<li><strong>访问控制列表 (ACL)：</strong> 防火墙管理员会手动或通过自动化工具，在防火墙的访问控制列表中添加已知的、恶意的或不受信任的 IP 地址。</li>
+<li><strong>匹配过程：</strong>
+<ol>
+<li>当一个网络数据包到达防火墙时，防火墙会检查该数据包的<strong>源 IP 地址</strong>。</li>
+<li>它将该源 IP 地址与配置好的 ACL 或<strong>黑名单</strong>进行比对。</li>
+<li>如果 IP 地址匹配到黑名单中的条目，防火墙会执行预设的操作，通常是：
+<ul>
+<li><strong>Drop (丢弃):</strong> 直接静默地丢弃数据包，不通知源端。</li>
+<li><strong>Reject (拒绝):</strong> 丢弃数据包，并向源端发送一个 ICMP 错误消息（例如，Destination Unreachable），表明连接被拒绝。</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<h3 id="2-动态策略与安全情报集成（IPS-Threat-Intelligence）">2. 动态策略与安全情报集成（IPS/Threat Intelligence）</h3>
+<p>现代防火墙（特别是下一代防火墙 NGFW）拥有更智能、更动态的阻止能力。</p>
+<h4 id="A-基于威胁情报-Threat-Intelligence-的阻止">A. 基于威胁情报 (Threat Intelligence) 的阻止</h4>
+<ul>
+<li><strong>情报订阅：</strong> 防火墙会订阅或集成外部的安全威胁情报源（如来自 SIEM、云服务商、或专业安全厂商的 Feeds）。</li>
+<li><strong>实时更新：</strong> 这些情报源提供了一个持续更新的、全球范围内的恶意 IP 地址列表，包括：<strong>僵尸网络 C&amp;C 服务器、恶意软件分发点、已知的攻击源</strong>等。</li>
+<li><strong>动态阻止：</strong> 防火墙将这些情报动态加载到其阻止列表中，实现对全球新兴威胁的实时防御。</li>
+</ul>
+<h4 id="B-基于行为和入侵检测的阻止-IPS-IDS">B. 基于行为和入侵检测的阻止 (IPS/IDS)</h4>
+<ul>
+<li><strong>入侵防御系统 (IPS)：</strong> IPS 通常是集成在防火墙内的模块。它不仅仅查看 IP 地址，还会对数据包的**内容（Payload）**进行深度检查。</li>
+<li><strong>异常行为：</strong> 如果一个 IP 地址开始发送<strong>大量探测请求</strong>、<strong>尝试登录多次失败</strong>、或者发送了<strong>包含已知漏洞特征码</strong>的数据包，IPS 就会将其标记为可疑。</li>
+<li><strong>临时封锁：</strong> 一旦检测到恶意行为，防火墙会<strong>自动</strong>在一段预设时间内（例如 10 分钟或 24 小时）阻止该可疑 IP 地址，即使该 IP 不在静态黑名单中。</li>
+</ul>
+<h3 id="3-基于地理位置的阻止-Geo-Blocking">3. 基于地理位置的阻止 (Geo-Blocking)</h3>
+<ul>
+<li><strong>地理定位：</strong> 防火墙通过 IP 地址的地理位置信息，识别数据包的来源国家或地区。</li>
+<li><strong>策略应用：</strong> 如果企业的业务不需要与某个高风险国家或地区进行网络通信，防火墙可以配置策略，<strong>直接阻止来自整个国家/地区 IP 范围的所有流量</strong>。</li>
+</ul>
+<p>防火墙阻止可疑 IP 地址是一个多层次的防御过程：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">依据</th>
+<th style="text-align:left">决策方式</th>
+<th style="text-align:left">常见应用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>静态/ACL</strong></td>
+<td style="text-align:left">IP 地址是否在管理员配置的黑名单中。</td>
+<td style="text-align:left">规则匹配（精确或范围）。</td>
+<td style="text-align:left">阻止已知的、长期的攻击者 IP。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>动态/IPS</strong></td>
+<td style="text-align:left">IP 地址的行为模式和数据包的内容。</td>
+<td style="text-align:left">实时分析、特征码比对、异常行为检测。</td>
+<td style="text-align:left">阻止正在进行中的暴力破解或漏洞利用尝试。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>情报集成</strong></td>
+<td style="text-align:left">IP 地址是否被全球威胁情报源标记为恶意。</td>
+<td style="text-align:left">动态订阅和匹配。</td>
+<td style="text-align:left">阻止最新的、全球性的僵尸网络或恶意活动。</td>
+</tr>
+</tbody>
+</table>
+</div><script type="text/javascript" src="/js/share.js?v=1.0.0" async></script><a class="article-share-link" data-url="https://kelinkong.github.io/2025/11/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8-tryHackMe%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" data-id="cmil1018p004miwsba2lyf3mt" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQ4AAAEOCAAAAABd2qZ5AAAD50lEQVR42u3aOXLkQAwEQP3/09qIddbQHFUApJWRtBQTVLM7aYA4Pj7i6/Pv9eyXr3+//uX1mq9Xzp/ydf2zCwcOHDhwBEd9duUc+TFeE8x2lWM9Ww0HDhw4cNxyvA6u7XaTQ7ar5Z8CedDFgQMHDhz/l6NNxvZbbwN2/jpx4MCBA8dv4NiE2LxglxQWZ+g4cODAgeMnOZIyXFsunAXvWZDO939WK8WBAwcOHGmd7aMNur//72+c78CBAwcOHKPWURK6ZsW+WYMqT/CKc+HAgQMHjjVHsmgemzap3etjtHfOhhtw4MCBA8ctRxsIXz9sU1hMmkOb8b436+PAgQMHjgXH7SBaHqqT9s9sbGK1Txw4cODAccqxD1f7UmB+jHyd5P4HgRYHDhw4cCw42hG3WdK1D4ftZ0GSfD5I4XDgwIEDx4Jjs9G2nZMnaZvcahVoceDAgQPHEUd7vLaoNxuDyA9ztT4OHDhw4Nhz5IlQi7K58rJg/iKj3eLAgQMHjjVHUSaLgdoRh9lAw+wU0Q5x4MCBA8cpRx7qkk0njaJk5dkKwxYXDhw4cOA45WhLfpvA3AbF/AUcf3fgwIEDB45FiM1bOG2SNhtraBO8TZDGgQMHDhy3HHnraDb6MHsBbSDfvGAcOHDgwHHLkW9r0+C5Ctj570UaiQMHDhw4TjmGaU/Ml7R/8lLgprz49H9x4MCBA8cRR9tq2h9p9vQ8yRx+KODAgQMHjqOc66y4tujdtGnb7f5x4MCBA8cVRx7eZincDK5OveKX9OYpOHDgwIHjlGMz0LAZMsgTuRauTlBx4MCBA8c3cCQbSsLqbAxiljS2qd3TU+PAgQMHjjVHGz7bwYVNINyH9rzdhQMHDhw4rjiSm/K0ql0twWoLgptXiwMHDhw49hxXQwz5FvN78rZTO0hXjMrhwIEDB46bWbJ6RGAfYvMEbzb60A5n4MCBAweOGUdymE1prx10y1tE+30+LQ7iwIEDB44Fx2Ywrh10mI3KbVKyzQvDgQMHDhwzjllbaJYR5mFyw7ehwYEDBw4cVxyzEJsPJczifz3oVrbQHvyCAwcOHDjWHO14waz5NAvJZ4MI7bNw4MCBA8eC47O82kDYjhrsRytmjbEHXTgcOHDgwDHi2MTndov7obfZyEWeauLAgQMHjiuOdgQt2W5eyMvLf+0bHs534MCBAweOI45ZMW42jrBpC+2TsTdMOHDgwIHjxzn25cI2rcobY5tPBBw4cODA8fMcsySqDXttytc+/Q0QDhw4cOA44si3shk7mA09tMF4VijEgQMHDhxXHO1AQ/LINojudzIbcTgYlcOBAwcOHP+uPxcV9km7jj4fAAAAAElFTkSuQmCC">Share</a><div class="tags"></div><div class="post-nav"><a class="next" href="/2025/11/18/Java-%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/">Java-命令模式</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="https://kelinkong.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="About"><img class="nofancybox" src="/img/logo.jpg"/></a><p>Kelin is a boring girl, but not always.</p><a class="info-icon" href="https://github.com/kelinkong" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/DataBase/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Digital-Human/">Digital Human</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network-Security/">Network-Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Operating-System/">Operating-System</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Radar-Principle/">Radar Principle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/frontend/">frontend</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/solutions/">solutions</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/architecture/" style="font-size: 15px;">architecture</a> <a href="/tags/CMU15-445/" style="font-size: 15px;">CMU15-445</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/%E9%9B%B7%E8%BE%BE%E5%8E%9F%E7%90%86/" style="font-size: 15px;">雷达原理</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2025/11/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8-tryHackMe%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">网络安全-学习笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/11/18/Java-%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/">Java-命令模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/09/11/Java-%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/">Java-项目开发记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/06/13/%E9%9B%B7%E8%BE%BE%E5%8E%9F%E7%90%86-ukf-%E6%BB%A4%E6%B3%A2%E5%99%A8/">雷达原理-ukf 滤波器</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/06/13/%E9%9B%B7%E8%BE%BE%E5%8E%9F%E7%90%86-%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E5%99%A8%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">雷达原理-卡尔曼滤波器基础学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/06/05/Java-Java%E7%9A%84%E5%AE%B9%E5%99%A8%E5%92%8CC-%E7%9A%84STL%E5%AE%B9%E5%99%A8%E7%9A%84%E5%AF%B9%E6%AF%94/">Java-Java的容器和C++的STL容器的对比</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/06/05/%E6%95%B0%E5%AD%97%E4%BA%BA-Java%E9%9F%B3%E8%A7%86%E9%A2%91%E5%A4%84%E7%90%86-%E9%9F%B3%E9%A2%91%E6%8E%A8%E6%B5%81%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">数字人-Java音视频处理-音频推流失败问题排查</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/05/21/%E6%95%B0%E5%AD%97%E4%BA%BA-Java%E9%9F%B3%E8%A7%86%E9%A2%91%E5%A4%84%E7%90%86/">数字人-Java音视频处理-推流和拉流</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/04/25/%E6%95%B0%E5%AD%97%E4%BA%BA-%E5%9F%BA%E7%A1%80%E6%89%AB%E7%9B%B2/">数字人-基础扫盲</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/04/18/Java-%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">Java-基础学习</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2025 <a href="/." rel="nofollow">Kelin's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0"></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.css"><script type="text/javascript" src="/js/love.js?v=1.0.0"></script><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="Copy Successed!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
