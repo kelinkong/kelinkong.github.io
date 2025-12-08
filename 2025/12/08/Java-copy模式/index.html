@@ -1,0 +1,253 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>Java-copy模式 | Kelin's blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/latest/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/grids-responsive-min.min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/favicon.ico"><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script type="text/javascript" src="//lib.baomitu.com/clipboard.js/latest/clipboard.min.js"></script><script type="text/javascript" src="//lib.baomitu.com/toastr.js/latest/toastr.min.js"></script><link rel="stylesheet" href="//lib.baomitu.com/toastr.js/latest/toastr.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Java-copy模式</h1><a id="logo" href="/.">Kelin's blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">Java-copy模式</h1><div class="post-meta">2025-12-08<span> | </span><span class="category"><a href="/categories/Java/">Java</a></span><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 3.1k</span><span class="post-meta-item-text"> Words</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i><span class="post-count"> 11</span><span class="post-meta-item-text"> Minutes</span></span></span></div><div class="post-content"><h2 id="Java中的赋值">Java中的赋值</h2>
+<p>在 Java 中，对象变量（非基本数据类型，如 int、boolean 等）存储的实际上是 引用（或者说内存地址），它指向堆（Heap）上的实际对象。</p>
+<p>当使用等号进行赋值时，默认执行的是 引用赋值（Reference Assignment）：</p>
+<ul>
+<li>ObjectA = ObjectB</li>
+</ul>
+<p>这个操作不会创建新的对象。</p>
+<p>它使得变量 ObjectA 存储的引用与变量 ObjectB 存储的引用 相同，它们现在都指向 堆上同一个对象实例。</p>
+<p><strong>这意味着通过 ObjectA 或 ObjectB 对对象进行的任何修改，都会影响到同一个底层数据。</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">MyObject</span> <span class="variable">a</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyObject</span>(); <span class="comment">// 创建对象1</span></span><br><span class="line"><span class="type">MyObject</span> <span class="variable">b</span> <span class="operator">=</span> a;              <span class="comment">// 引用赋值，b 和 a 都指向 对象1</span></span><br><span class="line">b.setValue(<span class="number">10</span>);              <span class="comment">// 通过 b 修改 对象1</span></span><br><span class="line"><span class="comment">// 此时 a.getValue() 也是 10</span></span><br></pre></td></tr></table></figure>
+<h3 id="C-默认复制构造函数或重载运算符">C++ (默认复制构造函数或重载运算符)</h3>
+<p>在 C++ 中，一个普通的 类对象变量 通常直接包含其数据成员。</p>
+<p>当使用等号进行赋值时，默认执行的是 成员逐个复制（Memberwise Copy）：</p>
+<ul>
+<li>ObjectA = ObjectB</li>
+</ul>
+<p>如果 ObjectA 已经存在，这个操作会调用 赋值运算符（Assignment Operator, 即 operator=）。</p>
+<p>如果没有显式定义，默认的赋值运算符 会将 ObjectB 的所有非静态数据成员 逐个复制 给 ObjectA。</p>
+<p>这会创建一个 新的独立的对象状态（虽然数据一样），ObjectA 和 ObjectB 仍是两个独立的对象。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">MyClass A;      <span class="comment">// 对象 A</span></span><br><span class="line">MyClass B;      <span class="comment">// 对象 B</span></span><br><span class="line">B.<span class="built_in">setValue</span>(<span class="number">10</span>);</span><br><span class="line">A = B;          <span class="comment">// 默认赋值：将 B 的数据成员复制给 A</span></span><br><span class="line">A.<span class="built_in">setValue</span>(<span class="number">20</span>); <span class="comment">// 修改 A 的值，不会影响 B</span></span><br><span class="line"><span class="comment">// 此时 B 的值仍是 10</span></span><br></pre></td></tr></table></figure>
+<h4 id="注意-C-浅拷贝陷阱-：">注意 (C++ 浅拷贝陷阱)：</h4>
+<p>默认的逐个复制对于对象内包含 动态分配的内存（例如，一个类中有一个 int* 指针）时，会导致 浅拷贝 问题。<a href="https://kelinkong.github.io/2021/09/18/%E3%80%90c++%E3%80%91%E6%B7%B1%E6%8B%B7%E8%B4%9D%E5%92%8C%E6%B5%85%E6%8B%B7%E8%B4%9D/">C++浅拷贝</a></p>
+<p>赋值后，<code>ObjectA</code> 和 <code>ObjectB</code> 的指针成员将指向 同一块 动态内存。</p>
+<p>当其中一个对象（如 <code>ObjectB</code>）被销毁时，它会释放这块内存，导致另一个对象（<code>ObjectA</code>）的指针变成悬空指针，再次访问或销毁时会导致程序崩溃。</p>
+<p>为了解决这个问题，在 C++ 中包含动态内存的类通常需要显式定义 深拷贝 的 复制构造函数 和 赋值运算符，以确保新对象拥有自己独立的数据副本。</p>
+<h2 id="Java是怎么避免浅拷贝陷阱的？">Java是怎么避免浅拷贝陷阱的？</h2>
+<p><strong>简而言之：</strong> Java 避免 C++ 默认赋值导致的浅拷贝陷阱，是因为它们对“赋值”的定义根本不同。</p>
+<h3 id="1-Java-如何避免浅拷贝陷阱？">1. Java 如何避免浅拷贝陷阱？</h3>
+<p>Java 通过其 <strong>引用的本质</strong> 避免了 C++ 默认赋值运算符所导致的浅拷贝陷阱。</p>
+<h4 id="1-1-赋值运算符（-）的角色不同">1.1 赋值运算符（<code>=</code>）的角色不同</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">语言</th>
+<th style="text-align:left">操作符 (<code>=</code>) 的默认行为</th>
+<th style="text-align:left">结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Java</strong></td>
+<td style="text-align:left"><strong>引用赋值 (Reference Assignment)</strong></td>
+<td style="text-align:left"><code>A = B</code> 意味着 <code>A</code> 和 <code>B</code> 都指向堆内存中的 <strong>同一对象</strong>。这永远不会创建新的数据副本，因此不会发生 C++ 意义上的浅拷贝（即复制对象数据时只复制指针地址）。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>C++</strong></td>
+<td style="text-align:left"><strong>数据赋值 (Data Copying)</strong></td>
+<td style="text-align:left">默认调用赋值运算符，将 <code>B</code> 对象的数据成员 <strong>逐个复制</strong> 给 <code>A</code> 对象。当数据成员是指针时，复制的只是指针的值（地址），导致两个对象共享同一块堆内存。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="1-2-Java-的内存管理机制">1.2 Java 的内存管理机制</h4>
+<p>在 Java 中，当你说：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">MyObject</span> <span class="variable">obj1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyObject</span>();</span><br><span class="line"><span class="type">MyObject</span> <span class="variable">obj2</span> <span class="operator">=</span> obj1; <span class="comment">// 引用赋值</span></span><br></pre></td></tr></table></figure>
+<p>这是 <strong>引用赋值</strong>。</p>
+<ul>
+<li><code>obj1</code> 和 <code>obj2</code> 都是 <strong>遥控器</strong>。</li>
+<li>它们都指向 <strong>堆上同一个电视机（对象）</strong>。</li>
+</ul>
+<p>因此，当你通过 <code>obj2</code> 改变电视机的频道时，<code>obj1</code> 看到的也是新频道。既然没有发生数据的“复制”行为，自然就不会触发 C++ 那种“复制指针”的陷阱。</p>
+<h4 id="1-3-clone-方法与浅拷贝风险">1.3 <code>clone()</code> 方法与浅拷贝风险</h4>
+<p>需要注意的是，虽然 Java 的 <strong>默认赋值</strong> 是安全的，但当你尝试在 Java 中进行 <strong>显式拷贝</strong> 时，风险仍然存在：</p>
+<p>Java 的 <code>Object</code> 类中自带的 <code>clone()</code> 方法，其默认实现是 <strong>浅拷贝（Shallow Copy）</strong>。</p>
+<ul>
+<li><strong>浅拷贝</strong>：它创建了一个新对象，并将原对象的所有字段值复制给新对象。
+<ul>
+<li>如果字段是 <strong>基本类型</strong> 或 <strong>不可变对象</strong>（如 <code>String</code>），则安全。</li>
+<li>如果字段是 <strong>可变对象引用</strong>（如 <code>ArrayList</code> 或自定义类），则只复制了该引用地址。新对象和原对象会 <strong>共享</strong> 内部的这个可变对象，当你修改其中一个时，另一个也会被影响。</li>
+</ul>
+</li>
+</ul>
+<p>所以，Java 避免了 C++ <strong>赋值</strong> 带来的默认陷阱，但如果你不正确地使用 <code>clone()</code> 或自定义拷贝方法，<strong>浅拷贝的风险依然存在</strong>。</p>
+<h3 id="2-如何在-Java-中实现-C-风格的独立拷贝（深拷贝）？">2. 如何在 Java 中实现 C++ 风格的独立拷贝（深拷贝）？</h3>
+<p>实现 C++ 风格的独立拷贝（即 <strong>深拷贝 Deep Copy</strong>），目的是创建一个全新的、与原对象在数据上完全独立的副本，包括所有嵌套的子对象。</p>
+<p>实现深拷贝主要有两种推荐的方法：<strong>拷贝构造函数</strong> 和 <strong>重写 <code>clone()</code></strong>。</p>
+<h4 id="方式一：使用拷贝构造函数（推荐）">方式一：使用拷贝构造函数（推荐）</h4>
+<p>这是最常用、最清晰、也是最推荐的方法。它在创建新对象时，递归地为所有可变（Mutable）引用字段创建新的实例。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Employee</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> Department department; <span class="comment">// 假设 Department 是一个可变对象</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 原始构造函数</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Employee</span><span class="params">(String name, Department department)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.department = department;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ⭐ 拷贝构造函数 (执行深拷贝)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Employee</span><span class="params">(Employee original)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = original.name; <span class="comment">// String 是不可变的，浅拷贝即可</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 关键：对可变引用类型执行深拷贝（调用其拷贝构造函数）</span></span><br><span class="line">        <span class="built_in">this</span>.department = <span class="keyword">new</span> <span class="title class_">Department</span>(original.department); </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// ... 其他方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>优点：</strong> 1.  <strong>明确性高：</strong> 意图清晰，易于维护。<br>
+2.  <strong>更灵活：</strong> 不依赖于 <code>Cloneable</code> 接口。</p>
+<h4 id="方式二：正确重写-clone-方法">方式二：正确重写 <code>clone()</code> 方法</h4>
+<p>使用 <code>clone()</code> 需要遵循特定的步骤来实现深拷贝：</p>
+<ol>
+<li>实现 <code>Cloneable</code> 接口（标记接口）。</li>
+<li>重写 <code>Object</code> 的 <code>protected clone()</code> 方法，并将其访问权限改为 <code>public</code>。</li>
+<li>在方法中，先调用 <code>super.clone()</code> 获得浅拷贝。</li>
+<li><strong>手动</strong> 对所有可变引用字段进行深拷贝。</li>
+</ol>
+<!-- end list -->
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Department</span> <span class="keyword">implements</span> <span class="title class_">Cloneable</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException &#123;</span><br><span class="line">        <span class="comment">// 1. 获得对象的浅拷贝</span></span><br><span class="line">        <span class="type">Department</span> <span class="variable">newDept</span> <span class="operator">=</span> (Department) <span class="built_in">super</span>.clone(); </span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 2. 如果 Department 内部还有可变对象，需要在这里递归进行深拷贝。</span></span><br><span class="line">        <span class="comment">// 例如：newDept.staff = new ArrayList&lt;&gt;(this.staff);</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> newDept;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>优点：</strong> 1.  实现了 Java 标准库的约定。</p>
+<p><strong>缺点：</strong> 1.  <strong>侵入性强：</strong> 必须实现 <code>Cloneable</code> 接口。<br>
+2.  <strong>不安全：</strong> <code>clone()</code> 返回 <code>Object</code> 类型，需要进行类型转换。<br>
+3.  <strong>复杂：</strong> 必须处理 <code>CloneNotSupportedException</code> 异常。</p>
+<h4 id="方式三：通过序列化（不推荐用于日常操作）">方式三：通过序列化（不推荐用于日常操作）</h4>
+<p>通过将对象写入输出流（序列化）再从输入流读出（反序列化），可以最简单地保证深拷贝，因为序列化过程会为整个对象图创建全新的副本。</p>
+<p><strong>缺点：</strong> 1.  <strong>性能差：</strong> 涉及 I/O 操作，比前两种方法慢得多。<br>
+2.  <strong>限制：</strong> 对象及其所有内部对象必须实现 <code>Serializable</code> 接口。</p>
+<h2 id="可变对象和不可变对象">可变对象和不可变对象</h2>
+<p>我的类A中有一个Integer对象，我使用B=A，那么当我修改B中的Integer对象时，A中的也会跟着改变？</p>
+<p>这是一个非常关键的问题，它涉及到 <strong>Java 的引用赋值</strong> 和 <strong>Integer 的不变性</strong>。</p>
+<p>答案是：<strong>不会</strong>。当你修改 <code>B</code> 中的 <code>Integer</code> 字段时，<strong><code>A</code> 中的 <code>Integer</code> 字段不会跟着改变</strong>。</p>
+<h3 id="为什么不会改变？">为什么不会改变？</h3>
+<p>虽然 <code>B = A</code> 是引用赋值（意味着 <code>A</code> 和 <code>B</code> 指向堆上同一个 <code>A</code> 类实例），并且它们共享了内部的 <code>Integer</code> 字段，但这种共享是安全的，原因在于 <code>Integer</code> 类的核心特性：<strong>不可变性 (Immutability)</strong>。</p>
+<p>让我们通过一个假设的例子来详细分析这个过程：</p>
+<h4 id="1-初始状态-引用共享">1. 初始状态 (引用共享)</h4>
+<p>假设你有一个 <code>MyClass</code>，其中包含一个 <code>Integer</code> 字段：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;</span><br><span class="line">    Integer value; <span class="comment">// 字段</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">MyClass</span><span class="params">(Integer v)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.value = v;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">MyClass</span> <span class="variable">A</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyClass</span>(<span class="number">100</span>);</span><br><span class="line"><span class="type">MyClass</span> <span class="variable">B</span> <span class="operator">=</span> A; <span class="comment">// A 和 B 引用赋值，指向同一个 MyClass 实例</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>此时，<code>A.value</code> 和 <code>B.value</code> 都指向 <strong>同一个 <code>Integer(100)</code> 对象</strong>。
+<ul>
+<li><code>A</code> 指向 Object X。</li>
+<li><code>B</code> 也指向 Object X。</li>
+<li>Object X 内部的 <code>value</code> 字段指向 Integer(100)。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-执行-“修改”-操作-断开共享">2. 执行 “修改” 操作 (断开共享)</h4>
+<p>当你执行一个看似修改 <code>B</code> 中 <code>Integer</code> 字段的操作时，实际上并不是在修改那个 <code>Integer</code> 对象，而是在 <strong>改变 <code>B</code> 内部的引用指向</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 你尝试修改 B.value 的值</span></span><br><span class="line">B.value = <span class="number">200</span>; <span class="comment">// 假设 B 类中有一个公共的 setter 或直接访问字段</span></span><br></pre></td></tr></table></figure>
+<p>这个操作的底层机制是：</p>
+<ol>
+<li><code>Integer</code> 对象是 <strong>不可变</strong> 的。你无法修改那个值为 <code>100</code> 的对象本身。</li>
+<li>Java 会创建一个 <strong>新的 <code>Integer(200)</code> 对象</strong>。</li>
+<li><code>B.value</code> 这个字段的 <strong>引用</strong> 被更新，使其指向这个 <strong>新的 <code>Integer(200)</code> 对象</strong>。</li>
+<li>因为 <code>A</code> 和 <code>B</code> 仍然指向同一个 <code>MyClass</code> 实例 (Object X)，所以 <code>A.value</code> 和 <code>B.value</code> 都改变了。</li>
+</ol>
+<h4 id="3-陷阱的真正发生条件：可变对象（Mutable-Object）">3. 陷阱的真正发生条件：可变对象（Mutable Object）</h4>
+<p>如果你的类 <code>A</code> 中包含的不是 <code>Integer</code>（不可变对象），而是像 <strong><code>ArrayList</code></strong> 或你自定义的 <strong>可变对象</strong>，那么陷阱就会发生：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyMutableClass</span> &#123;</span><br><span class="line">    ArrayList&lt;String&gt; data; <span class="comment">// 可变对象</span></span><br><span class="line">    <span class="comment">// ... 构造函数等</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">MyMutableClass</span> <span class="variable">A_mut</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyMutableClass</span>(<span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(Arrays.asList(<span class="string">&quot;X&quot;</span>)));</span><br><span class="line"><span class="type">MyMutableClass</span> <span class="variable">B_mut</span> <span class="operator">=</span> A_mut; <span class="comment">// 引用赋值，共享同一个 MyMutableClass 实例</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 尝试修改 B 中的字段内容</span></span><br><span class="line">B_mut.data.add(<span class="string">&quot;Y&quot;</span>); <span class="comment">// ⚠️ 陷阱发生！</span></span><br></pre></td></tr></table></figure>
+<p>在这个例子中：</p>
+<ol>
+<li><code>B_mut.data.add(&quot;Y&quot;)</code> 是在调用 <code>ArrayList</code> 对象的 <strong>内部修改方法</strong>。</li>
+<li>这个方法修改了 <strong>堆上共享的那个 <code>ArrayList</code> 实例</strong>。</li>
+<li>因为 <code>A_mut</code> 和 <code>B_mut</code> 都指向同一个 <code>ArrayList</code>，所以 <code>A_mut.data</code> 也会看到新的元素 <code>&quot;Y&quot;</code>。</li>
+</ol>
+<h3 id="总结-🚀">总结 🚀</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">字段类型</th>
+<th style="text-align:left">赋值 (<code>B = A</code>) 后修改 <code>B</code> 中的字段</th>
+<th style="text-align:left">结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>Integer</code> (不可变)</strong></td>
+<td style="text-align:left"><code>B.value = 200;</code></td>
+<td style="text-align:left"><strong>A 不变</strong>。因为该操作创建了新的 <code>Integer</code> 对象并更新了 <code>B</code> 的引用。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>ArrayList</code> (可变)</strong></td>
+<td style="text-align:left"><code>B.data.add(&quot;Y&quot;);</code></td>
+<td style="text-align:left"><strong>A 跟着改变</strong>。因为该操作修改了共享的 <code>ArrayList</code> 对象的内部状态。</td>
+</tr>
+</tbody>
+</table>
+<p><strong>对于 不可变对象 (Immutable Object)，当对它进行“修改”操作时，本质上就是创建了一个新的对象。</strong></p>
+<h3 id="常见的可变对象和不可变对象">常见的可变对象和不可变对象</h3>
+<p>常见的 <strong>可变对象</strong>（Mutable Objects）和 <strong>不可变对象</strong>（Immutable Objects）是 Java 语言设计的基础。</p>
+<h4 id="🔒-常见的不可变对象-Immutable-Objects">🔒 常见的不可变对象 (Immutable Objects)</h4>
+<p>不可变对象是线程安全的，它们的值在创建后不会改变。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">类别</th>
+<th style="text-align:left">示例类</th>
+<th style="text-align:left">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>基本类型包装类</strong></td>
+<td style="text-align:left"><code>java.lang.Integer</code></td>
+<td style="text-align:left">所有基本数据类型的包装类，包括 <code>Byte</code>, <code>Short</code>, <code>Long</code>, <code>Float</code>, <code>Double</code>, <code>Character</code>, <code>Boolean</code>，都是不可变的。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>字符串</strong></td>
+<td style="text-align:left"><code>java.lang.String</code></td>
+<td style="text-align:left">最常用的不可变对象。所有修改字符串的操作（如 <code>concat()</code>）都会返回一个新的 <code>String</code> 实例。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>日期时间 API</strong></td>
+<td style="text-align:left"><code>java.time.LocalDate</code></td>
+<td style="text-align:left">Java 8 引入的新的日期时间 API 中的核心类，如 <code>LocalDateTime</code>, <code>ZonedDateTime</code> 等，都是不可变的。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>通用类</strong></td>
+<td style="text-align:left"><code>java.lang.Class</code></td>
+<td style="text-align:left">表示类的对象，是不可变的。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>集合 (部分)</strong></td>
+<td style="text-align:left"><code>java.util.Collections.unmodifiableList(...)</code></td>
+<td style="text-align:left">通过工具类创建的 <strong>不可修改的集合视图</strong>，虽然不是真正的不可变，但不能通过视图修改内容。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="🔓-常见的可变对象-Mutable-Objects">🔓 常见的可变对象 (Mutable Objects)</h4>
+<p>可变对象可以随时修改其内部状态，因此在多线程环境下需要特别注意同步问题。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">类别</th>
+<th style="text-align:left">示例类</th>
+<th style="text-align:left">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>日期时间 API (旧)</strong></td>
+<td style="text-align:left"><code>java.util.Date</code></td>
+<td style="text-align:left">老的日期时间类，它的时间可以被 <code>setTime()</code> 方法修改。</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left"><code>java.util.Calendar</code></td>
+<td style="text-align:left">同样是可变的，可以通过 <code>set()</code> 方法修改内部日期字段。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>字符串构建</strong></td>
+<td style="text-align:left"><code>java.lang.StringBuilder</code></td>
+<td style="text-align:left">用于在单线程环境中高效地修改字符串。</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left"><code>java.lang.StringBuffer</code></td>
+<td style="text-align:left">线程安全的版本，用于在多线程环境中高效地修改字符串。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>集合框架</strong></td>
+<td style="text-align:left"><code>java.util.ArrayList</code></td>
+<td style="text-align:left">可以通过 <code>add()</code>, <code>remove()</code>, <code>set()</code> 等方法修改列表内容。</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left"><code>java.util.HashMap</code></td>
+<td style="text-align:left">可以通过 <code>put()</code>, <code>remove()</code> 等方法修改映射内容。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>IO 框架</strong></td>
+<td style="text-align:left"><code>java.io.File</code></td>
+<td style="text-align:left">表示文件路径的对象，虽然文件路径本身通常不变，但它不符合不可变对象的严格定义。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>数组</strong></td>
+<td style="text-align:left">所有数组类型 (e.g., <code>String[]</code>, <code>int[]</code>)</td>
+<td style="text-align:left">数组的内容可以被直接修改。</td>
+</tr>
+</tbody>
+</table>
+</div><script type="text/javascript" src="/js/share.js?v=1.0.0" async></script><a class="article-share-link" data-url="https://kelinkong.github.io/2025/12/08/Java-copy%E6%A8%A1%E5%BC%8F/" data-id="cmiwvy626000zbkog78jf6zq8" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACtElEQVR42u3aS24cMQwFQN//0g6QbTyd90gpMwhKKwPTH5UWTZrk11e8vn+v5NfvP9ar659/za8/sPDw8PBGW3+1njf9aiubu56flu8ZDw8P7zYvf/QshDxvog0keVDBw8PDey/v+TWvrs8P6JmNh4eH93/wZklwHnjw8PDwPpmXFCOSTSdPnjGu11rw8PDwYl5bYviEvy/29/Dw8PAWXfU2VMw+1vsw8/KNeHh4eBd4bdGhKAEE3+p8+OD53r8EDzw8PLyjvNnI1KZEmweY5FDqcSs8PDy8Q7z8Be2YVHKIbfAokHh4eHjXeO3nftbOb5ths0P8odaCh4eHd5SXf/T3pCQAtCWP6CDw8PDwrvFyUsuYlTnytB4PDw/vXbx24Kkt7+bhZNb6Kvp7eHh4eAveplybD13NirN5UfjlNXh4eHgXeG16eqpxlQxmtel+MSWBh4eHt+DlLfk28c2T4Nn4V1L+wMPDw7vNa1eeNLfgWToeDQ3g4eHhrXmbcYE2zW1T56QEXCDx8PDwDvFmhYPnT/mmJZY/J2qw4eHh4V3jtdvdF39vDCW8/I8BDw8P7wIvL0y0ZYL2aZtmW1GlxsPDw1vw9lufbaJNppM3RkNXeHh4eId4+5LrqUQ8HzUoggQeHh7eUd6pT/aszX8qSBSTEXh4eHhrXp6Y5k392bb27bGoFIKHh4e35iWt+nzgKW/wb55cjDvg4eHhXeDlmH2htm19nWqk4eHh4Z3lfZcraZW1KfWNhBsPDw/vHi9fbcK9efEm1cbDw8P7N7xZMJgNReXFiPyw8PDw8N7F2wwEtIBZKGrbaXh4eHifw9u0uJID2rfBfqi44OHh4b2JtykftL/O7loFBjw8PLySl3/WT7XE2uCRl3GLLh8eHh7eiDdrSuUP3aTms12t+nt4eHh4T7xf44tpznTRGRUAAAAASUVORK5CYII=">Share</a><div class="tags"></div><div class="post-nav"><a class="next" href="/2025/11/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8-tryHackMe%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">网络安全-学习笔记</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><form class="search-form" action="//www.google.com/search" method="get" accept-charset="utf-8" target="_blank"><input type="text" name="q" maxlength="20" placeholder="Search"/><input type="hidden" name="sitesearch" value="https://kelinkong.github.io"/></form></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="About"><img class="nofancybox" src="/img/logo.jpg"/></a><p>Kelin is a boring girl, but not always.</p><a class="info-icon" href="https://github.com/kelinkong" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/DataBase/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Digital-Human/">Digital Human</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network-Security/">Network-Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Operating-System/">Operating-System</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Radar-Principle/">Radar Principle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/solutions/">solutions</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/architecture/" style="font-size: 15px;">architecture</a> <a href="/tags/CMU15-445/" style="font-size: 15px;">CMU15-445</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/%E9%9B%B7%E8%BE%BE%E5%8E%9F%E7%90%86/" style="font-size: 15px;">雷达原理</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2025/12/08/Java-copy%E6%A8%A1%E5%BC%8F/">Java-copy模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/11/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8-tryHackMe%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">网络安全-学习笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/11/18/Java-%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/">Java-命令模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/09/11/Java-%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/">Java-项目开发记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/06/13/%E9%9B%B7%E8%BE%BE%E5%8E%9F%E7%90%86-ukf-%E6%BB%A4%E6%B3%A2%E5%99%A8/">雷达原理-ukf 滤波器</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/06/13/%E9%9B%B7%E8%BE%BE%E5%8E%9F%E7%90%86-%E5%8D%A1%E5%B0%94%E6%9B%BC%E6%BB%A4%E6%B3%A2%E5%99%A8%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">雷达原理-卡尔曼滤波器基础学习</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/06/05/Java-Java%E7%9A%84%E5%AE%B9%E5%99%A8%E5%92%8CC-%E7%9A%84STL%E5%AE%B9%E5%99%A8%E7%9A%84%E5%AF%B9%E6%AF%94/">Java-Java的容器和C++的STL容器的对比</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/06/05/%E6%95%B0%E5%AD%97%E4%BA%BA-Java%E9%9F%B3%E8%A7%86%E9%A2%91%E5%A4%84%E7%90%86-%E9%9F%B3%E9%A2%91%E6%8E%A8%E6%B5%81%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">数字人-Java音视频处理-音频推流失败问题排查</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/05/21/%E6%95%B0%E5%AD%97%E4%BA%BA-Java%E9%9F%B3%E8%A7%86%E9%A2%91%E5%A4%84%E7%90%86/">数字人-Java音视频处理-推流和拉流</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/04/25/%E6%95%B0%E5%AD%97%E4%BA%BA-%E5%9F%BA%E7%A1%80%E6%89%AB%E7%9B%B2/">数字人-基础扫盲</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2025 <a href="/." rel="nofollow">Kelin's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0"></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.css"><script type="text/javascript" src="/js/love.js?v=1.0.0"></script><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="Copy Successed!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
