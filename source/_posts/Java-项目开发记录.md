@@ -163,3 +163,101 @@ public void someMethod() throws BizException {
 log.error("时间：{}，类名：{}，方法名：{}，异常信息：{}", LocalDateTime.now(), this.getClass().getName(), "方法名", e.getMessage());
 ```
 3、如果需要有空返回，先返回空，而不是先走业务逻辑
+
+### Spring Boot相关
+
+#### @Value注解
+
+为什么@Value注解可以注入配置文件中的值？
+
+> **Spring 在创建 Bean 时，会使用专门的处理器（BeanPostProcessor）扫描 `@Value` 注解，把 `${xxx}` 转成真正的配置值，然后通过反射赋值给字段。**
+
+这背后分三步：
+
+##### **1. Spring 会加载配置文件进 Environment**
+
+`application.yml` / `application.properties`
+➡ 会被 Spring 解析成一堆 key-value
+➡ 存进 **Environment**（它是所有配置的统一容器）
+
+例如：
+
+```yaml
+app.name: demo
+```
+
+Spring 会存成：
+
+```
+Environment["app.name"] = "demo"
+```
+
+##### **2. Spring 创建 Bean 时，会扫描字段上的 @Value**
+
+Spring 在创建 Bean 时，会用到一个特殊的处理器：
+
+```
+AutowiredAnnotationBeanPostProcessor
+```
+
+它会检查字段上是否有：
+
+* `@Autowired`
+* `@Value`
+* `@Resource`
+* ……等
+
+看到 `@Value("${app.name}")`
+➡ 它会把 `${app.name}` 交给 **PlaceholderResolver** 去解析。
+
+##### **3. Spring 解析占位符并通过反射把值注入字段**
+
+`${app.name}`
+➡ 解析得到 `"demo"`
+➡ 反射赋值给字段：
+
+```java
+this.name = "demo";
+```
+
+Bean 就成功拿到配置文件中的值了。
+
+#### 配置的优先级
+
+1. 命令行参数
+2. Java 系统属性（-Dkey=value）
+3. OS 环境变量
+4. jar 外部的 application.yml / properties
+5. jar 内部（/resources）的 application.yml / properties
+6. @PropertySource 指定的配置文件
+7. 默认配置（Spring Boot 自动配置设置的默认值）
+
+
+### 启动参数
+
+Java和 Spring Boot 常用启动参数：
+
+```bash
+java -Xms1g -Xmx2g \
+  -Denv=prod \
+  -Duser.timezone=Asia/Shanghai \
+  -jar app.jar \
+  --spring.profiles.active=prod \
+  --server.port=9000 \
+  --logging.level.root=INFO
+```
+
+## Serializable
+在 Java 中，实现 `Serializable` 接口的类可以将其实例转换为字节流，从而实现对象的持久化存储或通过网络传输。
+
+### serialVersionUID 的作用
+`serialVersionUID` 是 Java 序列化机制中的一个重要概念。它是一个唯一的标识符，用于验证序列化和反序列化过程中类的版本一致性。
+
+- 当一个对象序列化后写入文件或缓存，再次反序列化时，JVM 会检查类的 serialVersionUID 是否一致。
+- 如果类结构改变（新增/删除字段等），但 serialVersionUID 没变，可能导致 序列化不兼容问题。
+- 如果没有显式定义，JVM 会根据类的结构生成一个默认的 serialVersionUID，但类结构一改，生成的值会变，导致反序列化失败。
+
+## tips
+1. 构造器注入优于@Autowired注入，推荐使用构造器注入。
+2. 少用 @Component 扫一切
+   1. 推荐使用 @Service、@Repository、@Controller 等更具体的注解，明确类的角色和职责。

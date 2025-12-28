@@ -226,7 +226,7 @@ public class PluginSystem {
    • *类似场景*：JDBC驱动加载（如`Class.forName("com.mysql.jdbc.Driver")`）。
 
 
-2. `getDeclaredMethod(String)`  
+2. `getDeclaredMethod(String)`
    • 获取类声明的任意方法（包括私有方法），而`getMethod()`只能获取公共方法。
 
 
@@ -260,6 +260,12 @@ public class PluginSystem {
 
 
 ## 使用@Autowired注解和手动创建的区别
+
+Spring 的构造函数注入，本质上就是：把“new 对象时传参”这件事，交给 Spring 容器来做。
+
+**当构造函数参数是 List<T> / Set<T> / Map<String, T> 时：
+Spring 会自动注入“容器中所有 T 类型的 Bean”**
+
 
 在Spring框架中，使用`@Autowired`自动注入依赖和手动创建（如`new`关键字）有显著区别，主要体现在对象生命周期管理、代码耦合度和扩展性等方面。以下是详细对比：
 
@@ -802,7 +808,7 @@ public class OrderService {
 • 推荐：在新项目中优先使用`@RequiredArgsConstructor`，保持代码简洁且线程安全。
 
 ## Java中的构造器注入和C++中的组合有什么区别？
-你提到了一个非常关键的问题！其实在 现代Spring（尤其是Spring 4.3+版本）中，构造器注入的`@Autowired`注解是可以省略的，这正是为了减少代码的冗余，让它更接近“纯Java”的风格（类似C++的组合）。下面分几个层面解释：
+在 现代Spring（尤其是Spring 4.3+版本）中，构造器注入的`@Autowired`注解是可以省略的，这正是为了减少代码的冗余，让它更接近“纯Java”的风格（类似C++的组合）。下面分几个层面解释：
 
 ---
 
