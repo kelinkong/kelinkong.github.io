@@ -257,6 +257,13 @@ java -Xms1g -Xmx2g \
 - 如果类结构改变（新增/删除字段等），但 serialVersionUID 没变，可能导致 序列化不兼容问题。
 - 如果没有显式定义，JVM 会根据类的结构生成一个默认的 serialVersionUID，但类结构一改，生成的值会变，导致反序列化失败。
 
+## 事务
+在 Spring 中，事务管理通常通过 `@Transactional` 注解来实现。它可以应用于类或方法上，以指定该类或方法需要在事务上下文中执行。
+### 注意事项
+1. @Transactional 必须加在 public 方法上，才一定生效
+2. 同一个类内部方法调用（self-invocation）不会触发事务
+3. 事务方法应该放在 Service 层，而不是 Controller
+
 ## tips
 1. 构造器注入优于@Autowired注入，推荐使用构造器注入。
 2. 少用 @Component 扫一切
