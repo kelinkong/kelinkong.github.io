@@ -264,6 +264,75 @@ java -Xms1g -Xmx2g \
 2. 同一个类内部方法调用（self-invocation）不会触发事务
 3. 事务方法应该放在 Service 层，而不是 Controller
 
+#### 正常调用的链路
+```java
+@Service
+public class OrderService {
+
+    @Transactional
+    public void createOrder() {
+        ...
+    }
+}
+```
+外部调用实际执行的是：
+```text
+OrderService$$Proxy.createOrder()
+  → 开启事务
+  → 调用 OrderService.createOrder()
+  → 提交 / 回滚事务
+```
+
+#### 同一个类的内部调用：
+
+```java
+@Service
+public class OrderService {
+
+    public void methodA() {
+        methodB(); // ❌ 内部调用
+    }
+
+    @Transactional
+    public void methodB() {
+        ...
+    }
+}
+```
+实际执行的是：
+```text
+OrderService.methodA()
+  → this.methodB()
+```
+此时不会触发事务，完全绕开了Spring AOP，因为没有经过代理对象。
+
+#### 拆成新的类：
+```java
+@Service
+public class OrderService {
+
+    @Autowired
+    private OrderApplyService applyService;
+
+    public void process() {
+        applyService.apply(); // ✔ 代理调用
+    }
+}
+
+@Service
+public class OrderApplyService {
+
+    @Transactional
+    public void apply() {
+        ...
+    }
+}
+```
+实际执行是：
+```text
+OrderService → OrderApplyService$$Proxy → apply()
+```
+
 ## tips
 1. 构造器注入优于@Autowired注入，推荐使用构造器注入。
 2. 少用 @Component 扫一切
