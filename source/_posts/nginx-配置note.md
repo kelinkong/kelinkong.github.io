@@ -104,6 +104,44 @@ server {
 ```
 后端不用管 HTTPS，全部交给 Nginx
 
+## nginx的变量
+
+### 内置变量
+随时都能用的，来自 Nginx 核心请求上下文。
+- $remote_addr: 客户端 IP 地址。
+- $host: 请求的主机名。
+- $request_uri: 包含参数的完整请求 URI。
+- $uri: 不包含参数的请求 URI。
+- $args: 请求参数部分。
+- $http_user_agent: 客户端的 User-Agent 头信息。
+- $http_referer: 请求的来源页面 URL。
+- $server_port: 服务器监听的端口号。
+- $scheme: 请求使用的协议（http 或 https）。
+### 自定义变量
+可以在配置文件中使用 `set` 指令定义自己的变量。
+```nginx
+set $my_var "some_value";
+```
+### header派生变量
+可以通过 `$http_` 前缀访问请求头信息，将请求头名称中的连字符 `-` 替换为下划线 `_`，全部小写。
+
+```http
+X-User-Id: 123
+```
+可以通过 `$http_x_user_id` 访问其值 `123`。
+
+### map生成的变量
+```nginx
+map $http_user_id $backend {
+    default app_b;
+    1001    app_a;
+    1002    app_c;
+}
+```
+`$backend` 变量将自动生成，并包含 `app_b`、`app_a` 和 `app_c` 三个值。
+
+使用`proxy_pass http://$backend;`实现基于用户 ID 的请求路由。
+
 ## nginx配置
 
 ### 基本结构
@@ -157,3 +195,6 @@ http {
     }
 }
 ```
+
+参考问答：
+[nginx能做什么好玩的事情](https://www.zhihu.com/question/21483073)
