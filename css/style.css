@@ -1603,12 +1603,6 @@ figure.highlight .line,
 }
 
 /* toc*/
-.post-layout-with-toc {
-  display: flex;
-  align-items: flex-start;
-  gap: 28px;
-}
-
 .toc-article {
   border: 1px solid #bbb;
   border-radius: 7px;
@@ -1643,15 +1637,17 @@ figure.highlight .line,
   padding-left: 0;
 }
 
-.post-layout-with-toc .post-content {
-  flex: 1 1 auto;
-  min-width: 0;
+.post-with-left-toc .toc-article-left {
+  position: fixed;
+  top: 250px;
+  left: 5px; /* 固定距离左边 */
+  width: 210px;
+  max-height: calc(100vh - 200px);
+  overflow: auto;
+  z-index: 2;
 }
 
 @media print, screen and (max-width: 48em) {
-  .post-layout-with-toc {
-    display: block;
-  }
   .toc-article {
     display: none;
     max-width: 100%;
@@ -1661,6 +1657,11 @@ figure.highlight .line,
   }
   #toc {
     float: none;
+  }
+}
+@media screen and (max-width: 1480px) {
+  .post-with-left-toc .toc-article-left {
+    display: none;
   }
 }
 /* table*/
