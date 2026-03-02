@@ -69,6 +69,9 @@ index_generator:
 # Category & Tag
 default_category: uncategorized
 category_map:
+  Algorithm: algorithm
+  Frontend: frontend
+  DataBase: database
 tag_map:
 
 # Metadata elements

@@ -4,8 +4,8 @@ block title
   title= page.title + ' | ' + config.title
 
 block content
-  .post
-    h1.post-title= page.title
+  .post(class=page.toc !== false ? 'post-with-left-toc' : '')
+    h1.post-title(id="post-title")= page.title
     .post-meta= page.date.format(config.date_format)
       if page.categories.length > 0
         span= ' | '
@@ -34,11 +34,11 @@ block content
       a.disqus-comment-count(href=url_for(page.path) + '#waline')
         span.waline-comment-count(id=url_for(page.path))
         span= ' ' + __('Comment')
-    if page.toc
-      .clear
-        #toc.toc-article
-          .toc-title= __('contents')
-          != toc(page.content, {list_number: theme.toc_number})
+    if page.toc !== false
+      #toc.toc-article.toc-article-left
+        .toc-title
+        a(href="#post-title")= page.title
+        != toc(page.content, {list_number: theme.toc_number})
     .post-content
       != page.content
     if theme.donate.enable == true && page.donate != false

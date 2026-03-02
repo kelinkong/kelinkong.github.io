@@ -11,7 +11,7 @@ categories: [Java]
 | 特性         | C++ STL                             | Java 集合框架                     |
 |-------------|-------------------------------------|----------------------------------|
 | 泛型实现     | 编译时模板（类型安全）                | 类型擦除（运行时类型信息丢失）       |
-| 基础类型处理 | 原生支持（`vector<int>`）            | 必须使用包装类（`ArrayList<Integer>`） |
+| 基础类型处理 | 原生支持（`vector<int>`）            | 必须使用包装类（`ArrayList<Integer>`），HashMap<Character, Integer> |
 | 类型检查     | 编译期检查                           | 编译期部分检查 + 运行期检查          |
 
 示例对比：
@@ -35,6 +35,7 @@ nums.add("text"); // 编译通过，运行时报ClassCastException
 | 双端队列       | deque             | ArrayDeque          | Java不支持随机访问           |
 | 链表           | list              | LinkedList          | Java实现了Deque接口          |
 | 线程安全数组   | -                 | CopyOnWriteArrayList | Java特有                   |
+| 字符串容器       | string            | String | C++本质是字符数组s[i]，java也是，但是使用s.charAt(i)|
 
 性能对比：
 • 随机访问：`vector` ≈ `ArrayList` > `LinkedList`

@@ -1,7 +1,7 @@
 ---
 title: nginx-配置note
 date: 2026-01-23 15:14:57
-categories:[Frontend]
+categories: [Frontend]
 ---
 
 ## nginx的作用

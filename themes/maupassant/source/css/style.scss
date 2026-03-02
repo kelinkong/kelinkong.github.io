@@ -1976,9 +1976,14 @@ figure.highlight,
 .toc-article {
     border: 1px solid #bbb;
     border-radius: 7px;
-    margin: 1.1em 0 0 2em;
-    padding: 0.7em 0.7em 0 0.7em;
-    max-width: 40%;
+    margin: 0;
+    padding: 0.7em;
+    width: 230px;
+    flex: 0 0 230px;
+    max-height: calc(100vh - 110px);
+    overflow: auto;
+    position: sticky;
+    top: 84px;
 }
 
 .toc-title {
@@ -1987,7 +1992,7 @@ figure.highlight,
 
 #toc {
     line-height: 1em;
-    float: right;
+    float: none;
 
     .toc {
         padding: 0;
@@ -2005,10 +2010,20 @@ figure.highlight,
     }
 }
 
+.post-with-left-toc .toc-article-left {
+    position: fixed;
+    top: 250px;
+    left: 5px;      /* 固定距离左边 */
+    width: 210px;
+    max-height: calc(100vh - 200px);
+    overflow: auto;
+    z-index: 2;
+}
+
 @media print,
 screen and (max-width: 48em) {
     .toc-article {
-        margin: 0em;
+        display: none;
         max-width: 100%;
     }
 
@@ -2018,6 +2033,12 @@ screen and (max-width: 48em) {
 
     #toc {
         float: none;
+    }
+}
+
+@media screen and (max-width: 1480px) {
+    .post-with-left-toc .toc-article-left {
+        display: none;
     }
 }
 
