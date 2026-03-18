@@ -376,3 +376,30 @@ public class Main {
 - Python装饰器用于简化代码、提高复用性，特别是在Web开发和数据处理领域。
   
 两者虽然都是用于增强代码的功能性，但Java注解偏向于静态配置，而Python装饰器偏向于动态行为修改。
+
+### @RequestBody和@RequestParam和@RequestPart
+
+- @RequestBody：用于将请求体中的JSON数据转换为Java对象，适用于POST、PUT等请求。
+- @RequestParam：用于获取请求参数，适用于GET请求中的查询参数。
+- @RequestPart：用于处理multipart/form-data类型的请求，适用于文件上传等场景。
+
+```java
+@PostMapping("/upload")
+public ResponseEntity<String> uploadFile(@RequestPart("file") MultipartFile file) {
+    // 处理文件上传逻辑
+    return ResponseEntity.ok("File uploaded successfully");
+}
+
+@PostMapping("/submit")
+public ResponseEntity<String> submitData(@RequestBody MyData data) {
+    // 处理请求体中的数据
+    return ResponseEntity.ok("Data submitted successfully");
+}
+
+@GetMapping("/search")
+public ResponseEntity<String> search(@RequestParam("query") String query) {
+    // 处理查询参数
+    return ResponseEntity.ok("Search results for: " + query);
+}
+```
+@RequestBody注解用于将HTTP请求体中的JSON数据转换为Java对象，适用于POST、PUT等请求。它通过HttpMessageConverter将请求体中的数据转换为Java对象。

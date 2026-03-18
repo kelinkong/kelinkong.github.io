@@ -199,3 +199,12 @@ List<String> filtered = list.stream()
 
 
 > 作为C++转Java开发者，核心转变是从对象所有权管理到引用管理的思维转换。Java容器更像是"对象引用管理系统"，而非真正的对象容器。这种设计带来GC便利性的同时，也增加了内存泄露的风险点。
+
+## Java的其他特性
+
+### int[]和ArrayList<Integer>
+在Java中，`int[]`和`ArrayList<Integer>`是两种不同的数据结构。是JVM内置的基本类型数组，获取长度时使用`length`属性，访问元素时使用`[index]`语法。而`ArrayList<Integer>`是Java集合框架中的一个类，使用泛型来存储`Integer`对象。获取长度时使用`size()`方法，访问元素时使用`get(index)`方法。
+- `int[]` 是一个基本类型数组，直接存储整数值，内存占用较小，访问速度快。
+- `ArrayList<Integer>` 是一个对象集合，存储的是`Integer`对象的引用，内存占用较大，访问速度较慢，因为需要进行自动装箱和拆箱操作。
+
+在Java中使用：`Integer.MAX_VALUE`和`Integer.MIN_VALUE`获取最大值和最小值。
