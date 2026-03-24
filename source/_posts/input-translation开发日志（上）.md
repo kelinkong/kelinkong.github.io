@@ -73,7 +73,7 @@ my-extension/
 
 **各个脚本的权限：**
 
-![alt text](../imgs/image-46.png)
+![alt text](/imgs/image-46.png)
 
 在调用百度翻译的API时，由于content脚本不支持直接跨域，所以要先将输入框的信息发送到background脚本，再由background脚本发送，所以这里涉及到两个脚本的通信。
 

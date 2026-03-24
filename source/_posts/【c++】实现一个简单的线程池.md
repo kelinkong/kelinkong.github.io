@@ -4,7 +4,7 @@ date: 2022-09-15 07:33:02
 categories: [C++]
 ---
 
-![](../imgs/image-8.png)
+![](/imgs/image-8.png)
 
 ## 代码
 ### 任务结构体

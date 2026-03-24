@@ -7,9 +7,9 @@ categories: [Java]
 深入浅出Spring Boot第九章，Spring MVC。
 
 ## Spring MVC 示意图
-![](../imgs/image-60.png)
+![](/imgs/image-60.png)
 
-![](../imgs/image-61.png)
+![](/imgs/image-61.png)
 
 
 如果 Web 工程使用了 Spring MVC ， 那么它在启动阶段就会将注解

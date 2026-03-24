@@ -10,7 +10,7 @@ categories: [Java]
 
 版本选择：
 
-![](../imgs/image-67.png)
+![](/imgs/image-67.png)
 
 ### 启动mysql
 ```bash

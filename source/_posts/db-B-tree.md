@@ -52,14 +52,14 @@ buffer_pool_manager_->UnpinPage(page_id, true);
 
 假设叶子结点插入值之后满了，要考虑break的问题，要向父节点中插入break之后新的索引，假设父节点也满了，也要break（这是一个递归的过程），注意这里内部节点的第一个位置只存放value，而不存放key
 
-![](../imgs/B+insert.png)
+![](/imgs/B+insert.png)
 
 ### delete
 delete的时候，如果当前节点小于最小size（Max size/2），首先考虑从兄弟结点偷一个过来，如果兄弟结点投不了，就考虑merge。因为是一个向上递归删除的过程，所以merge的时候要区分是叶节点还是内部节点。
 
 这里注意是先删除再做merge或者偷一个key
 
-![](../imgs/b+delete.png)
+![](/imgs/b+delete.png)
 
 ### 锁的问题：
 螃蟹式加锁（区分读锁和写锁）
@@ -68,7 +68,7 @@ delete的时候，如果当前节点小于最小size（Max size/2），首先考
 
 先给父节点加锁，然后给子节点加锁，如果确认子节点安全（不会发生merge或者break），此时解锁父节点
 
-![Alt text](../imgs/image-22.png)
+![Alt text](/imgs/image-22.png)
 
 当寻找兄弟结点时，一个指针往前走，假设另一个进程在往后寻找兄弟结点，此时会不会发生死锁？
 

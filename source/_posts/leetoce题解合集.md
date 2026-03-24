@@ -8,7 +8,7 @@ mathjax: true
 
 ### DFS/回溯
 **以整数拆分为例：**
-![](../imgs/image-5.png)
+![](/imgs/image-5.png)
 
 **剪枝条件**
 - 当和为n时，保存结果
@@ -62,7 +62,7 @@ f 函数代表什么状态？
 - 等于前一步？
 
 **如下图所示**
-![](../imgs/image-7.png)
+![](/imgs/image-7.png)
 
 [路径和有关的题目](https://blog.csdn.net/wenningker/article/details/124410311?spm=1001.2014.3001.5502)
 

@@ -348,7 +348,7 @@ eventSource.onerror = function(event) {
 ### SseEmitter对象
 `SseEmitter` 是 Spring 提供的一个类，用于处理 `Server-Sent Events (SSE)`，一种服务器端推送技术。通过 `SseEmitter`，服务器可以持续向客户端发送事件，而客户端只需要建立一次连接即可接收多个事件。
 
-![](../imgs/image-92.png)
+![](/imgs/image-92.png)
 
 在 Java 里，`SseEmitter`（Spring MVC 提供的 SSE 对象）之所以能**流式返回**，本质上是利用了 **HTTP 长连接** + **分块传输（Chunked Transfer Encoding）** 来实现的。
 

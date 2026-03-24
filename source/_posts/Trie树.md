@@ -16,7 +16,7 @@ categories: [Algorithm]
 
 [leetcode208 实现前缀树](https://leetcode.cn/problems/implement-trie-prefix-tree/solution/by-lfool-k6hb/)
 
-![Alt text](../imgs/image-9.png)
+![Alt text](/imgs/image-9.png)
 
 **如何去实现一个前缀树？**
 - 每个结点包含的东西：该节点是否是最后一个、该节点的子节点有哪些。

@@ -134,7 +134,7 @@ public class PaymentService {
 参考文档：[Resilience4j](https://github.com/lmhmhl/Resilience4j-Guides-Chinese/blob/main/index.md)
 
 ## 案例实战
-![](../imgs/image-68.png)
+![](/imgs/image-68.png)
 
 配置断路器
 

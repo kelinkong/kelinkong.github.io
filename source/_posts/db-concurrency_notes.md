@@ -64,7 +64,7 @@ txn never executed at all.
 ### 锁管理器
 
 管理锁的请求
-![Alt text](../imgs/image-30.png)
+![Alt text](/imgs/image-30.png)
 
 **过程：**
 1. Transactions request locks (or upgrades).
@@ -83,17 +83,17 @@ txn never executed at all.
 
 示意图：
 
-![](../imgs/image-32.png)
+![](/imgs/image-32.png)
 
 但是无法避免接连回滚问题：这里事务一进入Shrinking阶段后，并没有提交，而是ABORT，最终回滚，由于事务二用的是事务一修改后的数据，也需要跟着回滚。
 
-![](../imgs/image-33.png)
+![](/imgs/image-33.png)
 
 粗暴的解决方法：所有的锁都在commit的时候解锁，能解决脏读问题。
 
 **但是可能出现死锁：**
 
-![](../imgs/image-34.png)
+![](/imgs/image-34.png)
 
 ### 死锁检测
 
@@ -102,7 +102,7 @@ txn never executed at all.
 - edge：Ti to Tj表示Ti在等到Tj释放锁
 
 如果图种产生了环，需要解开环。
-![](../imgs/image-35.png)
+![](/imgs/image-35.png)
 
 解开环：选择一个事务victim(abort or restart)
 - 根据执行时间选择（执行时间短的）
@@ -126,7 +126,7 @@ txn never executed at all.
 Assign priorities based on timestamps:
 - Older Timestamp = Higher Priority (e.g., T1 > T2)
 
-![](../imgs/image-36.png)
+![](/imgs/image-36.png)
 
 两个事务不会互相等待。
 
@@ -140,11 +140,11 @@ Assign priorities based on timestamps:
 ### 意向锁
 并不是真的锁，只是一个意向。比如表A种某一个tuple被加了锁，此时需要对表A加意向锁，表示比表A粒度更细的内容被加了所，不能再对表A加表锁。
 
-![](../imgs/image-38.png)
+![](/imgs/image-38.png)
 
 例如：要对Tuple1加S锁，需要先对Table R加IS锁
 
-![](../imgs/image-39.png) 
+![](/imgs/image-39.png) 
 
 两阶段锁是悲观锁。
 
@@ -167,17 +167,17 @@ Assign priorities based on timestamps:
 
 读数据：
 
-![](../imgs/image-40.png)
+![](/imgs/image-40.png)
 
 写数据：数据的任何操作都应该发生在过去
 
-![](../imgs/image-41.png)
+![](/imgs/image-41.png)
 
 ### THOMAS WRITE RULE
 
 如果我们当前要修改的数据A已经被未来的事务所修改，那么我们忽视写这个操作，因为现在写了一定会被未来写的数据所覆盖掉。
 
-![](../imgs/image-42.png)
+![](/imgs/image-42.png)
 
 - 乐观锁不存在死锁，因为没有锁也没有等待
 - 长事务可能会饥饿，因为有可能碰到的所有数据都被未来的事务所修改

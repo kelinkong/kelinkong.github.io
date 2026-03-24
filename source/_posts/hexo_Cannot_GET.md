@@ -30,7 +30,7 @@ tags: [hexo]
 ### nodejs等级太高
 官方文档参考链接：https://hexo.io/zh-cn/docs/index.html
 
-![](../imgs/image-1.png)
+![](/imgs/image-1.png)
 
 ### 文件名问题
 

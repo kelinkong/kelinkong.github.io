@@ -248,7 +248,7 @@ public class PluginSystem {
 
    • JUnit：发现并运行测试方法（标记`@Test`的方法名在编译时未知）。
 
-   ![](../imgs/image-91.png)
+   ![](/imgs/image-91.png)
 
 
 2. 动态代理  

@@ -4,7 +4,7 @@ date: 2024-10-22 15:09:09
 categories: [Java]
 ---
 使用`@Transactional`注解，Spring就会知道在哪里启动事务。其约定流程如图：
-![](../imgs/image-58.png)
+![](/imgs/image-58.png)
 
 @Transactional注解的一些配置：
 
@@ -79,7 +79,7 @@ public class UserService {
 ## 事务的传播行为
 假设有批量任务在处理时，如果其中一个任务出现异常，是否需要回滚整个批量任务？这就需要用到事务的传播行为。
 通常我们只希望回滚出现异常的错误任务，而不是回滚整个批量任务。
-![](../imgs/image-59.png)
+![](/imgs/image-59.png)
 
 事务的传播行为（Transaction Propagation Behavior）决定了当一个事务方法调用另一个事务方法时，如何处理新旧事务之间的关系。Spring 提供了多种事务传播机制，允许开发人员根据业务需求选择适当的事务行为。主要的传播行为有以下几种：
 

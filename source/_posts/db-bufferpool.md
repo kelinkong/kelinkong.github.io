@@ -47,16 +47,16 @@ auto DeletePgImp(page_id_t page_id) -> bool override;
 此时针对桶的处理最简单的办法是也新建一倍的桶，每一个桶对应着每个索引，但是这样很浪费空间，当有数据插入的时候再考虑新建桶。
 扩展目录为double，更新index，将桶中的数据重新插入到新的桶中。
 
-![Alt text](../imgs/image-21.png)
+![Alt text](/imgs/image-21.png)
 
 ### LRU_K算法
 
 和传统的LRU不一样的地方在于，传统的LRU是淘汰最近未使用的，而LRU_K多维护了一个record链表，用于记录访问次数大于等于K的Page，当淘汰时优先淘汰访问次数小于K次的，若所有的Page访问次数都大于K次才从record链表中去淘汰。
 
-![Alt text](../imgs/image-20.png)
+![Alt text](/imgs/image-20.png)
 
 ### 具体实现
-![](../imgs/bufferpool.png)
+![](/imgs/bufferpool.png)
 
 ### tips
 

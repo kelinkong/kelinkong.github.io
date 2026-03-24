@@ -41,7 +41,7 @@ Spring 提供了一个更高级的 IoC 容器接口 ApplicationContext，它是 
 
 ## ApplicationContext
 
-![](../imgs/image-53.png)
+![](/imgs/image-53.png)
 
 ApplicationContext 接口通过实现多个接口，提供了更多的功能，如国际化、事件传播、资源加载等。
 
@@ -249,7 +249,7 @@ public class Car {
 ## Bean的生命周期
 
 ### 初始化流程
-![](../imgs/image-54.png)
+![](/imgs/image-54.png)
 
 ```java
 @ComponentScan(basePackages = "kelin.com.springnotes.chapter3", lazyInit = true)
@@ -258,7 +258,7 @@ public class Car {
 使用lazyInit = true，可以延迟初始化Bean，即在第一次使用Bean时才初始化。
 
 ### 生命周期
-![](../imgs/image-55.png)
+![](/imgs/image-55.png)
 
 ## 使用@Profile
 `@Profile`注解可以根据不同的环境来选择不同的Bean。

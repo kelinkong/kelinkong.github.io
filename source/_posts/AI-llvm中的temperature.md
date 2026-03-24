@@ -19,6 +19,6 @@ $$
 
 这个公式和描述与语言模型的温度调节（temperature scaling）有关，常用于生成任务（如文本生成、语言建模）中，控制模型生成的随机性。它影响从模型的概率分布中采样的方式，使生成的文本更加多样化或更加确定。
 
-![alt text](../imgs/image-48.png)
-![alt text](../imgs/image-49.png)
-![alt text](../imgs/image-50.png)
+![alt text](/imgs/image-48.png)
+![alt text](/imgs/image-49.png)
+![alt text](/imgs/image-50.png)

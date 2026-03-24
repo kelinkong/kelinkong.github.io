@@ -237,9 +237,9 @@ void UserService.login(String, String) executed in 50ms
 ```
 ## 使用AOP实现数据库操作
 在AOP出现之前，使用JDBC操作数据库，往往需要：
-![](../imgs/image-56.png)
+![](/imgs/image-56.png)
 但其中的，获取数据库连接、回滚、提交、释放连接，其实都是通用的。
 
-![](../imgs/image-57.png)
+![](/imgs/image-57.png)
 
 使用注解`@Transactional`，就表明了该方法需要事物执行。

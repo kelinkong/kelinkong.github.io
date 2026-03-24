@@ -60,7 +60,7 @@ READ_UNCOMMITTED:
   std::shared_ptr<std::unordered_map<table_oid_t, std::unordered_set<RID>>> x_row_lock_set_;
 ```
 
-![](../imgs/image-43.png)
+![](/imgs/image-43.png)
 
 **获取表锁**
 1. 判断锁请求是否合理(如果当前事务Abort/Commit，或者加锁类型与事务隔离级别不符合，抛异常)

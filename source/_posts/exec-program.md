@@ -12,7 +12,7 @@ categories: [Operating-System]
 - 输入设备
 - 输出设备
 
-![图来源于小林coding](../imgs/image-44.png)
+![图来源于小林coding](/imgs/image-44.png)
 
 ### 内存
 
@@ -47,7 +47,7 @@ categories: [Operating-System]
 
 ## 程序是如何执行的？
 
-![](../imgs/image-45.png)
+![](/imgs/image-45.png)
 
 指令：一串二进制数字的机器码，不同的CPU有不同的指令集
 
