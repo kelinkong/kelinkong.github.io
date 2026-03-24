@@ -1614,6 +1614,7 @@ figure.highlight .line,
   overflow: auto;
   position: sticky;
   top: 84px;
+  margin-bottom: 30px;
 }
 
 .toc-title {
@@ -1642,9 +1643,10 @@ figure.highlight .line,
   top: 250px;
   left: 5px; /* 固定距离左边 */
   width: 210px;
-  max-height: calc(100vh - 200px);
+  max-height: calc(100vh - 280px);
   overflow: auto;
   z-index: 2;
+  padding-bottom: 30px;
 }
 
 @media print, screen and (max-width: 48em) {
