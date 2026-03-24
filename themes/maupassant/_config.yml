@@ -58,10 +58,10 @@ twikoo: ## See: https://twikoo.js.org
   region: ## Tencent CloudBase region, e.g. ap-shanghai
   path: ## Article path, e.g. window.location.pathname
 
-google_search: true ## Use Google search, true/false.
+google_search: false ## Use Google search, true/false.
 baidu_search: false ## Use Baidu search, true/false.
 swiftype: ## Your swiftype_key, e.g. m7b11ZrsT8Me7gzApciT
-self_search: false ## Use a jQuery-based local search engine, true/false.
+self_search: true ## Use a jQuery-based local search engine, true/false.
 google_analytics: ## Your Google Analytics tracking id, e.g. UA-42425684-2
 baidu_analytics: ## Your Baidu Analytics tracking id, e.g. 8006843039519956000
 microsoft_clarity: ## Your Microsoft Clarity tracking id, e.g. zg2ctuea9j
