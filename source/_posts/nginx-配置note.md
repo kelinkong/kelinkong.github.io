@@ -192,6 +192,12 @@ http {
 
             proxy_pass http://digitalhuman/; // 这里加 / 表示去掉前缀
         }
+
+        location /uploads/ {
+            alias /data/uploads/; // 把 /uploads/ 整段路径替换掉
+            expires 7d;
+            add_header Cache-Control "public, no-transform";
+        }
     }
 }
 ```
