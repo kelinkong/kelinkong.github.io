@@ -170,7 +170,7 @@ js: js
 css: css
 
 # favicon
-favicon: /img/favicon.ico
+favicon: /img/logo.jpg
 
 # Theme version
 version: 1.0.0
