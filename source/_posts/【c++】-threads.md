@@ -1,5 +1,5 @@
 ---
-title: C++多线程模型
+title: C++ 多线程模型
 date: 2023-10-10 06:47:41
 categories: [C++]
 ---

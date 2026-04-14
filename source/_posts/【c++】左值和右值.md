@@ -1,5 +1,5 @@
 ﻿---
-title: 左值和右值
+title: C++ 左值和右值
 date: 2022-08-15 07:33:02
 categories: [C++]
 ---

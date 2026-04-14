@@ -2,6 +2,7 @@
 title: algorithm-计数排序
 date: 2026-04-13 18:09:28
 categories: [Algorithm]
+mathjax: true
 ---
 
 ## 有趣的算法之计数排序
