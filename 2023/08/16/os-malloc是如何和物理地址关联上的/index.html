@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content=""><title>malloc是如何和物理地址关联上的？ | Kelin's blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=1.0.0"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/normalize/latest/normalize.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/pure-min.min.css"><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/pure/latest/grids-responsive-min.min.css"><link rel="stylesheet" href="//lib.baomitu.com/font-awesome/4.7.0/css/font-awesome.min.css"><script type="text/javascript" src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script><link rel="icon" mask="" sizes="any" href="/img/logo.jpg"><link rel="Shortcut Icon" type="image/x-icon" href="/img/logo.jpg"><link rel="apple-touch-icon" href="/img/logo.jpg"><link rel="apple-touch-icon-precomposed" href="/img/logo.jpg"><link rel="alternate" type="application/atom+xml" href="/atom.xml"><script type="text/javascript" src="//lib.baomitu.com/clipboard.js/latest/clipboard.min.js"></script><script type="text/javascript" src="//lib.baomitu.com/toastr.js/latest/toastr.min.js"></script><link rel="stylesheet" href="//lib.baomitu.com/toastr.js/latest/toastr.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">malloc是如何和物理地址关联上的？</h1><a id="logo" href="/.">Kelin's blog</a><p class="description"></p></div><div id="nav-menu"><a class="current" href="/."><i class="fa fa-home"> Home</i></a><a href="/archives/"><i class="fa fa-archive"> Archive</i></a><a href="/about/"><i class="fa fa-user"> About</i></a><a href="/atom.xml"><i class="fa fa-rss"> RSS</i></a></div></div><div class="pure-g" id="layout"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post post-with-left-toc"><h1 class="post-title" id="post-title">malloc是如何和物理地址关联上的？</h1><div class="post-meta">2023-08-16<span> | </span><span class="category"><a href="/categories/Operating-System/">Operating-System</a></span><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span><span class="post-time"><span class="post-meta-item-text"> | </span><span class="post-meta-item-icon"><i class="fa fa-keyboard-o"></i><span class="post-count"> 1.7k</span><span class="post-meta-item-text"> Words</span></span></span><span class="post-time"> | <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i><span class="post-count"> 6</span><span class="post-meta-item-text"> Minutes</span></span></span></div><div class="toc-article toc-article-left" id="toc"><div class="toc-title"></div><a href="#post-title">malloc是如何和物理地址关联上的？</a><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">为什么为什么需要虚拟内存？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%B1CPU%E7%9A%84%E4%BD%8D%E6%95%B0%E5%86%B3%E5%AE%9A%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">地址空间为什么由CPU的位数决定？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MMU-Memory-Management-Unit"><span class="toc-number">3.</span> <span class="toc-text">MMU(Memory Management Unit)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88MMU%E5%8F%AF%E4%BB%A5%E8%A7%A3%E5%86%B3%E5%86%85%E5%AD%98%E7%A2%8E%E7%89%87%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="toc-number">4.</span> <span class="toc-text">为什么MMU可以解决内存碎片的问题？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-number">5.</span> <span class="toc-text">缓存一致性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#malloc%E8%B0%83%E7%94%A8%E6%97%B6%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E7%94%A8sys-mmap-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E7%94%A8brk%EF%BC%9F"><span class="toc-number">6.</span> <span class="toc-text">malloc调用时什么时候用sys_mmap, 什么时候用brk？</span></a></li></ol></div><div class="post-content"><p><img src="/imgs/image-19.png" alt=""></p>
+<ol>
+<li>malloc函数用于在堆上动态分配内存,它会向操作系统请求一块未使用的内存,然后返回这块内存的地址。</li>
+<li>操作系统维护着可用物理内存的信息,知道哪些内存地址 当前未被使用。当收到malloc的请求时,它会从可用虚拟内存中选择一块未使用的内存,将其标记为已分配,并返回给应用程序。</li>
+</ol>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">malloc()</span><br><span class="line">  ↓</span><br><span class="line">向 libc / glibc 要“虚拟地址空间”</span><br><span class="line">  ↓</span><br><span class="line">brk / mmap 系统调用</span><br><span class="line">  ↓</span><br><span class="line">操作系统只分配“虚拟页”</span><br><span class="line">  ↓</span><br><span class="line">真正物理内存：</span><br><span class="line">   → 用到时才分配（缺页中断）</span><br></pre></td></tr></table></figure>
+<h3 id="为什么为什么需要虚拟内存？">为什么为什么需要虚拟内存？</h3>
+<ol>
+<li>内存保护: 虚拟内存为每个进程提供独立的地址空间,防止一个进程访问另一个进程的内存,提高系统安全性。</li>
+<li>内存管理：虚拟内存允许操作系统更灵活地管理内存,可以将不连续的物理内存映射到连续的虚拟地址空间,提高内存利用率。解决内存碎片化问题。</li>
+<li>内存扩展: 虚拟内存可以使用磁盘空间作为扩展内存,允许程序使用比物理内存更大的地址空间。支持swap机制,当物理内存不足时,可以将部分内存页换出到磁盘,腾出物理内存供其他程序使用。</li>
+<li>文件映射：虚拟内存允许将文件映射到内存中,使得程序可以像访问内存一样访问文件内容,提高文件I/O效率。</li>
+<li>Copy-on-write：虚拟内存支持copy-on-write机制,允许多个进程共享同一内存页,只有在写入时才复制该页,节省内存资源。</li>
+</ol>
+<p>虚拟内存的本质是为每一个进程分配一套独立的内存空间。</p>
+<h3 id="地址空间为什么由CPU的位数决定？">地址空间为什么由CPU的位数决定？</h3>
+<ul>
+<li>32位 CPU = 地址寄存器只有 32 bit</li>
+<li>能表示的最大地址数量 = 2³²</li>
+<li>= 4,294,967,296 ≈ 4GB</li>
+</ul>
+<p>CPU 访问内存时，用的是“地址”：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">0x00000000</span><br><span class="line">0x00000001</span><br><span class="line">...</span><br><span class="line">0xFFFFFFFF</span><br><span class="line"></span><br><span class="line">32-bit CPU</span><br><span class="line">→ 地址线宽度 = 32 bit</span><br><span class="line">→ MMU 也只能处理 32 bit 地址</span><br></pre></td></tr></table></figure>
+<p>每个地址对应一个字节（byte），所以 32 位 CPU 的地址空间是 4GB。</p>
+<h3 id="MMU-Memory-Management-Unit">MMU(Memory Management Unit)</h3>
+<p>有些系统MMU集成在CPU中，有些系统是单独芯片实现，通过地址总线和CPU连接。（地址总线、数据总线、控制总线–&gt;传递信号）</p>
+<ol>
+<li>地址转换 MMU负责将CPU产生的虚拟地址转换成物理地址。转换过程需要参考TLB,根据虚拟地址的高位找到对应的页表项,翻译出物理页号,与虚拟地址的低位组合成物理地址。</li>
+<li>页面置换 当访问的页面不在物理内存时,MMU会触发页面置换（<em>页面置换算法通常不是由MMU(内存管理单元)直接实现的,而是由操作系统内核的虚拟内存管理子系统来实现。页表和地址转换是由MMU硬件来完成,但确定哪些页面需要换出、加载,以及页面替换策略则由操作系统内核的虚拟内存管理机制决定。</em>）,将内存中的某一页换出,将需要访问的页换入物理内存。</li>
+<li>存取权限检查 MMU会检查每次地址转换后的物理内存访问权限,例如是否可读、可写、可执行,避免非法访问。</li>
+<li>缓存一致性 MMU会与CPU缓存协同工作,实现缓存一致性,保证内存访问正确。</li>
+<li>地址空间隔离 MMU为每个进程维护一个独立的地址空间,实现进程间的内存隔离。</li>
+<li>中断与异常 若地址非法或者缺页等异常,MMU会触发中断信号,通知CPU进行异常处理。</li>
+<li>硬件缓存 部分MMU集成了TLB等缓存结构,加速地址转换的速度。</li>
+</ol>
+<h3 id="为什么MMU可以解决内存碎片的问题？">为什么MMU可以解决内存碎片的问题？</h3>
+<ol>
+<li>MMU实现了虚拟地址到物理地址的映射,程序只需要一个连续的虚拟地址空间。操作系统可以将不连续的物理内存片段映射到该连续虚拟地址空间上。通过这种映射,即使物理内存分布不连续,程序视图也是一个连续空间,可以任意使用而不会出现碎片。操作系统会负责这些不连续物理页的映射和调度,对上层应用透明。</li>
+<li>当物理内存使用产生外部碎片时,虚拟存储技术可以进行碎片回收,将闲置的小块内存映射给其他程序使用。</li>
+<li>同时,虚拟内存可以将暂时不用的内存页换出到磁盘,腾出物理内存空间供其他程序使用,减少内存碎片。</li>
+<li>进而避免了严重的外部碎片,提高了物理内存的利用效率。</li>
+</ol>
+<h3 id="缓存一致性">缓存一致性</h3>
+<p>一个计算系统通常包含多级缓存,任何两个存储层次之间都可能存在数据一致性的问题。</p>
+<ol>
+<li>
+<p>CPU缓存与硬盘缓存</p>
+</li>
+<li>
+<p>多核CPU之间</p>
+</li>
+<li>
+<p>各级系统缓存之间</p>
+<p>MMU与CPU缓存的一致性是通过以下几种方式实现的:<br>
+a. 缓存一致性协议 CPU和MMU之间通过一定的硬件协议(如Intel的MESI协议)来维持缓存和主存的数据一致性。当缓存数据被修改时,会根据协议规则通知MMU将主存更新。</p>
+<p>b. 缓存锁定 针对一些关键数据,CPU缓存会被锁定,每次访问必须从MMU加载,而不是缓存中的拷贝。保证了这部分数据的一致性。</p>
+<p>c. 地址翻译表同步 地址翻译表如TLB也存放在CPU高速缓存中,MMU会同步更新CPU中的翻译表缓存,保证访问获取的是最新翻译关系。</p>
+<p>d. 缓存行注释 MMU可以向缓存中的缓存行添加标记信息,如是否可缓存、是否已修改等,方便缓存控制。</p>
+</li>
+<li>
+<p>分布式缓存系统</p>
+</li>
+<li>
+<p>存储设备之间</p>
+</li>
+<li>
+<p>客户端缓存</p>
+</li>
+</ol>
+<h3 id="malloc调用时什么时候用sys-mmap-什么时候用brk？">malloc调用时什么时候用sys_mmap, 什么时候用brk？</h3>
+<p>在调用malloc时会产生系统调用，切换到内核态，然后执行系统调用<br>
+在malloc调用时,是否使用sys_mmap或brk分配内存,主要取决于请求的内存大小:</p>
+<ol>
+<li>对于较小的内存请求,malloc通常会使用brk系统调用去扩展程序的堆区。</li>
+<li>当请求较大内存页(一般超过128KB)时,malloc会使用mmap系统调用去映射匿名内存页。</li>
+</ol>
+<p>mmap相比brk的优势在于:</p>
+<ul>
+<li>可以指定地址对齐,提高效率</li>
+<li>可以随时释放不连续的大内存块</li>
+<li>避免堆区碎片</li>
+</ul>
+</div><script type="text/javascript" src="/js/share.js?v=1.0.0" async></script><a class="article-share-link" data-url="https://kelinkong.github.io/2023/08/16/os-malloc%E6%98%AF%E5%A6%82%E4%BD%95%E5%92%8C%E7%89%A9%E7%90%86%E5%9C%B0%E5%9D%80%E5%85%B3%E8%81%94%E4%B8%8A%E7%9A%84/" data-id="cmny9cmte003m2mog47d85nxs" data-qrcode="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAT4AAAE+CAAAAAAxUyPsAAAFRklEQVR42u3cwU7jQBAE0Pz/T2evIK1NVfcYIeXlhCDYnjcrpae6l9crfr2/vK5+evX11e9e/fT++/kV7teSPOGxFz58+PDhw3f7EMmS7heT32WzyOQK+b2S9f7nOvjw4cOHD9+Ib1aOJHz7cuf+mvl9k38c+TPjw4cPHz58v8+Xf9j/hbvcM+HDhw8fPnx/ky8vVpIYIjn8zwqpfcMAHz58+PDhe46vXeosvp81BpIooX3mTXmEDx8+fPjwbfjyKazP+fqR+T58+PDhw/fxfO/ytRkXSzZmH9NvSq76+vjw4cOHD9/k+kVQnscESWSQRO15U2EWx7dxAD58+PDhw3eKrw3cZ787O4nvR9WTVvpsSB0fPnz48OHL+dqP+RlfXgS0xcfsXm2L/fIZ8OHDhw8fvjVffuyfLaBdTA53ttyJ/jHhw4cPHz58C7588bMovL3yLA54Ijiop/bw4cOHDx++xSsvYvLBtbbEabPxHK4ty2pWfPjw4cOH72K26n55myGwWVjfhhQbynY87ltkgA8fPnz48I3ygfwDu43O8+/PljpreLeFVzTlhw8fPnz48L0mA+L7Y3weqc8GyzYlV76RRe6CDx8+fPjwxXyzouHUENi+eb+/+2r8Dh8+fPjw4XsPJrfrcqSNwvcxwaxJn8cKq03Fhw8fPnz4Dk0+twfpvNyZNbzzp82D+9koGz58+PDhwzfje+Lw34YL+XeK1nXZRM/hfgjr8eHDhw8fvovfao/lebkwixtOIe5H3A50OfDhw4cPH774yD2LD/b0M9ZT0fyBdeHDhw8fPnxlZLCP1zcPncf0x3oR5bgbPnz48OHDt+Frh7RmNLOIfNYUz7d8E4jgw4cPHz58i6mt1Z8O2cQHeQSfFCuzrWqHyy8H1PDhw4cPH77RbHMbHLTFwSxEmI2+nb1ykbjgw4cPHz58i9HwvKncht1t0JBvcL7xhwsXfPjw4cOH75Zv31TelD45Ux6gHxvyTsoyfPjw4cOHb8F3/xHeHraToL8tjzYj4G1jIIlC8OHDhw8fvhnfJv7Ow/pkeftxsX0YUQy448OHDx8+fK/5X3gu3jpqis+O/Xmk3ob1+XuibcaHDx8+fPiCJyx0R0F8W9bMypQ8jk+uULwfHz58+PDhW/C1j97m1XmRNCtKNmF9G4Lgw4cPHz58G76Wchad50fxJDjYNN3rEfCrbcOHDx8+fPhek/8L3H60bz7sk2IlL2s2YX3bcsCHDx8+fPj2fHlAP1tkfsgvdntRiOTlSIKODx8+fPjwzfg2Q2NtdJ4jzsqg2ZbnAcdl4oIPHz58+PDFfPkCZh/zbTO7XcZszG7WJPj2Hnz48OHDh2/Bd3ZYfDOU9jRc+7q8Pj58+PDhw1fy5SNZT4TjZzcsifjzoqTYBnz48OHDh2/Bt4nRk4Z3u22zrdoEH3XbHh8+fPjw4Sv52gN/2xqfEc9a43mZtWmW48OHDx8+fDO+zVDXLD7IG9htDLFv1efvX+Uf+PDhw4fv4/lmh+RZEZMHB3kDOy9r8qeK7oIPHz58+PCt+fZDY2dD/FPbs7nvDwE9Pnz48OHD16XfRYmwb0UnRUZbfGyi/Px52nIHHz58+PDhywfUZkXJ5sO+HRSbIeYbU4QR+PDhw4cP34ivfYh8OOxUJbU56udN+mEcgA8fPnz48D3GN0sd9gVE+zztJs1aFPjw4cOHD9/TfO1Q9b5IOtauLocDHqz78OHDhw/fx/MlYf2mtTxrridFTLsBZ9+PDx8+fPjwrWe3hm3sHCK//iZW2AQQ+bPhw4cPHz588bP9Aw+Fc0IwQ7dzAAAAAElFTkSuQmCC">Share</a><div class="tags"></div><div class="post-nav"><a class="pre" href="/2023/08/17/db-bufferpool/">CMU15-445 buffer pool manager</a><a class="next" href="/2023/08/15/hexo_Cannot_GET/">hexo Cannot GET/</a></div></div></div></div><div class="pure-u-1-4 hidden_mid_and_down"><div id="sidebar"><div class="widget"><div class="search-form"><input id="local-search-input" placeholder="Search" type="text" name="q" results="0"/><div id="local-search-result"></div></div></div><div class="widget"><div class="author-info"><a class="info-avatar" href="/about/" title="About"><img class="nofancybox" src="/img/logo.jpg"/></a><p>Kelin is a boring girl, but not always.</p><a class="info-icon" href="https://github.com/kelinkong" title="Github" target="_blank" style="margin-inline:5px"> <i class="fa fa-github-square" style="margin-inline:5px"></i></a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> Categories</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/AI/">AI</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/C/">C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Digital-Human/">Digital Human</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/frontend/">Frontend</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Network-Security/">Network-Security</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Operating-System/">Operating-System</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Radar-Principle/">Radar Principle</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/solutions/">solutions</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> Tags</i></div><div class="tagcloud"><a href="/tags/architecture/" style="font-size: 15px;">architecture</a> <a href="/tags/CMU15-445/" style="font-size: 15px;">CMU15-445</a> <a href="/tags/hexo/" style="font-size: 15px;">hexo</a> <a href="/tags/%E9%9B%B7%E8%BE%BE%E5%8E%9F%E7%90%86/" style="font-size: 15px;">雷达原理</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> Recent</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2026/04/13/algorithm-%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F/">algorithm-计数排序</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/04/02/Java-%E9%AB%98%E5%B9%B6%E5%8F%91%E7%93%B6%E9%A2%88%E6%8E%92%E6%9F%A5%E8%AE%B0%E5%BD%95/">Java-高并发瓶颈排查记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/03/24/%E6%90%AD%E5%BB%BA%E9%9D%99%E6%80%81%E5%8D%9A%E5%AE%A2/">利用hexo和github搭建静态博客</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/01/23/nginx-%E9%85%8D%E7%BD%AEnote/">nginx-配置note</a></li><li class="post-list-item"><a class="post-list-link" href="/2026/01/22/%E3%80%90c++%E3%80%91brtc%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/">【c++】brtc项目开发记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/12/08/Java-copy%E6%A8%A1%E5%BC%8F/">Java-copy模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/11/28/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8-tryHackMe%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">网络安全-学习笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/11/18/Java-%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/">Java-命令模式</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/09/11/Java-%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/">Java-项目开发记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2025/06/13/%E9%9B%B7%E8%BE%BE%E5%8E%9F%E7%90%86-ukf-%E6%BB%A4%E6%B3%A2%E5%99%A8/">雷达原理-ukf 滤波器</a></li></ul></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">Copyright © 2026 <a href="/." rel="nofollow">Kelin's blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a class="show" id="rocket" href="#top"></a><script type="text/javascript" src="/js/totop.js?v=1.0.0" async></script><script type="text/javascript" src="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.js"></script><script type="text/javascript" src="/js/fancybox.js?v=1.0.0"></script><link rel="stylesheet" type="text/css" href="//lib.baomitu.com/fancybox/latest/jquery.fancybox.min.css"><link rel="stylesheet" type="text/css" href="/css/search.css?v=1.0.0"><script type="text/javascript" src="/js/search.js?v=1.0.0"></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+  search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="/js/love.js?v=1.0.0"></script><script type="text/javascript" src="/js/copycode.js?v=1.0.0" successtext="Copy Successed!"></script><link rel="stylesheet" type="text/css" href="/css/copycode.css?v=1.0.0"><script type="text/javascript" src="/js/codeblock-resizer.js?v=1.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=1.0.0"></script></div></body></html>
