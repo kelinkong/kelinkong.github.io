@@ -15,7 +15,7 @@ categories: [Java]
 举例：
 
 ```bash
-你写了一个 HelloWorld.java
+写了一个 HelloWorld.java
 → 编译得到 HelloWorld.class
 → Windows 装 JVM → 可以跑
 → Linux 装 JVM → 也可以跑
